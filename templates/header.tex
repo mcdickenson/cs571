@@ -1,0 +1,49 @@
+\documentclass[twoside]{article}
+
+\usepackage{epsfig}
+
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf STA613/CBB540:~Statistical methods in computational biology \hfill} }
+       \vspace{6mm}
+       \hbox to 6.28in { {\Large \hfill #1 (#2)  \hfill} }
+       \vspace{6mm}
+       \hbox to 6.28in { {\it Lecturer: #3 \hfill Scribe: #4} }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{#1}{#1}
+   \vspace*{4mm}
+}
+
+\begin{document}
+
+\lecture{Lecture name}{1/1/13}{Barbara Engelhardt}{Scribe name}
+
+\section{Instructions}
+
+Send your finished notes to Barbara Engelhardt
+({\tt barbara.engelhardt@duke.edu}), including the Latex file and any .eps
+or .pdf files that you've created for figures. Double-check that your file compiles with {\tt pdflatex lec1.tex} before you send it.
+
+Thank you!
+Barbara
+
+\end{document}
+
