@@ -1,0 +1,103 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{fullpage}
+\usepackage{lastpage}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{xcolor}
+\usepackage[margin=3cm]{geometry}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+
+% Edit these as appropriate
+\newcommand\course{STA561/CS571}
+\newcommand\semester{Fall 2013}     % <-- current semester
+\newcommand\hwnum{1}                  % <-- homework number
+\newcommand\yourname{Name} % <-- your name
+\newcommand\login{NetID}           % <-- your NetID
+\newcommand\hwdate{Due: }           % <-- HW due date
+
+\newenvironment{answer}[1]{
+  \subsubsection*{Problem #1}
+}
+
+
+\pagestyle{fancyplain}
+\headheight 35pt
+\lhead{\yourname\ \login\\\course\ --- \semester}
+\chead{\textbf{\Large Homework \hwnum}}
+\rhead{\hwdate}
+\headsep 10pt
+
+\begin{document}
+
+\noindent \emph{Homework Notes:} Add information here on your study group, number of hours you spent on the homework, and other relevant information.
+
+\begin{answer}{1}
+
+You can write aligned equations as follows:
+\begin{eqnarray*}
+a &\sim& p(a)\\
+b &\sim& p(b).
+\end{eqnarray*}
+
+You can write inline equations: $a \sim p(b)$, or one line equations:
+\[
+a \sim p(a).
+\]
+
+You can also add bullet points:
+
+\begin{enumerate}[(a)]
+\item
+This is the first bullet point. It can be the solution to the first part of the question
+\item
+This is the solution to the second part of the question.
+\end{enumerate}
+
+You can also add figures (Figure~\ref{fig:example}).
+
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+   \centering
+  % \includegraphics[width=2in]{name.pdf} % uncomment this line and put the figure in the same folder as this document.
+   \caption{example caption}
+   \label{fig:example}
+\end{figure}
+
+And tables (Table~\ref{tab:booktabs})
+
+% Requires the booktabs if the memoir class is not being used
+\begin{table}[htbp]
+   \centering
+   \caption{Table captions are better up top} 
+   \begin{tabular}{|c|c|c|}\hline % Column formatting
+         Animal    & Description & Price (\$)\\\hline
+      Gnat      & per gram & 13.65 \\
+                & each     &  0.01 \\
+      Gnu       & stuffed  & 92.50 \\
+      Emu       & stuffed  & 33.33 \\
+      Armadillo & frozen   &  8.99 \\ \hline
+   \end{tabular}
+   \label{tab:booktabs}
+\end{table}
+
+\end{answer}
+
+\begin{answer}{2} 
+
+\end{answer}
+
+\begin{answer}{3}
+\end{answer}
+
+\begin{answer}{4}
+
+\end{answer}
+
+
+\begin{answer}{5}
+\end{answer}
+
+
+\end{document}
