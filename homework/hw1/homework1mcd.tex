@@ -83,7 +83,7 @@ p(x|\lambda) &=& {1 \over x!} \exp((\log \lambda)x - \exp{\eta}) \\
 \end{eqnarray}
 which is equivalent to our original parameterization. 
 
-\paragraph{b)} As shown above, $T(x)={1 \over x!}$.
+\paragraph{b)} As shown above, $T(x)=x$.
 
 \paragraph{c)} As shown above, $A(\eta)=e^{\eta}=\lambda$.
 
@@ -107,7 +107,7 @@ Var(X) &=& {\partial^2 \over \partial \eta^2} e^{\eta} \\
 \paragraph{f)}
 We can obtain the MLE estimate of $\lambda$, $\hat{\lambda}$, by taking the first derivative of the exponential familiy parameterization and setting it to zero:
 \begin{eqnarray}
-0 &=& {\partial \over \partial \lambda} ( \log h(x) + \eta \sum_{i=1}^N T(X_i) - n e^{\eta}) \\
+0 &=& {\partial \over \partial \eta} ( \log h(x) + \eta \sum_{i=1}^N T(X_i) - n e^{\eta}) \\
 &=& 0 + \sum_{i=1}^N T(X_i) - n e^{\eta} \\
 &=& \sum_{i=1}^N x_i - n \lambda \\
 n\hat{\lambda} &=& \sum_{i=1}^N x_i \\
@@ -115,7 +115,7 @@ n\hat{\lambda} &=& \sum_{i=1}^N x_i \\
 &=& \bar{x}
 \end{eqnarray}
 
-\paragraph{g)} For $\lambda \sim Ga(\alpha_0, \beta_0)$ and $X \sim Pois(\lambda)$, the posterior hyperparameters on $\lambda$ are $alpha_1 = \alpha_0 + \sum_{i=1}^n x_i, \beta_1 = \beta_0 +n$. We can find the MAP of $\lambda$ using the mode of this gamma posterior: $\alpha + \sum_{i=1}^n x_i \over \beta_0 +n$. As a sanity check, it can be seen that with small prior hyperparamters, as we get more data the MAP estimate converges to the MLE estimate in part (f). 
+\paragraph{g)} For $\lambda \sim Ga(\alpha_0, \beta_0)$ and $X \sim Pois(\lambda)$, the posterior hyperparameters on $\lambda$ are $\alpha_1 = \alpha_0 + \sum_{i=1}^n x_i, \beta_1 = \beta_0 +n$ (thanks to the conjugacy of the Gamma and Poisson distributions). We can find the MAP of $\lambda$ using the mode of this gamma posterior: $\alpha_0 + \sum_{i=1}^n x_i - 1 \over \beta_0 +n$. As a sanity check, it can be seen that with small prior hyperparamters, as we get more data the MAP estimate converges to the MLE estimate in part (f). 
 
 \end{answer}
 
