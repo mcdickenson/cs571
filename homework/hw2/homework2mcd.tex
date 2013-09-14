@@ -1,0 +1,115 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{lastpage}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{mathrsfs}
+\usepackage{cancel}
+\usepackage{xcolor}
+\usepackage[margin=3cm]{geometry}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+
+% Edit these as appropriate
+\newcommand\course{STA561/CS571}
+\newcommand\semester{Fall 2013}     % <-- current semester
+\newcommand\hwnum{2}                  % <-- homework number
+\newcommand\yourname{Matt Dickenson} % <-- your name
+\newcommand\login{mcd31}           % <-- your NetID
+\newcommand\hwdate{Due: 16 September, 2013}           % <-- HW due date
+
+\newenvironment{answer}[1]{
+  \subsubsection*{Problem #1}
+}
+
+
+\pagestyle{fancyplain}
+\headheight 35pt
+\lhead{\yourname\ \texttt{\login}\\\course\ --- \semester}
+\chead{\textbf{\Large Homework \hwnum}}
+\rhead{\hwdate}
+\headsep 10pt
+
+\begin{document}
+
+\noindent \emph{Homework Notes:} I did not work with anyone else on this homework or refer to resources other than the course notes, textbook, and course Piazza page.
+
+\begin{answer}{1}
+
+\paragraph{A} No, $X_1 \cancel{\perp} X_2 | X_3$:
+\begin{eqnarray*}
+p(x_1, x_2, x_3) &=& {p(x_1)p(x_2)p(x_3|x_1, x_2)} \\
+p(x_1, x_2 | x_3) &=& {p(x_1)p(x_2)p(x_3|x_1,x_2) \over p(x_3)}
+\end{eqnarray*}
+
+Also, by the Bayes Ball approach there is an active path from $X_1$ to $X_2$ when conditioning on $X_3$. 
+
+\paragraph{B}  Yes, $X_1 \perp X_2 | X_4$. By the Bayes Ball approach, $X_1$ and $X_2$ ``bounce back'' when they hit $X_3$ conditioning only on $X_4$. 
+
+\paragraph{C} Yes, $X_1 \perp X_2$ when $X_3$ and $X_4$ are unobserved. This is because the balls stop when they hit the unobserved $X_3$, so there are no active paths between them. 
+
+\paragraph{D} Yes, $X_4 \perp X_7 | X_1$. The $X_4$ ball can pass through $X_2$ but stops when it hits $X_1$. Similarly, $X_7$ can pass through $X_3$ but stops when it hits $X_1$. 
+
+\paragraph{E} No, $X_4 \cancel{\perp} X_5 | X_1$. Both $X_4$ and $X_5$ stop when they hit $X_2$. 
+
+\end{answer}
+
+
+
+
+\begin{answer}{2} 
+
+\paragraph{A} The joint probability represented by the graph is
+
+\begin{eqnarray*}
+p(X_A, X_B, X_C, Y) &=& p(Y)p(X_A|Y)p(X_B|Y)p(X_C|Y) \\
+&=& p(Y) {p(Y|X_A)p(X_A) p(Y|X_B)p(X_B) p(Y|X_C)p(X_C) \over p(Y)} \\
+&=&  {p(Y|X_A)p(X_A)} {p(Y|X_B)p(X_B))} {p(Y|X_C)p(X_C)} \\
+\end{eqnarray*}
+because the graph structure indicates that 
+
+\paragraph{B} In the model given, all pairs of features $(X_i, X_j)$ are conditionally independent given $Y$. This means that each feature influences $\pi$ independently of the others. In practice this is not realistic--the number of words, time of day, and number of non-dictionary words are not independent of one another. For example, the number of non-dictionary words likely increases with the total number of words in the email, and time of day is likely associated with the number of words in the email. 
+
+\paragraph{C} 
+We can compute the probability that a new email is spam using Bayes Rule:
+\begin{eqnarray*}
+P(Y_j=1|(X_A, X_B, X_C)_j) &=& {P((X_A, X_B, X_C)_j|Y_j=1)P(Y_j=1) \over P((X_A, X_B, X_C)_j)} \\
+&\propto& P((X_A, X_B, X_C)_j|Y_j=1)P(Y_j=1) \\
+\end{eqnarray*}
+
+We can simplify this using conditional independence (part B):
+\begin{eqnarray*}
+P(Y_j=1|(X_A, X_B, X_C)_j) &\propto& P(X_{Aj}|Y_j=1) P(X_{Bj}|Y_j=1) P(X_{Cj}|Y_j=1) P(Y_j=1) \\
+&\propto& P(X_{Aj}|Y_j=1) P(X_{Bj}|Y_j=1) P(X_{Cj}|Y_j=1) \hat{\pi}
+\end{eqnarray*}
+where $\hat{\pi}$ is our prior for $P(Y_j=1)$ given the training set. 
+
+In other words, we can compare the likelihood of the features $(X_A, X_B, X_C)_j$ under the hypotheses $Y_j=1$ and $Y_j=0$. 
+\end{answer}
+
+\begin{answer}{3}
+
+\paragraph{A} To compute MLE($\pi$) from the training set $D$, we can simply take the proportion of emails $Y_D$ that were classified as spam ($Y_i=1$):
+\begin{eqnarray*}
+\hat{\pi}_{MLE} &=& {\sum_D Y \over N_D}
+\end{eqnarray*}
+
+\paragraph{B} With fixed $\sigma^2_{A,y}$, we can just partition the data based on whether or not it is spam and compute each class mean MLE estimate:
+\begin{eqnarray*}
+\hat{\mu}_{A,1} &=& {1 \over N_1} \sum_{i:y_i=1} X_{A,i} \\
+\hat{\mu}_{A,0} &=& {1 \over N_0} \sum_{i:y_i=0} X_{A,i} 
+\end{eqnarray*}
+where $N_i$ is the number of cases in $D$ for which $Y=i$.
+
+\paragraph{C} With fixed class means, we can derive the MLE of the variance for feature $A$ in the training set:
+\begin{eqnarray*}
+\hat{\Sigma}_0 &=& {1 \over N_0} \sum_{i:y_i=0}(x_i - \hat{\mu}_{A,0})(x_i - \hat{\mu}_{A,0})^T
+\end{eqnarray*}
+\end{answer}
+
+
+
+\end{document}
