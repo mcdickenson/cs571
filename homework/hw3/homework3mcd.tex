@@ -53,25 +53,58 @@
 Letting $\beta_i$ correspond to $X_i$, $\hat{\beta}_1=3.01, \hat{\beta}_2=0.78$. 
 
 
-\paragraph{B}  
-
-We can also estimate $\beta$ using online stochastic gradient descent using $\mathcal{R}$'s \texttt{optim} function for minimization:
+\paragraph{B}  We can also estimate $\beta$ using online stochastic gradient descent using $\mathcal{R}$'s \texttt{optim} function for minimization:
 
 \lstinputlisting[language=R, caption=R Code for 1B, firstline=25, lastline=39, firstnumber=last]{cs571-hw3.r}
 
 Using this method we reach the same results as above: $\hat{\beta}_1=3.01, \hat{\beta}_2=0.78$. 
 
-\paragraph{C} 
-\paragraph{D} 
+\paragraph{C} A third method we can use to estimate $\beta$ is ridge regression, using the following $\mathcal{R}$ code:
+
+\lstinputlisting[language=R, caption=R Code for 1B, firstline=42, lastline=54, firstnumber=last]{cs571-hw3.r}
+
+From this approach we get the estimates $\hat{\beta}_1=3.00, \hat{\beta}_2=0.78$. 
+
+\paragraph{D} Table \ref{rss.train} presents the residual sum of squares (RSS) for the training data using each of the methods above.
+
+
+\begin{table}[h!]
+\caption{RSS for linear regression methods}
+\label{rss.train}
+\begin{center}
+\begin{tabular}{ll}
+Method & RSS \\
+\hline
+Normal equations & 181767.9 \\
+Online stochastic gradient descent & 181767.9 \\
+Ridge regression & 181768
+\end{tabular}
+\end{center}
+\end{table}
+
 % RSS(\beta) = \sum_{i=1}^n (y_i - \beta^T x_i)^2
 
-\paragraph{E} 
+\paragraph{E} Table \ref{rss.test} presents the residual sum of squares (RSS) for the training data using each of the methods above.
+
+\begin{table}[h!]
+\caption{RSS for linear regression methods}
+\label{rss.test}
+\begin{center}
+\begin{tabular}{ll}
+Method & RSS \\
+\hline
+Normal equations & 16963.35 \\
+Online stochastic gradient descent & 16963.35 \\
+Ridge regression & 16963.59
+\end{tabular}
+\end{center}
+\end{table}
 
 \end{answer}
 
 
 
-
+\pagebreak
 \begin{answer}{2} 
 \end{answer}
 
