@@ -3,6 +3,13 @@
 \usepackage{fullpage}
 \usepackage{graphicx}
 \usepackage{lastpage}
+\usepackage{listings}
+\lstset{
+	numbers=left,
+	numbersep=5pt,
+	stepnumber=1,
+	tabsize=2
+}
 \usepackage{enumerate}
 \usepackage{fancyhdr}
 \usepackage{hyperref}
@@ -39,11 +46,25 @@
 
 \begin{answer}{1}
 
-\paragraph{A} 
+\paragraph{A} Using the normal equation $\hat{\beta}=(X^TX)^{-1}(X^TY)$, we can calculate $\hat{\beta}$ in $\mathcal{R}$ with the following program (after loading the data as \texttt{lindata}):
+
+\lstinputlisting[language=R, caption=R Code for 1A, firstline=16, lastline=22, firstnumber=1]{cs571-hw3.r}
+
+Letting $\beta_i$ correspond to $X_i$, $\hat{\beta}_1=3.01, \hat{\beta}_2=0.78$. 
+
 
 \paragraph{B}  
+
+We can also estimate $\beta$ using online stochastic gradient descent using $\mathcal{R}$'s \texttt{optim} function for minimization:
+
+\lstinputlisting[language=R, caption=R Code for 1B, firstline=25, lastline=39, firstnumber=last]{cs571-hw3.r}
+
+Using this method we reach the same results as above: $\hat{\beta}_1=3.01, \hat{\beta}_2=0.78$. 
+
 \paragraph{C} 
 \paragraph{D} 
+% RSS(\beta) = \sum_{i=1}^n (y_i - \beta^T x_i)^2
+
 \paragraph{E} 
 
 \end{answer}
