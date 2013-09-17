@@ -26,7 +26,7 @@
 \newcommand\hwnum{2}                  % <-- homework number
 \newcommand\yourname{Matt Dickenson} % <-- your name
 \newcommand\login{mcd31}           % <-- your NetID
-\newcommand\hwdate{Due: 16 September, 2013}           % <-- HW due date
+\newcommand\hwdate{Due: 23 September, 2013}           % <-- HW due date
 
 \newenvironment{answer}[1]{
   \subsubsection*{Problem #1}
@@ -61,7 +61,7 @@ Using this method we reach the same results as above: $\hat{\beta}_1=3.01, \hat{
 
 \paragraph{C} A third method we can use to estimate $\beta$ is ridge regression, using the following $\mathcal{R}$ code:
 
-\lstinputlisting[language=R, caption=R Code for 1B, firstline=42, lastline=54, firstnumber=last]{cs571-hw3.r}
+\lstinputlisting[language=R, caption=R Code for 1C, firstline=42, lastline=54, firstnumber=last]{cs571-hw3.r}
 
 From this approach we get the estimates $\hat{\beta}_1=3.00, \hat{\beta}_2=0.78$. 
 
@@ -69,7 +69,7 @@ From this approach we get the estimates $\hat{\beta}_1=3.00, \hat{\beta}_2=0.78$
 
 
 \begin{table}[h!]
-\caption{RSS for linear regression methods}
+\caption{Training set RSS for linear regression methods}
 \label{rss.train}
 \begin{center}
 \begin{tabular}{ll}
@@ -87,7 +87,7 @@ Ridge regression & 181768
 \paragraph{E} Table \ref{rss.test} presents the residual sum of squares (RSS) for the training data using each of the methods above.
 
 \begin{table}[h!]
-\caption{RSS for linear regression methods}
+\caption{Test set RSS for linear regression methods}
 \label{rss.test}
 \begin{center}
 \begin{tabular}{ll}
@@ -99,6 +99,30 @@ Ridge regression & 16963.59
 \end{tabular}
 \end{center}
 \end{table}
+
+\paragraph{F}
+
+We can now take the predicted blood pressure for a hypothetical female weighing 135 pounds:
+
+\begin{table}[h!]
+\caption{Predicted values}
+\label{pred}
+\begin{center}
+\begin{tabular}{ll}
+Method & $\mathbb{E}[Y|X=[1,135]^T,\hat{\beta}]$ \\
+\hline
+Normal equations & 108.76 \\
+Online stochastic gradient descent & 108.76 \\
+Ridge regression & 108.75
+\end{tabular}
+\end{center}
+\end{table}
+
+\paragraph{G} \textbf{PLOTS HERE}
+
+\paragraph{H} Of the three methods used above, ridge regression is the least likely to overfit the data. This is because the $\lambda$ term (using the notation in the MLAPP textbook) helps to regularize the coefficients. This leads to higher RSS but also makes the coefficients less susceptible to outliers in the training data. The other two methods provide no such protection against outliers. 
+
+\paragraph{I} The researchers should use the ridge regresion results. One reason for this is its robustness (relative to the other two methods) to overfitting. This is especially pertinent given the relatively small $n$ of the training data. However, the similarity in the coefficients should help allay any concerns the researchers may have over the differences in the three methods. 
 
 \end{answer}
 

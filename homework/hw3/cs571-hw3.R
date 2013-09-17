@@ -82,3 +82,19 @@ RSSb #=> 16963.35
 ridge.yhat = X.test %*% beta.ridge
 RSSc = sum((Y.test - ridge.yhat)^2)
 RSSc #=> 16963.59
+
+# F 
+X.hypo = matrix(c(1,135), nrow=1)
+est1 = X.hypo %*% beta.hat
+est1
+est2 = X.hypo %*% model$beta
+est2
+est3 = X.hypo %*% beta.ridge
+est3
+
+# G 
+X1 = as.matrix(lindata[1:1100 , 1])
+X2 = as.matrix(lindata[1:1100, 2])
+Y = as.matrix(lindata[1:1100 , 3])
+plot(X1, Y)
+plot(X2, Y)
