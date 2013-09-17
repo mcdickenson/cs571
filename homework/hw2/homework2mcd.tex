@@ -69,7 +69,6 @@ p(X_A, X_B, X_C, Y) &=& p(Y)p(X_A|Y)p(X_B|Y)p(X_C|Y) \\
 &=& p(Y) {p(Y|X_A)p(X_A) p(Y|X_B)p(X_B) p(Y|X_C)p(X_C) \over p(Y)} \\
 &=&  {p(Y|X_A)p(X_A)} {p(Y|X_B)p(X_B))} {p(Y|X_C)p(X_C)} \\
 \end{eqnarray*}
-because the graph structure indicates that 
 
 \paragraph{B} In the model given, all pairs of features $(X_i, X_j)$ are conditionally independent given $Y$. This means that each feature influences $\pi$ independently of the others. In practice this is not realistic--the number of words, time of day, and number of non-dictionary words are not independent of one another. For example, the number of non-dictionary words likely increases with the total number of words in the email, and time of day is likely associated with the number of words in the email. 
 
