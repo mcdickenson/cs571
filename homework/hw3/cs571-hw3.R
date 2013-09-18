@@ -2,16 +2,13 @@
 # Matt Dickenson - mcd31
 # Homework 3
 
+# Problem 1
+
 setwd('~/github/cs571/homework/hw3')
 lindata = read.table("HW3_linear_regression.txt", header=TRUE)
 dim(lindata)
 head(lindata)
 
-logdata = read.table("HW3_logistic_regression.txt", header=TRUE)
-dim(logdata)
-head(logdata)
-
-# Problem 1
 # A 
 X = as.matrix(lindata[1:1000 , 1:2])
 X = cbind(1, X)
@@ -107,48 +104,60 @@ plot(X2, Y)
 
 # Problem 2
 
+logdata = read.table("HW3_logistic_regression.txt", header=TRUE)
+dim(logdata)
+head(logdata)
+
 # A 
 X = as.matrix(logdata[1:1000 , 1:2])
+X = cbind(1, X)
 Z = as.matrix(logdata[1:1000 , 3])
-
-head(X)
-X[1, ]
 
 sigm = function(eta){
 	out = exp(eta)/( exp(eta) + 1)
 	return(out)
 }
 
-
-irls = function(X, Y, epsilon=1/1e6){
+irls = function(X, Y, epsilon=1/1e10){
 	D = ncol(X)
 	N = nrow(X)
-	w = matrix(0, nrow=D, ncol=D) # 2x2
-	eta = matrix(NA, nrow=N, ncol=D)
-	mu = matrix(NA, nrow=N, ncol=D)
-	s = matrix(NA, nrow=N, ncol=D)
-	z = matrix(NA, nrow=N, ncol=D)
-	ybar = mean(Y)
-	w0 = log(ybar/(1-ybar))
+	
+	w = matrix(0, nrow=D, ncol=D) 
+	w0 = log(mean(Y)/(1-mean(Y)))
+	eta = mu = s = z = matrix(NA, nrow=N, ncol=D)
+	
 	converged = FALSE
 	numiters = 0 
 	while(!converged){
+		last.w = w 
 		for(i in 1:N){
-			xi = matrix(X[i, ], ncol=D) # 1x2
-			# print(xi)
-			eta[i, ] = w0 + (xi %*% t(w))
+			xi = matrix(X[i, ], ncol=1) 
+			eta[i, ] = w0 + (t(w) %*% xi)
 			mu[i, ] = sigm(eta[i, ])
 			s[i, ] = mu[i, ] * (1-mu[i, ])
 			z[i, ] = eta[i, ] + ((Y[i, ] - mu[i, ])/s[i, ])
 		}
-		S = diag(s)
-		w = solve(t(X) %*% S %*% X) %*% (t(X)%*%S%*%z)
-		numiters = numiters + 1
-		if(numiters %% 1000 == 0){
-			print(numiters)
+		S = matrix(0, nrow=N, ncol=N)
+		for(i in 1:N){
+			S[i, i] = s[i]
 		}
-		if(numiters > 1000){
-			converged = TRUE  
+		first.term = solve(t(X) %*% S %*% X)
+		second.term = t(X) %*% S %*% z 
+		w =  first.term %*% second.term
+		numiters = numiters + 1
+		diff = w - last.w 
+		smalldiff = TRUE
+		for(i in 1:D){
+			smalldiff = smalldiff & (diff[i, i] < epsilon)
+		}
+		if(smalldiff){ 
+			converged = TRUE 
+			output = paste("converged after ", numiters, " iterations", sep="")
+			print(output)
+		}
+		if(numiters > 100){
+			print("reached max iterations")
+			break 
 		}
 	}
 	return(w)
