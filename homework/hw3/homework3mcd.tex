@@ -8,7 +8,8 @@
 	numbers=left,
 	numbersep=5pt,
 	stepnumber=1,
-	tabsize=2
+	tabsize=2,
+	showstringspaces=false
 }
 \usepackage{enumerate}
 \usepackage{fancyhdr}
@@ -120,7 +121,7 @@ Ridge regression & 127.2
 
 \paragraph{G} \textbf{PLOTS HERE}
 
-\paragraph{H} Of the three methods used above, ridge regression is the least likely to overfit the data. This is because the $\lambda$ term (using the notation in the MLAPP textbook) helps to regularize the coefficients. This leads to higher RSS but also makes the coefficients less susceptible to outliers in the training data, as evidenced by the lower RSS using the training set data. The other two methods provide no such protection against outliers. 
+\paragraph{H} Of the three methods used above, ridge regression is the least likely to overfit the data. This is because the $\lambda$ term (using the notation in the MLAPP textbook) helps to regularize the coefficients. This leads to higher RSS but also makes the coefficients less susceptible to outliers in the training data, as evidenced by the lower RSS using the training set data. The other two methods provide no such protection against outliers, and are thus more likely to overfit the training data. 
 
 \paragraph{I} The researchers should use the ridge regresion results. One reason for this is its robustness (relative to the other two methods) to overfitting. This is especially pertinent given the small $n$ of the training data. However, the similarity in the coefficients should help allay any concerns the researchers may have over the differences in the three methods. 
 
@@ -130,6 +131,21 @@ Ridge regression & 127.2
 
 \pagebreak
 \begin{answer}{2} 
+
+\paragraph{A} The following $\mathcal{R}$ code implements the IRLS algorithm as presented in the MLAPP textbook (after loading the data):
+
+\lstinputlisting[language=R, caption=R Code for 2A, firstline=116, lastline=166, firstnumber=1]{cs571-hw3.r}
+
+\paragraph{B} The RSS($\hat{\beta}$) for the training data is 141.47. 
+
+\paragraph{C} The RSS($\hat{\beta}$) for the test data is 15.73.
+
+\paragraph{F} (\emph{sic}) $\mathbb{E}[Z|X=[1,135]^T,\hat{\beta}] = 0.088$
+
+\paragraph{G} \textbf{PLOTS HERE}
+
+\paragraph{H} The correlation between the features $X_1$ and $X_2$ is high (0.63). This causes our estimates of $\beta$ to be biased, since it is difficult to isolate the impact of each feature. 
+
 \end{answer}
 
 
