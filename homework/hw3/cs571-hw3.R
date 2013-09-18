@@ -163,4 +163,37 @@ irls = function(X, Y, epsilon=1/1e10){
 	return(w)
 }
 
-irls(X, Z)
+w = irls(X, Z)
+
+# B 
+beta = w[, 1]
+z.hat =sigm(X %*% beta)
+head(z.hat)
+summary(z.hat)
+RSSa = sum((Z - z.hat)^2)
+RSSa #=> 141.4738
+
+# C 
+X.test = as.matrix(logdata[1001:1100 , 1:2])
+X.test = cbind(1, X.test)
+Z.test = as.matrix(logdata[1001:1100 , 3])
+z.test.hat = sigm(X.test %*% beta)
+summary(z.test.hat)
+RSSb = sum((Z.test - z.test.hat)^2)
+RSSb #=> 15.73171
+
+# F (sic) 
+X.hypo = matrix(c(1,1,135), ncol=1)
+Z.hypo = sigm(beta %*% X.hypo)
+Z.hypo
+
+# G 
+# todo: plots 
+X1 = as.matrix(logdata[1:1000 , 1])
+X2 = as.matrix(logdata[1:1000 , 2])
+Z = as.matrix(logdata[1:1000 , 3])
+plot(X1, Z)
+plot(X2, Z)
+
+# H 
+cor(logdata[, 1], logdata[, 2])
