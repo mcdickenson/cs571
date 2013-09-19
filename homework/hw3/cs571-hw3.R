@@ -91,11 +91,35 @@ est3 = X.hypo %*% beta.ridge
 est3
 
 # G 
-X1 = as.matrix(lindata[1:1100 , 1])
-X2 = as.matrix(lindata[1:1100, 2])
-Y = as.matrix(lindata[1:1100 , 3])
-plot(X1, Y)
-plot(X2, Y)
+X1 = as.matrix(lindata[1:1000 , 1])
+X2 = as.matrix(lindata[1:1000, 2])
+Y = as.matrix(lindata[1:1000 , 3])
+summary(X1)
+summary(X2)
+summary(Y)
+
+# x1 plot
+pdf("p1x1.pdf")
+plot(X1, Y, # pch=16,
+	xlim=c(0,1),
+	ylim=c(65, 185))
+abline(beta.hat[1,], beta.hat[2,], lty=2, col="blue", lwd=2)
+abline(model$beta[1], model$beta[2], lty=3, lwd=3, col="red")
+abline(beta.ridge[1,], beta.ridge[2,], col="green", lwd=2)
+legend("topleft", legend=c("Normal eqn", "SGD", "Ridge"), 
+	lty=c(2, 3, 1), lwd=c(2,3,2), col=c("blue", "red", "green"))
+dev.off()
+
+pdf("p1x2.pdf")
+plot(X2, Y, # pch=16,
+	xlim=c(75, 240),
+	ylim=c(65, 185))
+abline(beta.hat[1,], beta.hat[3,], lty=2, col="blue", lwd=2)
+abline(model$beta[1], model$beta[3], lty=3, lwd=3, col="red")
+abline(beta.ridge[1,], beta.ridge[3,], col="green", lwd=2)
+legend("topleft", legend=c("Normal eqn", "SGD", "Ridge"), 
+	lty=c(2, 3, 1), lwd=c(2,3,2), col=c("blue", "red", "green"))
+dev.off()
 
 
 
@@ -192,8 +216,20 @@ Z.hypo
 X1 = as.matrix(logdata[1:1000 , 1])
 X2 = as.matrix(logdata[1:1000 , 2])
 Z = as.matrix(logdata[1:1000 , 3])
-plot(X1, Z)
-plot(X2, Z)
+
+pdf("p2x1.pdf")
+plot(jitter(X1, amount=0.05), jitter(Z, amount=0.05),
+	xlab="X1", ylab="Z")
+# abline(sigm(beta[1]), sigm(beta[2]))
+abline(mean(Z), beta[2], col="blue", lwd=2)
+dev.off()
+
+pdf("p2x2.pdf")
+plot(X2, jitter(Z, amount=0.05),
+	xlab="X2", ylab="Z")
+abline(beta[1], beta[3], col="blue", lwd=2)
+dev.off()
+
 
 # H 
 cor(logdata[, 1], logdata[, 2])

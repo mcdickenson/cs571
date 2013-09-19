@@ -119,7 +119,23 @@ Ridge regression & 127.2
 \end{center}
 \end{table}
 
-\paragraph{G} \textbf{PLOTS HERE}
+\paragraph{G} Bivariate plots of $X_1$ and $X_2$ with $Y$ are given in Figures \ref{p1x1} and \ref{p1x2} below, along with regression lines for the three methods used above. Note that the lines for the normal equation method and the stochastic gradient descent (SGD) method overlap in both cases. (The intercept and $\hat{\beta}_i$ are used in the plot for $X_i$, while $\hat{\beta}_j, j\neq i$ is ignored.)
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.5]{p1x1.pdf}
+\caption{$X_1$ and $Y$ with Regression Lines}
+\label{p1x1}
+\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.5]{p1x2.pdf}
+\caption{$X_2$ and $Y$ with Regression Lines}
+\label{p1x2}
+\end{center}
+\end{figure}
 
 \paragraph{H} Of the three methods used above, ridge regression is the least likely to overfit the data. This is because the $\lambda$ term (using the notation in the MLAPP textbook) helps to regularize the coefficients. This leads to higher RSS but also makes the coefficients less susceptible to outliers in the training data, as evidenced by the lower RSS using the training set data. The other two methods provide no such protection against outliers, and are thus more likely to overfit the training data. 
 
@@ -142,7 +158,23 @@ Ridge regression & 127.2
 
 \paragraph{F} (\emph{sic}) $\mathbb{E}[Z|X=[1,135]^T,\hat{\beta}] = 0.088$
 
-\paragraph{G} \textbf{PLOTS HERE}
+\paragraph{G} Figures \ref{p2x1} and \ref{p2x2} below plot $X_1$ and $X_2$ with $Z$ and the respective regression line. Because $X_1$ and $Z$ are binary variables, a small random jitter is added to make the points more apparent. In Figure \ref{p2x1} the intercept is set to the mean of $Z$ and in Figure \ref{p2x2} the intercept is set to $\hat{\beta}_2$; in each case this is needed to make the line visible on the plot. 
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.5]{p2x1.pdf}
+\caption{$X_1$ and $Z$ with Regression Lines}
+\label{p2x1}
+\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.5]{p2x2.pdf}
+\caption{$X_2$ and $Z$ with Regression Lines}
+\label{p2x2}
+\end{center}
+\end{figure}
 
 \paragraph{H} The correlation between the features $X_1$ and $X_2$ is high (0.63). This causes our estimates of $\beta$ to be biased, since it is difficult to isolate the impact of each feature. 
 
