@@ -49,20 +49,20 @@
 
 \paragraph{A} Using the normal equation $\hat{\beta}=(X^TX)^{-1}(X^TY)$, we can calculate $\hat{\beta}$ in $\mathcal{R}$ with the following program (after loading the data as \texttt{lindata}):
 
-\lstinputlisting[language=R, caption=R Code for 1A, firstline=16, lastline=23, firstnumber=1]{cs571-hw3.r}
+\lstinputlisting[language=R, caption=R Code for 1A, firstline=13, lastline=25, firstnumber=1]{cs571-hw3.r}
 
 Letting $\beta_i$ correspond to $X_i$ and $\beta_0$ represent the intercept, $\hat{\beta}_0=69.94, \hat{\beta}_1=15.12, \hat{\beta}_2=0.32$. 
 
 
-\paragraph{B}  We can also estimate $\beta$ using online stochastic gradient descent using $\mathcal{R}$'s \texttt{optim} function for minimization:
+\paragraph{B}  We can also estimate $\beta$ using online stochastic gradient descent with $\mathcal{R}$'s \texttt{optim} function for minimization:
 
-\lstinputlisting[language=R, caption=R Code for 1B, firstline=26, lastline=40, firstnumber=last]{cs571-hw3.r}
+\lstinputlisting[language=R, caption=R Code for 1B, firstline=28, lastline=42, firstnumber=last]{cs571-hw3.r}
 
 Using this method we reach the same results as above: $\hat{\beta}_0=69.94, \hat{\beta}_1=15.12, \hat{\beta}_2=0.32$. 
 
 \paragraph{C} A third method we can use to estimate $\beta$ is ridge regression, using the following $\mathcal{R}$ code:
 
-\lstinputlisting[language=R, caption=R Code for 1C, firstline=43, lastline=54, firstnumber=last]{cs571-hw3.r}
+\lstinputlisting[language=R, caption=R Code for 1C, firstline=45, lastline=56, firstnumber=last]{cs571-hw3.r}
 
 From this approach we get the estimates $\hat{\beta}_1=3.00, \hat{\beta}_2=0.78$. 
 
@@ -103,13 +103,13 @@ Ridge regression & 11,523.5
 
 \paragraph{F}
 
-We can now take the predicted blood pressure for a hypothetical female weighing 135 pounds:
+We can now take the predicted blood pressure for a hypothetical female weighing 135 pounds for the three different methods (Table \ref{pred}):
 
 \begin{table}[h!]
 \caption{Predicted values}
 \label{pred}
 \begin{center}
-\begin{tabular}{ll}
+\begin{tabular}{lr}
 Method & $\mathbb{E}[Y|X=[1,135]^T,\hat{\beta}]$ \\
 \hline
 Normal equations & 128.4 \\
@@ -137,7 +137,7 @@ Ridge regression & 127.2
 \end{center}
 \end{figure}
 
-\paragraph{H} Of the three methods used above, ridge regression is the least likely to overfit the data. This is because the $\lambda$ term (using the notation in the MLAPP textbook) helps to regularize the coefficients. This leads to higher RSS but also makes the coefficients less susceptible to outliers in the training data, as evidenced by the lower RSS using the training set data. The other two methods provide no such protection against outliers, and are thus more likely to overfit the training data. 
+\paragraph{H} Of the three methods used above, ridge regression is the least likely to overfit the data. This is because the $\lambda$ term (using the notation in the MLAPP textbook) helps to regularize the coefficients. This leads to higher RSS in the training data but also makes the coefficients less susceptible to outliers, as evidenced by the lower RSS using the test set data. The other two methods provide no such protection against outliers, and are thus more likely to overfit the training data. 
 
 \paragraph{I} The researchers should use the ridge regresion results. One reason for this is its robustness (relative to the other two methods) to overfitting. This is especially pertinent given the small $n$ of the training data. However, the similarity in the coefficients should help allay any concerns the researchers may have over the differences in the three methods. 
 
@@ -150,7 +150,7 @@ Ridge regression & 127.2
 
 \paragraph{A} The following $\mathcal{R}$ code implements the IRLS algorithm as presented in the MLAPP textbook (after loading the data):
 
-\lstinputlisting[language=R, caption=R Code for 2A, firstline=116, lastline=166, firstnumber=1]{cs571-hw3.r}
+\lstinputlisting[language=R, caption=R Code for 2A, firstline=145, lastline=195, firstnumber=1]{cs571-hw3.r}
 
 \paragraph{B} The RSS($\hat{\beta}$) for the training data is 141.47. 
 
@@ -158,7 +158,7 @@ Ridge regression & 127.2
 
 \paragraph{F} (\emph{sic}) $\mathbb{E}[Z|X=[1,135]^T,\hat{\beta}] = 0.088$
 
-\paragraph{G} Figures \ref{p2x1} and \ref{p2x2} below plot $X_1$ and $X_2$ with $Z$ and the respective regression line. Because $X_1$ and $Z$ are binary variables, a small random jitter is added to make the points more apparent. In Figure \ref{p2x1} the intercept is set to the mean of $Z$ and in Figure \ref{p2x2} the intercept is set to $\hat{\beta}_2$; in each case this is needed to make the line visible on the plot. 
+\paragraph{G} Figures \ref{p2x1} and \ref{p2x2} below plot $X_1$ and $X_2$ with $Z$ and the respective regression line. Because $X_1$ and $Z$ are binary variables, a small random jitter is added to make the points more apparent. 
 
 \begin{figure}[h!]
 \begin{center}
@@ -177,6 +177,8 @@ Ridge regression & 127.2
 \end{figure}
 
 \paragraph{H} The correlation between the features $X_1$ and $X_2$ is high (0.63). This causes our estimates of $\beta$ to be biased, since it is difficult to isolate the impact of each feature. 
+
+\paragraph{I} A model with only $X_2$ would do almost as well as the model with both features. This is due to the correlation between the two features and the relatively minimal impact of $X_1$ on the predicted $Z$ values, as shown in Figure \ref{p2x1}. As Figure \ref{p2x2} shows, risk for $Z$ increases noticeably when $X_2>160$, so this should be an important component of the researchers' decision rule. 
 
 \end{answer}
 

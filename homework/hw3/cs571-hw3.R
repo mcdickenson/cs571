@@ -13,10 +13,15 @@ head(lindata)
 X = as.matrix(lindata[1:1000 , 1:2])
 X = cbind(1, X)
 Y = as.matrix(lindata[1:1000 , 3])
-X.prime.X = t(X) %*% X
-X.prime.X.inverse = solve(X.prime.X)
-X.prime.Y = t(X) %*% Y
-beta.hat = X.prime.X.inverse %*% X.prime.Y
+
+normaleqn = function(x, y){
+	x.prime.x.inverse = solve(t(x) %*% x)
+	x.prime.y = t(x) %*% y 
+	beta = x.prime.x.inverse %*% x.prime.y
+	return(beta)
+}
+
+beta.hat = normaleqn(X, Y)
 beta.hat #=> 69.942167, 15.119109, 0.321028
 
 # B
@@ -212,16 +217,15 @@ Z.hypo = sigm(beta %*% X.hypo)
 Z.hypo
 
 # G 
-# todo: plots 
 X1 = as.matrix(logdata[1:1000 , 1])
 X2 = as.matrix(logdata[1:1000 , 2])
 Z = as.matrix(logdata[1:1000 , 3])
 
 pdf("p2x1.pdf")
 plot(jitter(X1, amount=0.05), jitter(Z, amount=0.05),
-	xlab="X1", ylab="Z")
+	xlab="X1", ylab="Z", ylim=c(-14,1))
 # abline(sigm(beta[1]), sigm(beta[2]))
-abline(mean(Z), beta[2], col="blue", lwd=2)
+abline(beta[1], beta[2], col="blue", lwd=2)
 dev.off()
 
 pdf("p2x2.pdf")
