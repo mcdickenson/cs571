@@ -119,11 +119,13 @@ Ridge regression & 127.2
 \end{center}
 \end{table}
 
-\paragraph{G} Bivariate plots of $X_1$ and $X_2$ with $Y$ are given in Figures \ref{p1x1} and \ref{p1x2} below, along with regression lines for the three methods used above. Note that the lines for the normal equation method and the stochastic gradient descent (SGD) method overlap in both cases. (The intercept and $\hat{\beta}_i$ are used in the plot for $X_i$, while $\hat{\beta}_j, j\neq i$ is ignored.)
+\paragraph{G} Bivariate plots are given in Figures \ref{p1x1} and \ref{p1x2} below, along with regression lines for the three methods used above. The $y$-axis values are $Y-\hat{\beta}_i X_i - \hat{\beta}_0$ and the $x$-axis values are $X_j, j \neq i$. (Note that indices in the $y$-axis label do not correspond to the $X$ and $\hat{\beta}$ subscripts because $\mathcal{R}$ uses 1-based indexing.) Regression lines in the plots for $X_i$ use $\hat{\beta}_i X_i$
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[scale=0.5]{p1x1.pdf}
+\includegraphics[scale=0.4]{p1x1-normal.pdf}
+\includegraphics[scale=0.4]{p1x1-sgd.pdf}
+\includegraphics[scale=0.4]{p1x1-ridge.pdf}
 \caption{$X_1$ and $Y$ with Regression Lines}
 \label{p1x1}
 \end{center}
@@ -131,8 +133,9 @@ Ridge regression & 127.2
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[scale=0.5]{p1x2.pdf}
-\caption{$X_2$ and $Y$ with Regression Lines}
+\includegraphics[scale=0.4]{p1x2-normal.pdf}
+\includegraphics[scale=0.4]{p1x2-sgd.pdf}
+\includegraphics[scale=0.4]{p1x2-ridge.pdf}\caption{$X_2$ and $Y$ with Regression Lines}
 \label{p1x2}
 \end{center}
 \end{figure}
@@ -145,12 +148,12 @@ Ridge regression & 127.2
 
 
 
-\pagebreak
+\newpage
 \begin{answer}{2} 
 
 \paragraph{A} The following $\mathcal{R}$ code implements the IRLS algorithm as presented in the MLAPP textbook (after loading the data):
 
-\lstinputlisting[language=R, caption=R Code for 2A, firstline=145, lastline=195, firstnumber=1]{cs571-hw3.r}
+\lstinputlisting[language=R, caption=R Code for 2A, firstline=168, lastline=222, firstnumber=1]{cs571-hw3.r}
 
 \paragraph{B} The RSS($\hat{\beta}$) for the training data is 141.47. 
 

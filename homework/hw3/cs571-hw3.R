@@ -103,29 +103,56 @@ summary(X1)
 summary(X2)
 summary(Y)
 
-# x1 plot
-pdf("p1x1.pdf")
-plot(X1, Y, # pch=16,
-	xlim=c(0,1),
-	ylim=c(65, 185))
-abline(beta.hat[1,], beta.hat[2,], lty=2, col="blue", lwd=2)
-abline(model$beta[1], model$beta[2], lty=3, lwd=3, col="red")
-abline(beta.ridge[1,], beta.ridge[2,], col="green", lwd=2)
-legend("topleft", legend=c("Normal eqn", "SGD", "Ridge"), 
-	lty=c(2, 3, 1), lwd=c(2,3,2), col=c("blue", "red", "green"))
+# x1 plots
+
+# (Y - ols_beta_2 * X2 - ols_beta_0) vs X1
+
+# normal eqn
+pdf("p1x1-normal.pdf")
+plot(X1, (Y-beta.hat[3,]*X2-beta.hat[1,]),
+	main="Normal Eqn")
+# lines(X1, beta.hat[2,]*X1)
+abline(0, beta.hat[2,], col="blue")
 dev.off()
 
-pdf("p1x2.pdf")
-plot(X2, Y, # pch=16,
-	xlim=c(75, 240),
-	ylim=c(65, 185))
-abline(beta.hat[1,], beta.hat[3,], lty=2, col="blue", lwd=2)
-abline(model$beta[1], model$beta[3], lty=3, lwd=3, col="red")
-abline(beta.ridge[1,], beta.ridge[3,], col="green", lwd=2)
-legend("topleft", legend=c("Normal eqn", "SGD", "Ridge"), 
-	lty=c(2, 3, 1), lwd=c(2,3,2), col=c("blue", "red", "green"))
+# sgd
+pdf("p1x1-sgd.pdf")
+plot(X1, (Y-model$beta[3]*X2-model$beta[1]), 
+	main="SGD")
+# lines(X1, model$beta[2]*X1)
+abline(0, model$beta[2], col="blue")
 dev.off()
 
+# ridge
+pdf("p1x1-ridge.pdf")
+plot(X1, (Y-beta.ridge[3,]*X2-beta.ridge[1,]), 
+	main="Ridge")
+# lines(X1, beta.ridge[2,]*X1)
+abline(0, beta.ridge[2,], col="blue")
+dev.off()
+
+# x2 plots
+
+# normal
+pdf("p1x2-normal.pdf")
+plot(X2, (Y-beta.hat[2,]*X1-beta.hat[1,]),
+	main="Normal Eqn")
+abline(0, beta.hat[3,], col="blue")
+dev.off()
+
+# sgd
+pdf("p1x2-sgd.pdf")
+plot(X2, (Y-model$beta[2]*X1-model$beta[1]),
+	main="SGD")
+abline(0, model$beta[3], col="blue")
+dev.off()
+
+# ridge
+pdf("p1x2-ridge.pdf")
+plot(X2, (Y-beta.ridge[2,]*X1-beta.ridge[1,]),
+	main="Ridge")
+abline(0, beta.ridge[3,], col="blue")
+dev.off()
 
 
 
@@ -192,7 +219,8 @@ irls = function(X, Y, epsilon=1/1e10){
 	return(w)
 }
 
-w = irls(X, Z)
+w = irls(X, Z) #=> -13.52371957, 0.24204760, 0.08109647
+w
 
 # B 
 beta = w[, 1]
