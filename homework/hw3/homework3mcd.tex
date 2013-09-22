@@ -43,7 +43,7 @@
 
 \begin{document}
 
-\noindent \emph{Homework Notes:} I did not work with anyone else on this homework or refer to resources other than the course notes, textbook, and course Piazza page.
+\noindent \emph{Homework Notes:} I did not work with anyone else on this homework or refer to resources other than the course notes, textbook, and course Piazza page. This homework took me $X+2$ hours, where $X$ is the amount of time it took to complete the original assignment and submit it on Friday, and 2 additional hours revising when homework problems were changed several days after being assigned.
 
 \begin{answer}{1}
 
@@ -159,14 +159,14 @@ Ridge regression & 127.2
 
 \paragraph{C} The RSS($\hat{\beta}$) for the test data is 15.73.
 
-\paragraph{F} (\emph{sic}) $\mathbb{E}[Z|X=[1,135]^T,\hat{\beta}] = 0.088$
+\paragraph{D} $\mathbb{E}[Z|X=[1,135]^T,\hat{\beta}] = 0.088$
 
-\paragraph{G} Figures \ref{p2x1} and \ref{p2x2} below plot $X_1$ and $X_2$ with $Z$ and the respective regression line. Because $X_1$ and $Z$ are binary variables, a small random jitter is added to make the points more apparent. 
+\paragraph{E} Bivariate plots are given in Figures \ref{p2x1} and \ref{p2x2} below, along with regression lines from the IRLS results. The $y$-axis values are $Z-\hat{\beta}_i X_i - \hat{\beta}_0$ and the $x$-axis values are $X_j, j \neq i$. (Note that indices in the $y$-axis label do not correspond to the $X$ and $\hat{\beta}$ subscripts because $\mathcal{R}$ uses 1-based indexing.) Regression lines in the plots for $X_i$ use $\hat{\beta}_i X_i$
 
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[scale=0.5]{p2x1.pdf}
-\caption{$X_1$ and $Z$ with Regression Lines}
+\caption{$X_1$ and $Z$ with Regression Line}
 \label{p2x1}
 \end{center}
 \end{figure}
@@ -174,14 +174,15 @@ Ridge regression & 127.2
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[scale=0.5]{p2x2.pdf}
-\caption{$X_2$ and $Z$ with Regression Lines}
+\caption{$X_2$ and $Z$ with Regression Line}
 \label{p2x2}
 \end{center}
 \end{figure}
 
-\paragraph{H} The correlation between the features $X_1$ and $X_2$ is high (0.63). This causes our estimates of $\beta$ to be biased, since it is difficult to isolate the impact of each feature. 
+\paragraph{F} The correlation between the features $X_1$ and $X_2$ is high (0.63). This causes our estimates of $\beta$ to be biased, since it is difficult to isolate the impact of each feature. If the features are gender and weight, this is because the mean of the male weight distribution is higher than that for females. However, both features are still important to the analysis. 
 
-\paragraph{I} A model with only $X_2$ would do almost as well as the model with both features. This is due to the correlation between the two features and the relatively minimal impact of $X_1$ on the predicted $Z$ values, as shown in Figure \ref{p2x1}. As Figure \ref{p2x2} shows, risk for $Z$ increases noticeably when $X_2>160$, so this should be an important component of the researchers' decision rule. 
+\paragraph{G} Although $X_1$ and $X_2$ are correlated, both features are important for the decision rule used to predict $Z^*$. Assuming $X_1$ is gender (female=1) and $X_2$ is weight, the decision rule I would recommend (based on Figure \ref{p2x2}) is that females with a weight over about 145 pounds and males with a weight over about 160 pounds have a high risk of $Z$. These patients should be counseled to seek additional diagnostic tests. 
+ 
 
 \end{answer}
 

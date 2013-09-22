@@ -239,29 +239,41 @@ summary(z.test.hat)
 RSSb = sum((Z.test - z.test.hat)^2)
 RSSb #=> 15.73171
 
-# F (sic) 
+# D
 X.hypo = matrix(c(1,1,135), ncol=1)
 Z.hypo = sigm(beta %*% X.hypo)
 Z.hypo
 
-# G 
+# E
 X1 = as.matrix(logdata[1:1000 , 1])
 X2 = as.matrix(logdata[1:1000 , 2])
 Z = as.matrix(logdata[1:1000 , 3])
 
+beta
+
 pdf("p2x1.pdf")
-plot(jitter(X1, amount=0.05), jitter(Z, amount=0.05),
-	xlab="X1", ylab="Z", ylim=c(-14,1))
-# abline(sigm(beta[1]), sigm(beta[2]))
-abline(beta[1], beta[2], col="blue", lwd=2)
+plot(X1, Z-beta[3]*X2-beta[1])
+abline(0, beta[2], col="blue")
 dev.off()
 
 pdf("p2x2.pdf")
-plot(X2, jitter(Z, amount=0.05),
-	xlab="X2", ylab="Z")
-abline(beta[1], beta[3], col="blue", lwd=2)
+plot(X2, Z-beta[2]*X1-beta[1])
+abline(0, beta[3], col="blue")
 dev.off()
 
+# pdf("p2x1.pdf")
+# plot(jitter(X1, amount=0.05), jitter(Z, amount=0.05),
+# 	xlab="X1", ylab="Z", ylim=c(-14,1))
+# # abline(sigm(beta[1]), sigm(beta[2]))
+# abline(beta[1], beta[2], col="blue", lwd=2)
+# dev.off()
 
-# H 
+# pdf("p2x2.pdf")
+# plot(X2, jitter(Z, amount=0.05),
+# 	xlab="X2", ylab="Z")
+# abline(beta[1], beta[3], col="blue", lwd=2)
+# dev.off()
+
+
+# F 
 cor(logdata[, 1], logdata[, 2])
