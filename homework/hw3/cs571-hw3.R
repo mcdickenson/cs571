@@ -277,3 +277,4 @@ dev.off()
 
 # F 
 cor(logdata[, 1], logdata[, 2])
+
