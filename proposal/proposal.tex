@@ -1,0 +1,80 @@
+\documentclass[twoside]{article}
+
+\usepackage{epsfig}
+
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf STA561:~Probabilistic machine learning \hfill} }
+       \vspace{6mm}
+       \hbox to 6.28in { {\Large \hfill #1 (#2)  \hfill} }
+       \vspace{6mm}
+       \hbox to 6.28in { {\it Authors: #3} \hfill}
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{#1}{#1}
+   \vspace*{4mm}
+}
+
+\begin{document}
+
+\lecture{Automated Production of Political Indicators}{9/25/13}{Matt Dickenson, Department of Political Science}
+
+% keep this document to one page.
+
+\section{Motivation}
+
+%What is the real-world problem your project will address? What data
+%will motivate your methodology?  
+
+The Militarized Interstate Disputes (MID) dataset, produced by the Correlates of War project, has been widely used in political research over the past three decades and is increasingly used in policy applications. Despite its value for understanding conflict, MID data coding is performed in iterative batches by human coders that lag behind the present by several years. For example, the most recent version was released in 2004 and contains data through 2001. An update through 2010 was expected last summer but is delayed indefinitely. However, reliance solely on human coders is neither necessary nor desirable. Using automated classification methods to classify real-time event data, this project hopes to obtain a close approximation to the MID dataset at a fraction of the cost in both time and money. 
+% \footnote{The article introducing the most recent version of the MID data has been cited over 500 times on Google Scholar.} 
+
+\section{Problem definition} 
+
+%Define this problem quantitatively. What question are you trying to
+%solve? What are the random variables? What is the goal of the project?
+
+The goal of this project is to replicate and extend MID data coding as accurately as possible using automated procedures. If a reliable method can be developed to replicate the MID data up to 2001, it can then be extended to generate event data for interstate disputes since 2001. The event data input used for classification will include GDELT, which begins with 1979 and is updated daily, and ICEWS, which begins in 2000 and is updated on an approximately monthly basis.
+
+\section{Models and methods}
+
+%What probabilistic approach will you take to solve the problems? What
+%parameters will be estimated, and how will you estimate those
+%parameters? Do the parameters have interpretations in terms of the
+%solution to the problem you are trying to answer?
+
+This project will use classification methods to categorize country-country-months (e.g. \texttt{USA-China-2012-May}) as either in conflict or not. The method used will most likely be HMM, with conflict treated as a latent state. Observed data from GDELT and ICEWS include information how much actors from each country interacted, whether acts were material or verbal, and how conflictual or cooperative each interaction was. Another alternative method to explore is Bayesian Hierarchical Association Rule Mining (HARM). 
+
+% Intermediate variables, such as the month-to-month change in the number of interactions or the proportion of events that are conflictual, will be calculated to aid in the classificaiton process.
+
+\section{Results and validation}
+
+% What will your results show? How will you quantify how well this 
+% approach answered the question? What other models/methods will you 
+% compare these results against? How will you validate the answers 
+% and your uncertainty in the answers?
+
+The results of the classification procedure will be a matrix of country-country-months that are categorized as interstate disputes or not. Results through 2001 can be validated against MID data to see whether they accurately classify disputes. Results for dyad-months after 2001 can be easily checked for face validity by checking whether observations classified as interstate disputes match with events that actually occurred. When the next update to the MID dataset is released it will provide a true out-of-sample validation opportunity. 
+
+
+% do not include references in this document; your final document will be
+% allowed unlimited citations.
+
+\end{document}
