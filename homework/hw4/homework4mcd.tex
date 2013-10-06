@@ -1,0 +1,113 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{lastpage}
+\usepackage{listings}
+\lstset{
+	numbers=left,
+	numbersep=5pt,
+	stepnumber=1,
+	tabsize=2,
+	showstringspaces=false
+}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{mathrsfs}
+\usepackage{cancel}
+\usepackage{xcolor}
+\usepackage[margin=3cm]{geometry}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+
+% Edit these as appropriate
+\newcommand\course{STA561/CS571}
+\newcommand\semester{Fall 2013}     % <-- current semester
+\newcommand\hwnum{3}                  % <-- homework number
+\newcommand\yourname{Matt Dickenson} % <-- your name
+\newcommand\login{mcd31}           % <-- your NetID
+\newcommand\hwdate{Due: 7 October, 2013}           % <-- HW due date
+
+\newenvironment{answer}[1]{
+  \subsubsection*{Problem #1}
+}
+
+
+\pagestyle{fancyplain}
+\headheight 35pt
+\lhead{\yourname\ \texttt{\login}\\\course\ --- \semester}
+\chead{\textbf{\Large Homework \hwnum}}
+\rhead{\hwdate}
+\headsep 10pt
+
+\begin{document}
+
+\noindent \emph{Homework Notes:} I did not work with anyone else on this homework or refer to resources other than the course notes, textbook, and course Piazza page.
+
+\begin{answer}{1}
+
+\paragraph{A} 
+\begin{eqnarray*}
+\hat{\mu}_k &=& \sum_{i=1}^n p(z_i=k | \hat{\pi}, \hat{\Sigma}_k)*x_i \\
+\hat{\pi}_k &=& \sum_{i=1}^n p(x_i | \hat{\mu}_k \hat{\Sigma}_k)
+\end{eqnarray*}
+
+\paragraph{B} These estimates differ slightly from those in the Murphy textbook. In that text, $\hat{\pi}_k=1/K$ for all $k$, whereas here we use information in the data to estimate $\hat{\pi}$. Similarly, in the Murphy book $\mu_k = {1 \over N_k} \sum_{i:z_i=k} x_i$ relies on the indicator funciton, while in the version above $\hat{\mu}$ is a weighted average of the $x_i$'s based on the probability that observation $i$ is in category $k$. Thus, the version above relies more fully on information in the data rather than the \texttt{argmin} of the deviance function.
+\end{answer}
+
+
+
+\begin{answer}{2} 
+
+\paragraph{A} Let $n_X = \sum_{i=1}^n X_i$. The data likelihood can be written
+\begin{eqnarray*}
+P(\mathcal{D}|\theta) &=& \prod_{i=1}^n P(X_i | \theta) \\
+&=& \prod_{i=1}^n \mu_{Z_t} \times X_t + (1-\mu_{Z_t}) \times (1-X_t) \\
+&=& \mu_{Z_t}^{n_X} \times (1-\mu_{Z_t})^{n-n_X}. 
+\end{eqnarray*}
+
+\paragraph{B} The complete log likelihood can be written
+\begin{eqnarray*}
+\ell_c(\theta) &=& \log P(X, Z | \theta) \\
+&=& \log ( \prod_{i=1}^n P(X_i, Z_i | \theta)  ) \\
+&=& \sum_{i=1}^n (\mu_{Z_t} \times X_t + (1-\mu_{Z_t}) \times (1-X_t)) \times (\pi_{Z_{t-}1} \times Z_t + (1-\pi_{Z_t}) \times (1-Z_{t-1})) \\
+&=& (\mu_{Z_t} \times \pi_{Z_{t-}1}  \times {n_X}) + ((1-\mu_{Z_t}) \times (1-\pi_{Z_t}) \times (n-n_X) )
+\end{eqnarray*}
+
+\paragraph{C} Omitted.
+
+\paragraph{D} Omitted.
+
+\paragraph{E} Omitted.
+
+\end{answer}
+
+\begin{answer}{3}
+
+\paragraph{A} 
+I would expect to have a single cluster ($K=1$) because in a single dimension the mean value should minimize the squared distance from $X$. 
+
+\paragraph{B}  
+
+\paragraph{C}
+
+\end{answer}
+
+\begin{answer}{4}
+Omitted.
+\end{answer}
+
+% \answer{4} 
+
+\begin{answer}{5}
+\paragraph{A} The width of the tree is $\log_2 K$. 
+
+\paragraph{B} Omitted.
+\end{answer}
+
+\begin{answer}{6}
+Omitted.
+\end{answer}
+
+\end{document}
