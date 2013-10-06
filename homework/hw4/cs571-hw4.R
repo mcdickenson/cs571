@@ -8,13 +8,10 @@ setwd('~/github/cs571/homework/hw4')
 X = read.table("HW4_problem3.txt", header=FALSE)
 dim(X)
 head(X)
-X[1:10, 1]
-
 
 mykmeans = function(x, maxiters=100){
 	# step 1
 	centroids = eta_0 = c(mean(x)) #eta_0
-	print(eta_0)
 	k = 1
 	iters = 0 
 	clusters = matrix(1, nrow=length(x), ncol=1)
@@ -33,11 +30,6 @@ mykmeans = function(x, maxiters=100){
 
 		# step 4
 		to_keep = which(c(1:length(centroids)) %in% new_clusters)
-		# print("to_keep")
-		# print(to_keep)
-
-		# print("centroids")
-		# print(centroids)
 
 		keep = centroids[to_keep]
 
@@ -51,8 +43,6 @@ mykmeans = function(x, maxiters=100){
 			subset = x[which(new_clusters[, 1]==i)]
 			centroids[i] = mean(subset, na.rm=TRUE)
 		}
-		# print("really updated centroids")
-		# print(centroids)
 
 		iters = iters + 1
 		if(k==lastk || iters>=maxiters){ converged=TRUE }
@@ -85,10 +75,53 @@ euclid = function(a, b){
 answer3 = mykmeans(X[1:1000,1])
 answer3
 
+mykmeans2 = function(x, maxiters=100){
+	# step 1
+	centroids = eta_0 = c(mean(x)) #eta_0
+	k = 1
+	iters = 0 
+	clusters = matrix(1, nrow=length(x), ncol=1)
 
-warnings()
+	converged = FALSE
 
-mean(X[1:1000,1])
+	while(!converged){
+		# step 2
+		last_eta = centroids[length(centroids)]
+		new_eta = rnorm(1, eta_0, sd(x))
+		centroids = c(centroids, new_eta)
 
-kmeans(X[1:1000,1], centers=2)$centers
+		# step 3
+		new_clusters = cluster(x=x, centroids=centroids)
+		clusters = cbind(clusters, new_clusters)
 
+		# step 4 
+		to_keep = c()
+		for(i in 1:length(centroids)){
+			occurs = length(which(new_clusters==i))
+			if(occurs>=10){ to_keep = c(to_keep, i)}
+		}
+		# which(c(1:length(centroids)) %in% new_clusters)
+
+		keep = centroids[to_keep]
+
+		lastk = k
+		k = length(keep)
+
+		centroids = keep
+
+		# update retained centroids
+		for(i in 1:length(centroids)){
+			subset = x[which(new_clusters[, 1]==i)]
+			centroids[i] = mean(subset, na.rm=TRUE)
+		}
+
+		iters = iters + 1
+		if(k==lastk || iters>=maxiters){ converged=TRUE }
+	}
+
+	output = list(K=k, numiters=iters, means=centroids)
+	return(output)
+}
+
+answer3c = mykmeans2(X[1:1000,1])
+answer3c

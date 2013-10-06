@@ -86,11 +86,15 @@ P(\mathcal{D}|\theta) &=& \prod_{i=1}^n P(X_i | \theta) \\
 \begin{answer}{3}
 
 \paragraph{A} 
-I would expect to have a single cluster ($K=1$) because in a single dimension the mean value should minimize the squared distance from $X$. 
+I would expect to have a single cluster ($K=1$) because in a single dimension the mean value should minimize the sum of squared distances from all $X_i$. 
 
-\paragraph{B}  
+\paragraph{B} The following code is my implementation of the adaptive $K$-means algorithm in R:
 
-\paragraph{C}
+\lstinputlisting[language=R, caption=R Code for 3B, firstline=12, lastline=76, firstnumber=1]{cs571-hw4.r}
+
+Using this code, I end up with $K=100$, and the centroid means are not consistent each time the function is called.  
+
+\paragraph{C} My implementation clearly overfits the data. One way to prevent overfitting is to adjust step 4 so that we only keep centroids $\eta_k$ with at least $c$ $X_i$'s assigned to them. I reimplemented the algorithm with $c=10$. This reduced $K$, but the result is again not consistent when the function is called multiple times. 
 
 \end{answer}
 
