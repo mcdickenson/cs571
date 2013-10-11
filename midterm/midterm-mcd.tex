@@ -62,7 +62,28 @@
 
 From this we can determine that the expected sufficient statistics are $\mathbb{E}[z_i|x_i]$ and $E [z_i z_i^{\prime} | x_i]$. 
 
+\paragraph{B} We can derive the maximum likelhihood estimated of $\mu$, $\Psi$, and $\Lambda$ by differentiating the expected log likelihood:
+\begin{eqnarray*}
+{\partial \mathbb{E}[\ell_c] \over \partial \mu^{(new)} } = 0 &=& - \sum_{i=1}^n \{ -x_i \Psi^{-1} + \frac{1}{2} \mu \Psi^{-1} + \Psi^{-1} \} \\
+&=& \sum_{i=1}^n x_i \Psi^{-1} - \frac{n}{2} \sum_{i=1}^n 2\mu^{(new)} \Psi^{-1} - \sum_{i=1}^n \Psi^{-1} \mathbb{E}[z_i | x_i] \\
+\mu^{(new)} \sum_{i=1}^n \Psi^{-1} &=& \frac{1}{n} \sum_{i=1}^n x_i \Psi^{-1} - \frac{1}{n} \sum_{i=1}^n \Psi^{-1} \mathbb{E}[z_i | x_i] \\
+\mu^{(new)} &=& \frac{1}{n} \sum_{i=1}^n x_i - \frac{1}{n} \sum_{i=1}^n \mathbb{E}[z_i | x_i]
+\end{eqnarray*}
 
+\begin{eqnarray*}
+{\partial \mathbb{E}[\ell_c] \over \partial \Psi^{-1}  } = 0 &=& -\frac{n}{2} \Psi^{(new)}
+- \sum_{i=1}^n \{ \frac{1}{2} x_i x_i^{\prime} - x_i\mu^{\prime} - x_i \Lambda \mathbb{E}[z_i|x_i] + \frac{1}{2}\mu \mu^{\prime} + \mu \Lambda \mathbb{E}[z_i|x_i] + \frac{1}{2} \Lambda^{\prime} \Lambda E [z_i z_i^{\prime} | x_i]  \} \\
+\frac{n}{2} \Psi^{(new)} &=&  \sum_{i=1}^n \{ \frac{1}{2} x_i x_i^{\prime} - x_i\mu^{\prime} - x_i \Lambda \mathbb{E}[z_i|x_i] + \frac{1}{2}\mu \mu^{\prime} + \mu \Lambda \mathbb{E}[z_i|x_i] + \frac{1}{2} \Lambda^{\prime} \Lambda E [z_i z_i^{\prime} | x_i]  \} \\
+\Psi^{(new)}  &=& \frac{1}{n} \sum_{i=1}^n \{ x_i(x_i^{\prime} - 2\mu^{\prime} - \Lambda \mathbb{E}[z_i | x_i]) \} + \frac{1}{n} \sum_{i=1}^n \{ \mu ( \mu^{\prime} + 2\Lambda \mathbb{E}[z_i | x_i] )  \} + \frac{1}{n} \sum_{i=1}^n \Lambda^{\prime} \Lambda E [z_i z_i^{\prime} | x_i] \\
+\end{eqnarray*}
+
+
+
+\begin{eqnarray*}
+{\partial \mathbb{E}[\ell_c] \over \partial \Lambda } = 0 &=& - \sum_{i=1}^n \{ -x_i \Psi^{-1} \mathbb{E}[z_i | x_i] + \mu \Psi^{-1} \mathbb{E}[z_i | x_i] + \Lambda^{\prime} \Psi^{-1} E [z_i z_i^{\prime} | x_i] \} \\
+n \Lambda^{(new)} \Psi^{-1} E [z_i z_i^{\prime} | x_i] &=& \sum_{i=1}^n \{ -x_i \Psi^{-1} \mathbb{E}[z_i | x_i] + \mu \Psi^{-1} \mathbb{E}[z_i | x_i] \} \\
+\Lambda^{(new)}  &=& E [z_i z_i^{\prime} | x_i]^{-1} \frac{1}{n} \sum_{i=1}^n \{ \mathbb{E}[z_i | x_i] (\mu - x_i)  \}  
+\end{eqnarray*}
 
 \end{answer}
 
