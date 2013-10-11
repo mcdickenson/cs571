@@ -85,15 +85,50 @@ n \Lambda^{(new)} \Psi^{-1} E [z_i z_i^{\prime} | x_i] &=& \sum_{i=1}^n \{ -x_i 
 
 \paragraph{C} Now we derive the expected sufficient statistics, using fact that data and factors are jointly normal:
 \begin{eqnarray*}
-\mathbb{E}[z|x-\mu] &=& \Lambda^{\prime} (\Psi + \Lambda \Lambda^{\prime})^{-1} x \\
-\mathbb{E}[z|x-] &=& \{ \mu \Lambda^{\prime} (\Psi + \Lambda \Lambda^{\prime})^{-1} \} x \\
+\mathbb{E}[z|x-\mu] &=& \Lambda^{\prime} (\Psi + \Lambda \Lambda^{\prime})^{-1} x^{\prime} \\
+\mathbb{E}[z|x] &=&  \mu + \Lambda^{\prime} (\Psi + \Lambda \Lambda^{\prime})^{-1}  x^{\prime} \\
 \mathbb{E}[z z^{\prime}|x] &=& Var(z|x) + \mathbb{E}[z|x]E[z|x]^\prime \\
 &=& I + [x(\mu + \Lambda^{\prime}(\Psi + \Lambda \Lambda^{\prime})^{-1})] [(\mu + \Lambda^{\prime}(\Psi + \Lambda \Lambda^{\prime})^{-1})x^{\prime}] 
 \end{eqnarray*}
 
 
+\paragraph{D} Now the EM pseudocode, written with $\mathcal{R}$ syntax for matrix operations and indexing:
+\begin{lstlisting}
+initialize mu[1:p] = sample(x, n/10)
+initialize psi = var(x - mu)
+initialize lambda = matrix(epsilon)
+repeat
+  for each example i=1:N do 
+    expected_z[i] = mu + t(lambda) %*% 
+      (psi + lambda %*% t(lambda)) %*% t(x)
+    expected_z_squared[i] = I + (x %*% t(lambda) %*% 
+    	(psi + lambda %*% t(lambda))) %*% 
+      (t(lambda) %*% (psi + lambda %*% t(lambda)) %*% t(x))
+  end 
+  for each factor k = 1:K do 
+	  for each feature j=1:p do 
+	    mu[k][j] = mean(x[,j]) + mean(expected_z[,j])
+	    psi[k][j, j] = mean(x%*%(t(x)-2*t(mu)-lambda*mean(expected_z))) + 
+	      mean(mu %*% (t(mu) + 2 lambda*mean(expected_z))) + 
+	      mean(t(lambda) %*% lambda * mean(expected_z_squared))
+	    lambda = factor_loadings(x, z)
+	   end 
+	end 
+until converged 
+\end{lstlisting}
+
+I would set $K$ by cross-validation, holding out subsets of $X$ each time. 
+
+\paragraph{E} I would assess convergence by the change in each $\mu_{1:p}$ between iterations. If these are not changing, it suggests that the underlying factors are not changing. 
+
 \end{answer}
 
+\begin{answer}{2}
+Modeling mean values of each feature in the model is better than mean-centering each of the features before performing factor analysis because it takes into account $E[z_i|x_i]$. That is, it leverages the information in the factor analysis to compute feature means. 
+\end{answer}
 
+\begin{answer}{3}
+
+\end{answer}
 
 \end{document}
