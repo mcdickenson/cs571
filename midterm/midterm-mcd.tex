@@ -49,6 +49,21 @@
 
 \begin{answer}{1}
 
+\paragraph{A} We can write out the expected log likelihood as:
+\begin{eqnarray*}
+\mathbb{E}[\ell_c] &=& \mathbb{E} [ \log \prod_{i=1}^n (2 \pi)^{p/2} |\Psi|^{-1/2} \exp \{ -\frac{1}{2} [ x_i - \mu - \Lambda z_i]^{\prime} \Psi^{-1} [x_i - \mu - \Lambda z_i] \}] \\
+&=& c - \frac{n}{2} \log |\Psi| - \\
+&&~~~~~~~~~ \sum_{i=1}^n \mathbb{E} [ \frac{1}{2}(x_i \Psi^{-1} x_i^{\prime} - 2x_i \Psi^{-1}\mu^{\prime} -2x_i\Psi^{-1}\Lambda z_i + \mu \Psi^{-1}\mu^{\prime} + 2\mu \Psi^{-1} \Lambda z_i + z_i^{\prime} \Lambda^{\prime} \Psi^{-1} \Lambda z_i)] \\
+&=& c - \frac{n}{2} \log |\Psi| - \\
+&&~~~~~~~~~ \sum_{i=1}^n \mathbb{E} [ \frac{1}{2}x_i \Psi^{-1} x_i^{\prime} - x_i \Psi^{-1}\mu^{\prime} -x_i\Psi^{-1}\Lambda z_i + \frac{1}{2} \mu \Psi^{-1}\mu^{\prime} + \mu \Psi^{-1} \Lambda z_i + \frac{1}{2}z_i^{\prime} \Lambda^{\prime} \Psi^{-1} \Lambda z_i] \\
+&=& c - \frac{n}{2} \log |\Psi| - \sum_{i=1}^n  \{ \frac{1}{2}x_i \Psi^{-1} x_i^{\prime} - x_i \Psi^{-1}\mu^{\prime} -x_i\Psi^{-1}\Lambda \mathbb{E}[z_i|x_i] + \\ 
+&&~~~~~~~~~ \frac{1}{2} \mu \Psi^{-1}\mu^{\prime} + \mu \Psi^{-1} \Lambda \mathbb{E}[z_i|x_i] + \frac{1}{2} tr(  \Lambda^{\prime} \Psi^{-1} \Lambda E [z_i z_i^{\prime} | x_i] )\}\\
+\end{eqnarray*}
+
+From this we can determine that the expected sufficient statistics are $\mathbb{E}[z_i|x_i]$ and $E [z_i z_i^{\prime} | x_i]$. 
+
+
+
 \end{answer}
 
 
