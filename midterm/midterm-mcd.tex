@@ -77,13 +77,20 @@ From this we can determine that the expected sufficient statistics are $\mathbb{
 \Psi^{(new)}  &=& \frac{1}{n} \sum_{i=1}^n \{ x_i(x_i^{\prime} - 2\mu^{\prime} - \Lambda \mathbb{E}[z_i | x_i]) \} + \frac{1}{n} \sum_{i=1}^n \{ \mu ( \mu^{\prime} + 2\Lambda \mathbb{E}[z_i | x_i] )  \} + \frac{1}{n} \sum_{i=1}^n \Lambda^{\prime} \Lambda E [z_i z_i^{\prime} | x_i] \\
 \end{eqnarray*}
 
-
-
 \begin{eqnarray*}
 {\partial \mathbb{E}[\ell_c] \over \partial \Lambda } = 0 &=& - \sum_{i=1}^n \{ -x_i \Psi^{-1} \mathbb{E}[z_i | x_i] + \mu \Psi^{-1} \mathbb{E}[z_i | x_i] + \Lambda^{\prime} \Psi^{-1} E [z_i z_i^{\prime} | x_i] \} \\
 n \Lambda^{(new)} \Psi^{-1} E [z_i z_i^{\prime} | x_i] &=& \sum_{i=1}^n \{ -x_i \Psi^{-1} \mathbb{E}[z_i | x_i] + \mu \Psi^{-1} \mathbb{E}[z_i | x_i] \} \\
 \Lambda^{(new)}  &=& E [z_i z_i^{\prime} | x_i]^{-1} \frac{1}{n} \sum_{i=1}^n \{ \mathbb{E}[z_i | x_i] (\mu - x_i)  \}  
 \end{eqnarray*}
+
+\paragraph{C} Now we derive the expected sufficient statistics, using fact that data and factors are jointly normal:
+\begin{eqnarray*}
+\mathbb{E}[z|x-\mu] &=& \Lambda^{\prime} (\Psi + \Lambda \Lambda^{\prime})^{-1} x \\
+\mathbb{E}[z|x-] &=& \{ \mu \Lambda^{\prime} (\Psi + \Lambda \Lambda^{\prime})^{-1} \} x \\
+\mathbb{E}[z z^{\prime}|x] &=& Var(z|x) + \mathbb{E}[z|x]E[z|x]^\prime \\
+&=& I + [x(\mu + \Lambda^{\prime}(\Psi + \Lambda \Lambda^{\prime})^{-1})] [(\mu + \Lambda^{\prime}(\Psi + \Lambda \Lambda^{\prime})^{-1})x^{\prime}] 
+\end{eqnarray*}
+
 
 \end{answer}
 
