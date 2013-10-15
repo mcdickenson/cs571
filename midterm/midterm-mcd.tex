@@ -64,7 +64,7 @@ From this we can determine that the expected sufficient statistics are $\mathbb{
 
 \paragraph{B} We can derive the maximum likelhihood estimated of $\mu$, $\Psi$, and $\Lambda$ by differentiating the expected log likelihood:
 \begin{eqnarray*}
-{\partial \mathbb{E}[\ell_c] \over \partial \mu^{(new)} } = 0 &=& - \sum_{i=1}^n \{ -x_i \Psi^{-1} + \frac{1}{2} \mu \Psi^{-1} + \Psi^{-1} \} \\
+{\partial \mathbb{E}[\ell_c] \over \partial \mu } = 0 &=& - \sum_{i=1}^n \{ -x_i \Psi^{-1} + \frac{1}{2} \mu^{(new)} \Psi^{-1} + \Psi^{-1} \} \\
 &=& \sum_{i=1}^n x_i \Psi^{-1} - \frac{n}{2} \sum_{i=1}^n 2\mu^{(new)} \Psi^{-1} - \sum_{i=1}^n \Psi^{-1} \mathbb{E}[z_i | x_i] \\
 \mu^{(new)} \sum_{i=1}^n \Psi^{-1} &=& \frac{1}{n} \sum_{i=1}^n x_i \Psi^{-1} - \frac{1}{n} \sum_{i=1}^n \Psi^{-1} \mathbb{E}[z_i | x_i] \\
 \mu^{(new)} &=& \frac{1}{n} \sum_{i=1}^n x_i - \frac{1}{n} \sum_{i=1}^n \mathbb{E}[z_i | x_i]
@@ -94,7 +94,7 @@ n \Lambda^{(new)} \Psi^{-1} E [z_i z_i^{\prime} | x_i] &=& \sum_{i=1}^n \{ -x_i 
 
 \paragraph{D} Now the EM pseudocode, written with $\mathcal{R}$ syntax for matrix operations and indexing:
 \begin{lstlisting}
-initialize mu[1:p] = sample(x, n/10)
+initialize mu[1:p] = sample(x)
 initialize psi = var(x - mu)
 initialize lambda = matrix(epsilon)
 repeat
@@ -124,10 +124,17 @@ I would set $K$ by cross-validation, holding out subsets of $X$ each time.
 \end{answer}
 
 \begin{answer}{2}
-Modeling mean values of each feature in the model is better than mean-centering each of the features before performing factor analysis because it takes into account $E[z_i|x_i]$. That is, it leverages the information in the factor analysis to compute feature means. 
+Modeling mean values of each feature in the model is better than mean-centering each of the features before performing factor analysis because it takes into account $E[z_i|x_i]$, leveraging the information in the factor analysis to compute feature means. This is useful because the some features will be more strongly correlated with some factors than others. 
 \end{answer}
 
 \begin{answer}{3}
+One problem where a mixture of factor analyzers would be preferable to a simpler factor analysis model is in analyzing voting behavior. For example, some observers of Turkish politics have argued that Turkey is turning its back on the West (specifically the US and EU) in favor of the East, as represented by Russia and Iran. This claim often references voters' preferences for the ruling AKP party, which has reduced the country's efforts to join the EU in favor of a ``zero-problems'' policy with its immediate neighbors including Iran. 
+
+It would be difficult to draw inferences about this debate directly from the individual features that may influence a voter's choice of political party (e.g. gender, education level, income), so factor analysis is preferable to identify certain latent dimensions (e.g. religiosity, favorability toward the West). However, individuals likely differ in the extent to which each of these latent factors motivates them. Thus, a mixture of factor analyzers would be useful. 
+
+The parameters of this model are $\Psi$ and $\Lambda$ as before, $\mu_j$ as the mean of the $j^{th}$ factor analyzer (of a total of $J$), and the vector $\pi$ of mixing proportions. $\Psi$ and $\Lambda$ help to assess the covariance structure but are not of primary interest for the applied problem described above. $\mu$ helps to give a baseline for each factor analyzer. The main parameter of interest is $\pi$, which indicates the weight given to each factor analyzer in the model. 
+
+If much weight is given to a model in which factors appear to be correlated with an East-West divide (i.e. a large value of $\pi_j$), that would lend credibility to one side of the Turkish debate. On the other hand, low weight on such factor analyzers would indicate that the East-West dimension is not a primary cleavage in contemporary Turkish politics. In this way, a mixture of factor analyzers could help shed light on an important political question. 
 
 \end{answer}
 
