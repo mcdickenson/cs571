@@ -31,7 +31,30 @@ plot(density(eigen3), main="X3")
 dev.off()
 
 # b
+RMSE = function(a, b){
+	sq.err = (a - b)^2
+	mean.sq.err = mean(sq.err)
+	root.mean.sq.err = sqrt(mean.sq.err)
+	return(root.mean.sq.err)
+}
 
+x1eigvec = eigen(cov(X1))$vectors[, 1:3]
+x1eigval = diag(eigen1[1:3])
+recon1 = x1eigvec %*% x1eigval %*% t(x1eigvec)
+rmse1 = RMSE(cov(X1), recon1)
+rmse1 #=> 0.005441325
+
+x2eigvec = eigen(cov(X2))$vectors[, 1:3]
+x2eigval = diag(eigen2[1:3])
+recon2 = x2eigvec %*% x2eigval %*% t(x2eigvec)
+rmse2 = RMSE(cov(X2), recon2)
+rmse2 #=> 0.5532188
+
+x3eigvec = eigen(cov(X3))$vectors[, 1:3]
+x3eigval = diag(eigen3[1:3])
+recon3 = x3eigvec %*% x3eigval %*% t(x3eigvec)
+rmse3 = RMSE(cov(X3), recon3)
+rmse3 #=> 13.02954
 
 
 # Problem 2

@@ -47,7 +47,33 @@
 
 \begin{answer}{1}
 
-\paragraph{A} 
+\paragraph{A} Figure \ref{eigens} shows the eigenvalues for each matrix $X$ with different values of $\psi$ ($X_i$ uses $\psi_i$). All of the distributions are similarly skewed, but the mean and variance of the eigenvalues increase as the amount of noise ($\psi$) in the original matrix increases. 
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.5]{1a.pdf}
+\caption{Distribution of Eigenvalues for Three Values of $\psi$}
+\label{eigens}
+\end{center}
+\end{figure}
+
+\paragraph{B} Table \ref{rmse} presents the root mean squared error (RMSE) between the covariances of the X matrices and the matrix reconstructions using the first three eigenvectors (and eigen values). Overall, the eigenvectors do a good job of recapitulating the original data matrices. Those with less noise (small $\psi$) do a better job (lower RMSE) than those with more noise. 
+
+\begin{table}[h!]
+\begin{center}
+\caption{RMSE between Cov(X) and Matrix Reconstructions}
+\label{rmse}
+\begin{tabular}{cr}
+$\psi$ & \texttt{RMSE} \\
+\hline
+0.2 & 0.0054 \\
+2 & 0.553 \\
+10 & 13.029
+\end{tabular}
+\end{center}
+\end{table}
+
+\paragraph{C} When we reconstruct the matrices we are able to obtain an estimate of the covariance of $X$, subject to some noise. This could be useful for identifying the number of components that could be used in our analysis, as long as we assume that the level of noise is relatively low. 
 
 \end{answer}
 
