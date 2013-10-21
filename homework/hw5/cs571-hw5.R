@@ -67,8 +67,6 @@ test = read.table("test_data_gp.txt", as.is=TRUE, header=FALSE)
 dim(test)
 names(train) = names(test) = c("sequence", "intensity")
 
-
-
 # a 
 combos1 = c("A", "C", "G", "T")
 substrings = expand.grid(first=combos1, second=combos1)
@@ -92,25 +90,23 @@ substringCount = function(substring, string) {
   return(count) 
 }
 
-train$A = train$C = train$G = train$T = NA 
-for(i in 1:n){
-	train$A[i] = letterCount("A", train$sequence[i])
-	train$C[i] = letterCount("C", train$sequence[i])
-	train$G[i] = letterCount("G", train$sequence[i])
-	train$T[i] = letterCount("T", train$sequence[i])
-}
-
-kernel = function(x1, x2){
-	dist = sqrt((x1$A - x2$A)^2 + (x1$C - x2$C)^2 + (x1$G - x2$G)^2 + (x1$T - x2$T))
+stringKernel = function(x1, x2){
+	s = 0 
+	for(combo in combos){
+		phi = substringCount(combo, x1) * substringCount(combo, x2)
+		s = s + phi
+	}
+	return(s)
 }
 
 gram = matrix(NA, nrow=n, ncol=n)
 for(i in 1:n){
-	for(j in 1:n){
-		gram[i,j] = kernel(train[i, ], train[j, ])
+	for(j in i:n){
+		gram[i,j] = gram[j,i] = stringKernel(train$sequence[i], train$sequence[j])
 	}
 	print(i)
 }
+
 save(gram, file="gram.rda")
 load("gram.rda")
 
