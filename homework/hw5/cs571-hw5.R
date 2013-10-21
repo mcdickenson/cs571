@@ -3,6 +3,8 @@
 # Homework 5
 
 setwd('~/github/cs571/homework/hw5')
+require(utils)
+require(stringr)
 
 # Problem 1
 # a
@@ -65,9 +67,29 @@ test = read.table("test_data_gp.txt", as.is=TRUE, header=FALSE)
 dim(test)
 names(train) = names(test) = c("sequence", "intensity")
 
-letterCount = function(letter, string){
-	count = length(which(unlist(strsplit(string,NULL))==letter))
-	return(count)
+
+
+# a 
+combos1 = c("A", "C", "G", "T")
+substrings = expand.grid(first=combos1, second=combos1)
+combos2 = paste(substrings$first, substrings$second, sep="")
+substrings = expand.grid(first=letters, second=letters, third=letters)
+combos3 = paste(substrings$first, substrings$second, substrings$third, sep="")
+combos3
+combos = c(combos1, combos2, combos3)
+length(combos)
+
+# http://r.789695.n4.nabble.com/how-to-count-the-total-number-of-INCLUDING-overlapping-occurrences-of-a-substring-within-a-string-td975644.html
+substringCount = function(substring, string) { 
+	count = 0 
+  i = 1; n = nchar(string) 
+  found = regexpr(substring, substr(string, i, n), perl=TRUE) 
+  while (found > 0) { 
+    count = count + 1 
+    i = i + found 
+    found = regexpr(substring, substr(string, i, n), perl=TRUE) 
+  } 
+  return(count) 
 }
 
 train$A = train$C = train$G = train$T = NA 
@@ -79,7 +101,7 @@ for(i in 1:n){
 }
 
 kernel = function(x1, x2){
-	dist = (x1$A - x2$A)^2 + (x1$C - x2$C)^2 + (x1$G - x2$G)^2 + (x1$T - x2$T)^2 
+	dist = sqrt((x1$A - x2$A)^2 + (x1$C - x2$C)^2 + (x1$G - x2$G)^2 + (x1$T - x2$T))
 }
 
 gram = matrix(NA, nrow=n, ncol=n)
@@ -90,5 +112,68 @@ for(i in 1:n){
 	print(i)
 }
 save(gram, file="gram.rda")
+load("gram.rda")
 
+# b
+rbf = function(x1, x2, sigma = 5){
+	dist = kernel(x1, x2)
+	k = exp(-(dist^2)/(2*sigma^2))
+	return(k)
+}
 
+dim(train)
+n = nrow(train)
+K.train = matrix(NA, nrow=n, ncol=n)
+for(i in 1:n){
+	for(j in i:n){
+		K.train[i,j] = K.train[j,i] = rbf(train[i, ], train[j, ])
+	}
+	print(i)
+}
+
+test$A = test$C = test$G = test$T = NA 
+for(i in 1:n){
+	test$A[i] = letterCount("A", test$sequence[i])
+	test$C[i] = letterCount("C", test$sequence[i])
+	test$G[i] = letterCount("G", test$sequence[i])
+	test$T[i] = letterCount("T", test$sequence[i])
+}
+
+n = nrow(test)
+K.test = matrix(NA, nrow=n, ncol=n)
+for(i in 1:n){
+	for(j in i:n){
+		K.test[i,j] = K.test[j,i] = rbf(test[i, ], test[j, ])
+	}
+	print(i)
+}
+
+K = K.train 
+head(K)
+K.star.star = K.test
+
+complete.data = rbind(train, test)
+n = nrow(complete.data)
+K.star = matrix(NA, nrow=n, ncol=n)
+for(i in 1:n){
+	for(j in i:n){
+		K.star[i,j] = K.star[j,i] = rbf(complete.data[i, ], complete.data[j, ])
+	}
+	print(i)
+}
+
+sigma = 5 
+
+# problem inverting K 
+alpha = solve(K) %*% train$intensity
+#####################
+
+# sigmaI = sigma^2 * diag(nrow(K))
+# dim(sigmaI)
+# dim(K)
+# K.plus.sigmaI = K + sigmaI
+# dim(K.plus.sigmaI)
+# mu.star = t(K.star) %*% solve(K+sigmaI) 
+# sigma.star = K.star.star - t(K.star) %*% solve(K) %*% K.star
+
+intensity.est = mu.star * test$intensity
