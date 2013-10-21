@@ -58,6 +58,37 @@ rmse3 #=> 13.02954
 
 
 # Problem 2
-train = read.table("train_data_gp.txt", header=FALSE)
+train = read.table("training_data_gp.txt", as.is=TRUE, header=FALSE)
+dim(train)
+n = nrow(train)
+test = read.table("test_data_gp.txt", as.is=TRUE, header=FALSE)
+dim(test)
+names(train) = names(test) = c("sequence", "intensity")
+
+letterCount = function(letter, string){
+	count = length(which(unlist(strsplit(string,NULL))==letter))
+	return(count)
+}
+
+train$A = train$C = train$G = train$T = NA 
+for(i in 1:n){
+	train$A[i] = letterCount("A", train$sequence[i])
+	train$C[i] = letterCount("C", train$sequence[i])
+	train$G[i] = letterCount("G", train$sequence[i])
+	train$T[i] = letterCount("T", train$sequence[i])
+}
+
+kernel = function(x1, x2){
+	dist = (x1$A - x2$A)^2 + (x1$C - x2$C)^2 + (x1$G - x2$G)^2 + (x1$T - x2$T)^2 
+}
+
+gram = matrix(NA, nrow=n, ncol=n)
+for(i in 1:n){
+	for(j in 1:n){
+		gram[i,j] = kernel(train[i, ], train[j, ])
+	}
+	print(i)
+}
+save(gram, file="gram.rda")
 
 
