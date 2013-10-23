@@ -25,11 +25,15 @@ eigen1 = eigen(cov(X1))$values
 eigen2 = eigen(cov(X2))$values
 eigen3 = eigen(cov(X3))$values
 
+l2norm1 = sqrt(sum(eigen1^2))
+l2norm2 = sqrt(sum(eigen2^2))
+l2norm3 = sqrt(sum(eigen3^2))
+
 pdf("1a.pdf")
 par(mfrow=c(1,3))
-plot(density(eigen1), main="X1")
-plot(density(eigen2), main="X2")
-plot(density(eigen3), main="X3")
+plot(density(eigen1/l2norm1), main="X1")
+plot(density(eigen2/l2norm2), main="X2")
+plot(density(eigen3/l2norm3), main="X3")
 dev.off()
 
 # b
@@ -58,6 +62,16 @@ recon3 = x3eigvec %*% x3eigval %*% t(x3eigvec)
 rmse3 = RMSE(cov(X3), recon3)
 rmse3 #=> 13.02954
 
+# c 
+mean(eigen1/l2norm1)
+mean(eigen2/l2norm2)
+mean(eigen3/l2norm3)
+
+sd(eigen1/l2norm1)
+sd(eigen2/l2norm2)
+sd(eigen3/l2norm3)
+
+
 
 # Problem 2
 train = read.table("training_data_gp.txt", as.is=TRUE, header=FALSE)
@@ -77,10 +91,10 @@ combos3
 combos = c(combos1, combos2, combos3)
 length(combos)
 
-# http://r.789695.n4.nabble.com/how-to-count-the-total-number-of-INCLUDING-overlapping-occurrences-of-a-substring-within-a-string-td975644.html
 substringCount = function(substring, string) { 
 	count = 0 
-  i = 1; n = nchar(string) 
+  i = 1 
+  n = nchar(string) 
   found = regexpr(substring, substr(string, i, n), perl=TRUE) 
   while (found > 0) { 
     count = count + 1 
@@ -88,6 +102,14 @@ substringCount = function(substring, string) {
     found = regexpr(substring, substr(string, i, n), perl=TRUE) 
   } 
   return(count) 
+}
+
+allSubstringCounts = function(string){
+	s = 0 
+	for(combo in combos){
+		s = s + substringCount(combo, string)
+	}
+	return(s)
 }
 
 stringKernel = function(x1, x2){
@@ -109,37 +131,45 @@ for(i in 1:n){
 
 save(gram, file="gram.rda")
 load("gram.rda")
+gram[1:10, 1:10]
+plot(density(gram))
 
 # b
 rbf = function(x1, x2, sigma = 5){
-	dist = kernel(x1, x2)
-	k = exp(-(dist^2)/(2*sigma^2))
+	# dist = (allSubstringCounts(x1) - allSubstringCounts(x2))^2
+	dist = stringKernel(x1, x2)
+	k = exp(-dist/(2*sigma^2))
 	return(k)
 }
 
+# train$sequence[1]
+# train$sequence[2]
+# substringCount("TTT", train$sequence[1])
+# substringCount("TTT", train$sequence[2])
+
+# allSubstringCounts(train$sequence[1])
+# allSubstringCounts(train$sequence[2])
+
+# rbf(train$sequence[1], train$sequence[2])
+
 dim(train)
 n = nrow(train)
+head(train)
+# n = 10 
 K.train = matrix(NA, nrow=n, ncol=n)
 for(i in 1:n){
 	for(j in i:n){
-		K.train[i,j] = K.train[j,i] = rbf(train[i, ], train[j, ])
+		K.train[i,j] = K.train[j,i] = rbf(train$sequence[i], train$sequence[j])
 	}
 	print(i)
 }
-
-test$A = test$C = test$G = test$T = NA 
-for(i in 1:n){
-	test$A[i] = letterCount("A", test$sequence[i])
-	test$C[i] = letterCount("C", test$sequence[i])
-	test$G[i] = letterCount("G", test$sequence[i])
-	test$T[i] = letterCount("T", test$sequence[i])
-}
+K.train
 
 n = nrow(test)
 K.test = matrix(NA, nrow=n, ncol=n)
 for(i in 1:n){
 	for(j in i:n){
-		K.test[i,j] = K.test[j,i] = rbf(test[i, ], test[j, ])
+		K.test[i,j] = K.test[j,i] = rbf(test$sequence[i], estn$sequence[j])
 	}
 	print(i)
 }
