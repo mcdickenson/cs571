@@ -112,15 +112,19 @@ allSubstringCounts = function(string){
 	return(s)
 }
 
+charsInCombos = 4+(2*16)+(3*64)
+
 stringKernel = function(x1, x2){
 	s = 0 
 	for(combo in combos){
 		phi = substringCount(combo, x1) * substringCount(combo, x2)
-		s = s + phi
+		w = nchar(combo)/charsInCombos
+		s = s + (w*phi)
 	}
 	return(s)
 }
 
+n = nrow(train)
 gram = matrix(NA, nrow=n, ncol=n)
 for(i in 1:n){
 	for(j in i:n){
@@ -128,8 +132,9 @@ for(i in 1:n){
 	}
 	print(i)
 }
+gram[1:10, 1:10]
 
-save(gram, file="gram.rda")
+save(gram, file="gram-new.rda")
 load("gram.rda")
 gram[1:10, 1:10]
 plot(density(gram))
