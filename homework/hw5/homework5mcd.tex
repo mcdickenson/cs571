@@ -81,18 +81,37 @@ $\psi$ & \texttt{RMSE} \\
 
 \paragraph{A and B}
 
-% Write down the steps for building your string kernel and equations for your Gram Matrix and Gaussian processes regression, and paste your code at the end.
+
+Steps for building string kernel:
+\begin{enumerate}
+\item Create all possible ``words'' up to length three (3) using the letters A, C, G, and T (\texttt{combos})
+\item Write a function to count all occurrences of a substring within a string (\texttt{substringCount})
+\item Write a string kernel function to loop through the words generated in step 1, count their occurrence within a string using the function in step 2, multiply, and apply a weight proportional to the length of the word/substring (\texttt{stringKernel}) 
+\end{enumerate}
+
+The $(i,j)^{th}$ Gram matrix entry, $K(x_i, x_j)$ was computed as $\Sigma_a w(a) \phi(x_i, a) \phi(x_2, a)$ where $a$ is a word/substring, $\phi(x, a)$ counts the occurrences of $a$ in $x$, and $w(a) = {|a| \over 228}$ because there are a total of 228 characters in all the words that can be created as a combination of A, C, G, and T. 
+
+\lstinputlisting[language=R, caption=R Code for 2A and 2B, firstline=76, lastline=149, firstnumber=1]{cs571-hw5.r}
+
 
 \paragraph{C}
 
-% Draw a scatter plot for your predicted intensities versus the measured intensities in the test data. Calculate RMSE for the predicted intensities versus measured intensities.
+Figure \ref{scatter} presents a scatter plot of predicted intensities versus the measured intensities in the test data. The RMSE was calculated to be 0.654. 
+
+\begin{figure}
+\begin{center}
+\includegraphics{scatterplot.pdf}
+\caption{Scatterplot of Predicted versus Measured Intensities}
+\label{scatter}
+\end{center}
+\end{figure}
 
 \paragraph{D} There are at least three ways that we would improve the prediction acuracy for our regression:
 
 \begin{enumerate}
 \item Consider longer substrings of the sequence, such as $|A|={4,5,...}$
 \item Modify the weights put on shorter substrings, including weighting single character strings at zero
-\item Tune $\sigma$ to 
+\item Try other values of $\sigma$
 \end{enumerate}
 
 \end{answer}

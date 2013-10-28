@@ -104,34 +104,6 @@ substringCount = function(substring, string) {
   return(count) 
 }
 
-substringOccurrences = function(string="AAAGTAAAGT", substring="AAA"){
-	string_length = nchar(string)
-	substring_length = nchar(substring)
-	locations = seq(1, string_length-(substring_length-1), substring_length)
-	substrings = NULL
-	for(i in 1:substring_length){
-		substrings = rbind(substrings, substring(string, locations+i-1, locations+substring_length+i-2))
-	}
-	match_locations = grep(substring, substrings)
-	number_matches = length(match_locations)
-	return(number_matches)
-}
-
-allSubstringCounts = function(string){
-	s = 0 
-	for(combo in combos){
-		s = s + substringCount(combo, string)
-	}
-	return(s)
-}
-
-allSubstringOccurrences = function(string){
-	s = 0 
-	for(combo in combos){
-		s = s + substringOccurrences(string=string, substring=combo)
-	}
-	return(s)
-}
 
 charsInCombos = 4+(2*16)+(3*64)
 
@@ -150,78 +122,28 @@ gram = matrix(NA, nrow=n, ncol=n)
 start = proc.time()
 for(i in 1:n){
 	for(j in i:n){
-		gram[i,j] = gram[j,i] = stringKernel(train$sequence[i], train$sequence[j])
+		gram[i,j] = gram[j,i] = 
+			stringKernel(train$sequence[i], train$sequence[j])
 	}
 	print(i)
 }
 
-save(gram, file="gram-new.rda")
-
-load("gram.rda")
-gram[1:10, 1:10]
-plot(density(gram))
 
 # b
 rbf = function(x1, x2, sigma = 5){
-	# dist = (allSubstringCounts(x1) - allSubstringCounts(x2))^2
 	dist = stringKernel(x1, x2)
 	k = exp(-dist/(2*sigma^2))
 	return(k)
 }
 
-rbfFromStringCount = function(dist, sigma = 5){
-	# dist = (allSubstringCounts(x1) - allSubstringCounts(x2))^2
-	k = exp(-dist/(2*sigma^2))
-	return(k)
-}
-
-# train$sequence[1]
-# train$sequence[2]
-# substringCount("TTT", train$sequence[1])
-# substringCount("TTT", train$sequence[2])
-
-# allSubstringCounts(train$sequence[1])
-# allSubstringCounts(train$sequence[2])
-
-# rbf(train$sequence[1], train$sequence[2])
-
-dim(train)
-n = nrow(train)
-head(train)
-# n = 10 
-K.train = matrix(NA, nrow=n, ncol=n)
-for(i in 1:n){
-	for(j in i:n){
-		dist = gram[i,j]
-		K.train[i,j] = K.train[j,i] = rbfFromStringCount(dist)
-	}
-	print(i)
-}
-K.train[1:10, 1:10]
-save(K.train, file="K-train.rda")
-
-n = nrow(test)
-K.test = matrix(NA, nrow=n, ncol=n)
-for(i in 1:n){
-	for(j in i:n){
-		K.test[i,j] = K.test[j,i] = rbf(test$sequence[i], test$sequence[j])
-	}
-	print(i)
-}
-K.test[1:10, 1:10]
-save(K.test, file="K-test.rda")
-
-K = K.train 
-head(K)
-K.star.star = K.test
-
 complete.data = rbind(train, test)
 head(complete.data)
 n = nrow(complete.data)
-K.star = matrix(NA, nrow=n, ncol=n)
+rbfMatrix = matrix(NA, nrow=n, ncol=n)
 for(i in 1:n){
 	for(j in i:n){
-		K.star[i,j] = K.star[j,i] = rbf(complete.data$sequence[i], complete.data$sequence[j])
+		rbfMatrix[i,j] = rbfMatrix[j,i] = 
+			rbf(complete.data$sequence[i], complete.data$sequence[j])
 	}
 	print(i)
 }
@@ -229,43 +151,24 @@ save(K.star, file="K-star.rda")
 
 sigma = 5 
 
-# problem inverting K 
-alpha = solve(K) %*% train$intensity
-#####################
-
 sigmaI = sigma^2 * diag(nrow(K))
-dim(sigmaI)
-dim(K)
-K.plus.sigmaI = K + sigmaI
-# dim(K.plus.sigmaI)
-# mu.star = K.star %*% solve(K) 
-# sigma.star = K.star.star - t(K.star) %*% solve(K) %*% K.star
-# intensity.est = mu.star * test$intensity
-
-
-
-##################
 FULL = K.star
 k.x.x = FULL[1:1000, 1:1000]
 k.x.x.noisy = k.x.x + sigmaI
-k.xstar.x = FULL[1001:1100, 1:1000]
-dim(k.xstar.x)
-f.star = k.xstar.x %*% t(k.x.x.noisy) %*% train$intensity
-f.star[1:10, 1:10]
-dim(f.star)
-f.star
 
-summary(train$intensity)
-k.xstar.x[1:10, 1:10]
-
-
-#####
 k.star = FULL[1:1000, 1001:1100]
 mu.star = t(k.star) %*% solve(k.x.x) %*% train$intensity
 dim(mu.star)
 mu.star[1:10,1]
 
 ests = mu.star
+regline = lm(ests ~ test$intensity)
 
+RMSE(ests, test$intensity)
 
-plot(test$intensity, ests)
+pdf("scatterplot.pdf")
+plot(test$intensity, ests,
+	xlab="Observed Intensity",
+	ylab="Predicted Intensity")
+abline(regline)
+dev.off()
