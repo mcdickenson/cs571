@@ -21,19 +21,18 @@ K = 2
 
 # initialize
 pis = mus = matrix(NA, nrow=M, ncol=K)
-pis[1, ] = rep(1/K, K)
 mus[1, ] = runif(K, MIN, MAX)
-alpha = rep(1, K)
-Z <- matrix(NA, nrow=nrow(X), ncol=K)
-Z[1,] <- alpha/K
-S_0 = rep(1, K)
-v_0 = rep(1, K)
-v = rep(0, K)
-S = rep(0, K)
-Sigma.inv = rgamma(K, rate=S_0, shape=v_0)
-x.bar = rep(0, K)
-N = rep(0, K)
+Z = matrix(NA, nrow=nrow(X), ncol=K)
+Z[1,] = pis[1, ] = rep(1/K, K)
+N = x.bar = rep(0, K)
 z = rep(0, nrow(X))
+alpha = rep(1, K)
+S_0 = rep(1, K) # set this
+v_0 = rep(1, K) # set this
+v = rep(0, K)   # set this
+S = rep(0, K)   # set this 
+Sigma.inv = rgamma(K, rate=S_0, shape=v_0)
+
 
 for(m in 2:M){
 	# step 1 - simulate proportion vector from Dirichlet
@@ -47,7 +46,7 @@ for(m in 2:M){
 		}
 		Z[i,] = Z[i,]/sum(Z[i,])
 
-		# step 3 - calculate new N_k's based on Z draws
+		# step 3 - calculate new z's based on Z draws
 		z[i] = sample(seq(1:K), size=1, prob=Z[i,])
 	}
 
@@ -76,4 +75,7 @@ sum.sq.err = function(x, mu){
 	sse = sum(sq.errs)
 	return(sse)
 }
+
+# todo: need a trace of the log-likelihood
+
 
