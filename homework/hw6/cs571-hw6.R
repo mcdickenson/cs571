@@ -9,12 +9,16 @@ library(MCMCpack) # for Dirichlet distribution
 # Problem 1
 X = read.table("HW6_mixture.txt", as.is=TRUE, header=FALSE)
 X = as.matrix(X)
+plot(density(X))
+min(X)
+max(X)
 dim(X)
 head(X)
 
 # set hyperparameters
 # M = 1e4
-M = 10
+M = 1500
+STEP = 0.1
 MIN = 0
 MAX = 5
 K = 2
@@ -34,18 +38,18 @@ log.lik = function(x, mu){
 
 # initialize
 pis = mus = matrix(NA, nrow=M, ncol=K)
-mus[1, ] = runif(K, MIN, MAX)
+mus[1, ] = sample(X, 2)
 Z = matrix(NA, nrow=nrow(X), ncol=K)
 Z[1,] = pis[1, ] = rep(1/K, K)
 N = x.bar = rep(0, K)
 z = rep(0, nrow(X))
 alpha = rep(1, K)
-S_0 = rep(5, K) # set this
+S_0 = rep(3, K) # set this
 v_0 = rep(5, K) # set this
 v = rep(0, K)   
 S = rep(0, K)   
 Sigma.inv = rgamma(K, rate=S_0, shape=v_0)
-
+Sigma.inv
 
 for(m in 2:M){
 	# step 1 - simulate proportion vector from Dirichlet
@@ -73,8 +77,8 @@ for(m in 2:M){
 		S[k] = S_0[k] + sum.sq.err(subset, mus[m-1,k]) # test this
 		Sigma.inv[k] = rgamma(1, shape=v[k], rate=S[k])
 
-		lower = max(c(MIN, mus[m-1, k]-1))
-		upper = min(c(MAX, mus[m-1, k]+1))
+		lower = max(c(MIN, mus[m-1, k]-STEP))
+		upper = min(c(MAX, mus[m-1, k]+STEP))
 		new.mu = runif(1, lower, upper)
 		ll.new.mu = log.lik(subset, new.mu)
 		ll.old.mu = log.lik(subset, mus[m-1,k])
@@ -85,20 +89,34 @@ for(m in 2:M){
 		} else {
 			mus[m, k] = mus[m-1, k]
 		}
-		# print(acceptance.prob)
-
 		
 	}
-	print(m)
+	if(m%%10==0){ print(m) }
 }
 
+mus[1:107, ]
+ll.new.mu
+ll.old.mu
+new.mu
+
+
+# problems:
+# 1. all getting labeled into one Z
+# 2. high acceptance probability 
+
+plot(1:M, mus[, 1], type='l')
+plot(1:M, mus[, 2], type='l')
+
+mus[1401:1500, 1]
+mus[1401:1500, 2]
 
 
 # How many iterations of Burn-In did you run? 
+#  500
 # How many iterations of sampling did you run? 
+#  10,000
 # How did you initialize your parameters?
 # Show the log likelihood trace for three different runs of the sampler starting at three different points on the data you downloaded.
 # Plot a histogram of the posterior samples for each mean parameter for a single run (after burn-in)
 
-x = c(-3, -2, -1, 1,2,3)
 
