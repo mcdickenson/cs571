@@ -19,6 +19,19 @@ MIN = 0
 MAX = 5
 K = 2
 
+# helper functions
+sum.sq.err = function(x, mu){
+	errs = (x-mu) 
+	sq.errs = errs %*% t(errs)
+	sse = sum(sq.errs)
+	return(sse)
+}
+
+log.lik = function(x, mu){
+	ll = sum(log(dnorm(x, mu,1)))
+	return(ll)
+}
+
 # initialize
 pis = mus = matrix(NA, nrow=M, ncol=K)
 mus[1, ] = runif(K, MIN, MAX)
@@ -27,10 +40,10 @@ Z[1,] = pis[1, ] = rep(1/K, K)
 N = x.bar = rep(0, K)
 z = rep(0, nrow(X))
 alpha = rep(1, K)
-S_0 = rep(1, K) # set this
-v_0 = rep(1, K) # set this
-v = rep(0, K)   # set this
-S = rep(0, K)   # set this 
+S_0 = rep(5, K) # set this
+v_0 = rep(5, K) # set this
+v = rep(0, K)   
+S = rep(0, K)   
 Sigma.inv = rgamma(K, rate=S_0, shape=v_0)
 
 
@@ -42,7 +55,7 @@ for(m in 2:M){
 	# step 2 - sample latent indicators
 	for(i in 1:nrow(Z)){
 		for(j in 1:ncol(Z)){
-			Z[i, j] = pis[m, j] * dnorm(X[i], mus[m-1, j], Sigma.inv[j])
+			Z[i, j] = pis[m, j] * dnorm(X[i], mus[m-1, j], 1/Sigma.inv[j])
 		}
 		Z[i,] = Z[i,]/sum(Z[i,])
 
@@ -62,20 +75,30 @@ for(m in 2:M){
 
 		lower = max(c(MIN, mus[m-1, k]-1))
 		upper = min(c(MAX, mus[m-1, k]+1))
+		new.mu = runif(1, lower, upper)
+		ll.new.mu = log.lik(subset, new.mu)
+		ll.old.mu = log.lik(subset, mus[m-1,k])
+		acceptance.prob = ll.new.mu / ll.old.mu 
+		acceptance.prob = min(1, acceptance.prob)
+		if(runif(1,0,1)<acceptance.prob){
+			mus[m, k] = new.mu 
+		} else {
+			mus[m, k] = mus[m-1, k]
+		}
+		# print(acceptance.prob)
 
-		mus[m, k] = runif(1, lower, upper)
+		
 	}
 	print(m)
 }
 
 
-sum.sq.err = function(x, mu){
-	errs = (x-mu) 
-	sq.errs = errs %*% t(errs)
-	sse = sum(sq.errs)
-	return(sse)
-}
 
-# todo: need a trace of the log-likelihood
+# How many iterations of Burn-In did you run? 
+# How many iterations of sampling did you run? 
+# How did you initialize your parameters?
+# Show the log likelihood trace for three different runs of the sampler starting at three different points on the data you downloaded.
+# Plot a histogram of the posterior samples for each mean parameter for a single run (after burn-in)
 
+x = c(-3, -2, -1, 1,2,3)
 
