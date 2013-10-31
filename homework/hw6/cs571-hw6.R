@@ -17,7 +17,8 @@ head(X)
 
 # set hyperparameters
 # M = 1e4
-M = 1500
+BURN = 500
+M = 3500
 STEP = 0.1
 MIN = 0
 MAX = 5
@@ -39,6 +40,7 @@ log.lik = function(x, mu){
 # initialize
 pis = mus = matrix(NA, nrow=M, ncol=K)
 mus[1, ] = sample(X, 2)
+mus[1,]
 Z = matrix(NA, nrow=nrow(X), ncol=K)
 Z[1,] = pis[1, ] = rep(1/K, K)
 N = x.bar = rep(0, K)
@@ -48,8 +50,7 @@ S_0 = rep(3, K) # set this
 v_0 = rep(5, K) # set this
 v = rep(0, K)   
 S = rep(0, K)   
-Sigma.inv = rgamma(K, rate=S_0, shape=v_0)
-Sigma.inv
+Sigma.inv = rgamma(K, shape=v_0, rate=S_0)
 
 for(m in 2:M){
 	# step 1 - simulate proportion vector from Dirichlet
@@ -83,7 +84,7 @@ for(m in 2:M){
 		ll.new.mu = log.lik(subset, new.mu)
 		ll.old.mu = log.lik(subset, mus[m-1,k])
 		acceptance.prob = ll.new.mu / ll.old.mu 
-		acceptance.prob = min(1, acceptance.prob)
+		acceptance.prob = min(1, acceptance.prob, na.rm=TRUE)
 		if(runif(1,0,1)<acceptance.prob){
 			mus[m, k] = new.mu 
 		} else {
@@ -94,11 +95,6 @@ for(m in 2:M){
 	if(m%%10==0){ print(m) }
 }
 
-mus[1:107, ]
-ll.new.mu
-ll.old.mu
-new.mu
-
 
 # problems:
 # 1. all getting labeled into one Z
@@ -107,9 +103,13 @@ new.mu
 plot(1:M, mus[, 1], type='l')
 plot(1:M, mus[, 2], type='l')
 
-mus[1401:1500, 1]
-mus[1401:1500, 2]
+mean(mus[(BURN+1):M, 1])
+mean(mus[(BURN+1):M, 2])
 
+length(which(z==1))
+length(which(z==2))
+
+mus[1700:1720,]
 
 # How many iterations of Burn-In did you run? 
 #  500
@@ -119,4 +119,16 @@ mus[1401:1500, 2]
 # Show the log likelihood trace for three different runs of the sampler starting at three different points on the data you downloaded.
 # Plot a histogram of the posterior samples for each mean parameter for a single run (after burn-in)
 
+# save.image("success-1.RData")
+# save.image("success-2.RData")
+save.image("success-3.RData")
 
+# rm(list=ls())
+# load("success-1.RData")
+# ls()
+# BURN
+# M
+# S_0
+# v_0
+
+# M
