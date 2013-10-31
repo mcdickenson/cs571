@@ -16,9 +16,8 @@ dim(X)
 head(X)
 
 # set hyperparameters
-# M = 1e4
 BURN = 500
-M = 3500
+M = 3000+BURN
 STEP = 0.1
 MIN = 0
 MAX = 5
@@ -46,8 +45,8 @@ Z[1,] = pis[1, ] = rep(1/K, K)
 N = x.bar = rep(0, K)
 z = rep(0, nrow(X))
 alpha = rep(1, K)
-S_0 = rep(3, K) # set this
-v_0 = rep(5, K) # set this
+S_0 = rep(3, K) 
+v_0 = rep(5, K) 
 v = rep(0, K)   
 S = rep(0, K)   
 Sigma.inv = rgamma(K, shape=v_0, rate=S_0)
@@ -114,7 +113,7 @@ mus[1700:1720,]
 # How many iterations of Burn-In did you run? 
 #  500
 # How many iterations of sampling did you run? 
-#  10,000
+#  3,000
 # How did you initialize your parameters?
 # Show the log likelihood trace for three different runs of the sampler starting at three different points on the data you downloaded.
 # Plot a histogram of the posterior samples for each mean parameter for a single run (after burn-in)
@@ -123,12 +122,3 @@ mus[1700:1720,]
 # save.image("success-2.RData")
 save.image("success-3.RData")
 
-# rm(list=ls())
-# load("success-1.RData")
-# ls()
-# BURN
-# M
-# S_0
-# v_0
-
-# M

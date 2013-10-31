@@ -1,0 +1,94 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{lastpage}
+\usepackage{listings}
+\lstset{
+	numbers=left,
+	numbersep=5pt,
+	stepnumber=1,
+	tabsize=2,
+	showstringspaces=false
+}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{mathrsfs}
+\usepackage{cancel}
+\usepackage{xcolor}
+\usepackage[margin=3cm]{geometry}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+
+% Edit these as appropriate
+\newcommand\course{STA561/CS571}
+\newcommand\semester{Fall 2013}     % <-- current semester
+\newcommand\hwnum{6}                  % <-- homework number
+\newcommand\yourname{Matt Dickenson} % <-- your name
+\newcommand\login{mcd31}           % <-- your NetID
+\newcommand\hwdate{Due: 28 October, 2013}           % <-- HW due date
+
+\newenvironment{answer}[1]{
+  \subsubsection*{Problem #1}
+}
+
+
+\pagestyle{fancyplain}
+\headheight 35pt
+\lhead{\yourname\ \texttt{\login}\\\course\ --- \semester}
+\chead{\textbf{\Large Homework \hwnum}}
+\rhead{\hwdate}
+\headsep 10pt
+
+\begin{document}
+
+\noindent \emph{Homework Notes:} I did not work with anyone else on this homework or refer to resources other than the course notes, textbook, and course Piazza page.
+
+\begin{answer}{1}
+
+\paragraph{A} 
+
+To update the sample of $\mu_k$ at iteration $m+1$, we can sample $\mu_{k,m+1} \sim Unif(l,u)$ where $l=min(0, \mu_k-\epsilon)$ and $u=max(5, \mu_k+\epsilon)$. The prevents us from sampling outside the range defined by the prior. In my samples, I set the `step' $\epsilon=0.1$. 
+
+The MH acceptance probability is the ratio of the likelihood of the new and old samples: $p(keep)={\mathcal{L}(X|\mu_{k,m+1} \over \mathcal{L}(X|\mu_{k,m}}$. 
+
+
+\paragraph{B}  
+% Why do we choose to perform MH here instead of a Gibbs sample step?
+
+
+\paragraph{C} 
+
+I ran 500 rounds of burn-in and 3,000 iterations of sampling. Parameters were initialized as:
+
+\lstinputlisting[language=R, caption=R Code for 1A, firstline=18, lastline=52, firstnumber=1]{cs571-hw6.r}
+
+The following code runs the burn-in and sampling iterations: 
+\lstinputlisting[language=R, caption=R Code for 1A, firstline=54, lastline=95, firstnumber=37]{cs571-hw6.r}
+
+\paragraph{D}
+
+% Show the log likelihood trace for three different runs of the sampler starting at three different points on the data you downloaded.
+
+\paragraph{E}
+
+% Plot a histogram of the posterior samples for each mean parameter for a single run (after burn-in). Write one sentence about what this means. Did label switching occur?
+
+\begin{figure}[h!]
+\begin{center}
+% \includegraphics[scale=0.5]{1a.pdf}
+% \caption{Distribution of Normalized Eigenvalues for Three Values of $\psi$}
+% \label{eigens}
+\end{center}
+\end{figure}
+
+\paragraph{F}
+
+% composite of all three -- weight according to likelihood of data 
+
+\end{answer}
+
+
+
+\end{document}
