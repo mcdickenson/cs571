@@ -122,25 +122,33 @@ length(which(z==2))
 
 # save.image("success-1.RData") # ok
 # save.image("success-2.RData") # beautiful, except likelihood trace
-# save.image("success-3.RData") # pretty good
+# save.image("success-3.RData") # pretty good--best mu's
 
 
 
 # D: Show the log likelihood trace for three different runs of the sampler starting at three different points on the data you downloaded.
 
+for(i in 1:3){
+	inputname = paste("success-", i, ".RData", sep="")
+	pdfname = paste("likelihood", i, ".pdf", sep="")
+	load(inputname)
+	pdf(pdfname)
+		plot(1:M, likelihood.trace, type='l')
+	dev.off()
+}
+
+
 # posterior samples post burn-in
 
 # load("success-1.RData")
 # load("success-2.RData")
-# load("success-3.RData")
+load("success-3.RData")
 
-# pdf("mu1.pdf")
-# histogram(mus[(BURN+1):M, 1], xlab="mu1")
-# # histogram(mus[(BURN+1):M, 2], xlab="mu2")
-# dev.off()
+pdf("mu1.pdf")
+histogram(mus[(BURN+1):M, 1], xlab="mu1")
+dev.off()
 
-# pdf("mu2.pdf")
-# # histogram(mus[(BURN+1):M, 1], xlab="mu1")
-# histogram(mus[(BURN+1):M, 2], xlab="mu2")
-# dev.off()
+pdf("mu2.pdf")
+histogram(mus[(BURN+1):M, 2], xlab="mu2")
+dev.off()
 

@@ -51,7 +51,7 @@
 
 To update the sample of $\mu_k$ at iteration $m+1$, we can sample $\mu_{k,m+1} \sim Unif(l,u)$ where $l=min(0, \mu_k-\epsilon)$ and $u=max(5, \mu_k+\epsilon)$. The prevents us from sampling outside the range defined by the prior. In my samples, I set the `step' $\epsilon=0.1$. 
 
-The MH acceptance probability is the ratio of the likelihood of the new and old samples: $p(keep)={\mathcal{L}(X|\mu_{k,m+1}) \over \mathcal{L}(X|\mu_{k,m})}$. 
+The MH acceptance probability is the ratio of the likelihood of the new and old samples: $p(keep)={\mathcal{L}(X|\mu_{m+1}) \over \mathcal{L}(X|\mu_{m})}$. 
 
 
 \paragraph{B}  
@@ -64,29 +64,41 @@ We chose to perform Metropolis-Hastings rather than a Gibbs sample step because 
 
 I ran 500 rounds of burn-in and 3,000 iterations of sampling. Parameters were initialized as:
 
-\lstinputlisting[language=R, caption=R Code for Initial Parameters, firstline=18, lastline=52, firstnumber=1]{cs571-hw6.r}
+\lstinputlisting[language=R, caption=R Code for Initial Parameters, firstline=37, lastline=59, firstnumber=1]{cs571-hw6.r}
 
 The following code runs the burn-in and sampling iterations: 
-\lstinputlisting[language=R, caption=R Code for MH, firstline=54, lastline=95, firstnumber=37]{cs571-hw6.r}
+\lstinputlisting[language=R, caption=R Code for MH, firstline=63, lastline=109, firstnumber=25]{cs571-hw6.r}
 
 \paragraph{D}
 
 % Show the log likelihood trace for three different runs of the sampler starting at three different points on the data you downloaded.
 
+Figure \ref{traceplots} shows the log likelihood trace for three different runs of the sampler using three different (randomly chosen) starting points.
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.4]{likelihood1.pdf}
+\includegraphics[scale=0.4]{likelihood2.pdf}
+\includegraphics[scale=0.4]{likelihood3.pdf}
+\caption{Traceplot of Likelihood for Three Starting Points}
+\label{traceplots}
+\end{center}
+\end{figure}
+
 \paragraph{E}
 
 % Plot a histogram of the posterior samples for each mean parameter for a single run (after burn-in). Write one sentence about what this means. Did label switching occur?
 
+Figure \ref{post-samps} presents histograms of the posterior samples for each mean parameter from a single run (after burn-in).  It appears that $K=2$ is a reasonable fit for the data, with $\mu \approx (1.5, 3)$. Label switching did not occur in these samples. 
+
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[scale=0.5]{mu1.pdf}
-\includegraphics[scale=0.5]{mu2.pdf}
+\includegraphics[scale=0.4]{mu1.pdf}
+\includegraphics[scale=0.4]{mu2.pdf}
 \caption{Histogram of Posterior Samples}
 \label{post-samps}
 \end{center}
 \end{figure}
-
-It appears that $K=2$ is a reasonable fit for the data, with $mu \approx (1.5, 3)$. Label switching did occur in my samples. 
 
 \paragraph{F}
 
