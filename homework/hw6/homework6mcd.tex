@@ -57,6 +57,8 @@ The MH acceptance probability is the ratio of the likelihood of the new and old 
 \paragraph{B}  
 % Why do we choose to perform MH here instead of a Gibbs sample step?
 
+We chose to perform Metropolis-Hastings rather than a Gibbs sample step because we need to sample $\mu_k$ for all $k$ simultaneously.  Moreover, we cannot sample from the the conditional probability $p(\mu_k | x, z, \Sigma)$, which would be needed for the Gibbs step. 
+
 
 \paragraph{C} 
 
