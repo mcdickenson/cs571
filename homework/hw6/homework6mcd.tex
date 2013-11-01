@@ -27,7 +27,7 @@
 \newcommand\hwnum{6}                  % <-- homework number
 \newcommand\yourname{Matt Dickenson} % <-- your name
 \newcommand\login{mcd31}           % <-- your NetID
-\newcommand\hwdate{Due: 28 October, 2013}           % <-- HW due date
+\newcommand\hwdate{Due: 4 November, 2013}           % <-- HW due date
 
 \newenvironment{answer}[1]{
   \subsubsection*{Problem #1}
@@ -51,7 +51,7 @@
 
 To update the sample of $\mu_k$ at iteration $m+1$, we can sample $\mu_{k,m+1} \sim Unif(l,u)$ where $l=min(0, \mu_k-\epsilon)$ and $u=max(5, \mu_k+\epsilon)$. The prevents us from sampling outside the range defined by the prior. In my samples, I set the `step' $\epsilon=0.1$. 
 
-The MH acceptance probability is the ratio of the likelihood of the new and old samples: $p(keep)={\mathcal{L}(X|\mu_{m+1}) \over \mathcal{L}(X|\mu_{m})}$. 
+The MH acceptance probability is the ratio of the likelihood of the new and old samples: $p(keep)={\mathcal{L}(X|\mu_{m+1}) \over \mathcal{L}(X|\mu_{m})}$ (or 1, if the ratio is greater than 1). 
 
 
 \paragraph{B}  
@@ -102,9 +102,8 @@ Figure \ref{post-samps} presents histograms of the posterior samples for each me
 
 \paragraph{F}
 
-I would use a composite from all three samples, weighted by the likelihood of each. 
+I would use a composite from all three samples, weighted by the posterior probability of each. For the data given, my estimates of these values are $\mu_1=1.80$, $\mu_2=3.30$, $\sigma_1=0.770$, $\sigma_2=0.316$. 
 
-% composite of all three -- weight according to likelihood of data 
 
 \end{answer}
 

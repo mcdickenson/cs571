@@ -152,3 +152,35 @@ pdf("mu2.pdf")
 histogram(mus[(BURN+1):M, 2], xlab="mu2")
 dev.off()
 
+load("success-1.RData")
+mus1 = mus 
+like1 = likelihood.trace
+
+load("success-2.RData")
+mus2 = mus
+like2 = likelihood.trace
+
+
+load("success-3.RData")
+mus3 = mus
+like3 = likelihood.trace
+
+
+ls()
+
+sum.like = like1[M,] + like2[M,] + like3[M,]
+
+weight.like = c(like1[M,], like2[M,], like3[M,])/sum.like
+weight.like
+
+mean1 = mean(mus1[(BURN+1):M, 1])*weight.like[1] + mean(mus2[(BURN+1):M, 1])*weight.like[2] + mean(mus3[(BURN+1):M, 1])*weight.like[3]
+mean1
+
+mean2 = mean(mus1[(BURN+1):M, 2])*weight.like[1] + mean(mus2[(BURN+1):M, 2])*weight.like[2] + mean(mus3[(BURN+1):M, 2])*weight.like[3]
+mean2
+
+var1 = var(mus1[(BURN+1):M, 1])*weight.like[1] + var(mus2[(BURN+1):M, 1])*weight.like[2] + var(mus3[(BURN+1):M, 1])*weight.like[3]
+var1
+
+var2 = var(mus1[(BURN+1):M, 2])*weight.like[1] + var(mus2[(BURN+1):M, 2])*weight.like[2] + var(mus3[(BURN+1):M, 2])*weight.like[3]
+var2
