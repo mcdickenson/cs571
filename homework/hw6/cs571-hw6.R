@@ -15,14 +15,6 @@ max(X)
 dim(X)
 head(X)
 
-# set hyperparameters
-BURN = 500
-M = 3000+BURN
-STEP = 0.1
-MIN = 0
-MAX = 5
-K = 2
-
 # helper functions
 sum.sq.err = function(x, mu){
 	errs = (x-mu) 
@@ -31,10 +23,24 @@ sum.sq.err = function(x, mu){
 	return(sse)
 }
 
-log.lik = function(x, mu){
-	ll = sum(log(dnorm(x, mu,1)))
+log.lik = function(x, z, mu){
+	ll = 0 
+	for(i in 1:nrow(X)){
+		# print(x)
+		mu.tmp = mu[z[i]]
+		tmp = log(dnorm(x[i], mu.tmp, 1))
+		ll = ll + tmp 
+	}
 	return(ll)
 }
+
+# settings 
+BURN = 500
+M = 3000+BURN
+STEP = 0.1
+MIN = 0
+MAX = 5
+K = 2
 
 # initialize
 pis = mus = matrix(NA, nrow=M, ncol=K)
@@ -50,6 +56,9 @@ v_0 = rep(5, K)
 v = rep(0, K)   
 S = rep(0, K)   
 Sigma.inv = rgamma(K, shape=v_0, rate=S_0)
+new.mu = rep(NA, K)
+likelihood.trace =  matrix(NA, nrow=M, ncol=1)
+
 
 for(m in 2:M){
 	# step 1 - simulate proportion vector from Dirichlet
@@ -79,28 +88,30 @@ for(m in 2:M){
 
 		lower = max(c(MIN, mus[m-1, k]-STEP))
 		upper = min(c(MAX, mus[m-1, k]+STEP))
-		new.mu = runif(1, lower, upper)
-		ll.new.mu = log.lik(subset, new.mu)
-		ll.old.mu = log.lik(subset, mus[m-1,k])
-		acceptance.prob = ll.new.mu / ll.old.mu 
-		acceptance.prob = min(1, acceptance.prob, na.rm=TRUE)
-		if(runif(1,0,1)<acceptance.prob){
-			mus[m, k] = new.mu 
-		} else {
-			mus[m, k] = mus[m-1, k]
-		}
-		
+		new.mu[k] = runif(1, lower, upper)
+
 	}
+
+	ll.new.mu = log.lik(X, z, new.mu)
+	ll.old.mu = log.lik(X, z, mus[m-1,])
+
+	acceptance.prob = ll.new.mu / ll.old.mu 
+	acceptance.prob = min(1, acceptance.prob, na.rm=TRUE)
+	if(runif(1,0,1)<acceptance.prob){
+		mus[m, ] = new.mu 
+		likelihood.trace[m, 1] = ll.new.mu
+	} else {
+		mus[m, ] = mus[m-1, ]
+		likelihood.trace[m, 1] = ll.old.mu
+	}
+		
 	if(m%%10==0){ print(m) }
 }
 
 
-# problems:
-# 1. all getting labeled into one Z
-# 2. high acceptance probability 
-
 plot(1:M, mus[, 1], type='l')
 plot(1:M, mus[, 2], type='l')
+plot(1:M, likelihood.trace, type='l')
 
 mean(mus[(BURN+1):M, 1])
 mean(mus[(BURN+1):M, 2])
@@ -108,19 +119,11 @@ mean(mus[(BURN+1):M, 2])
 length(which(z==1))
 length(which(z==2))
 
-mus[1700:1720,]
 
-# How many iterations of Burn-In did you run? 
-#  500
-# How many iterations of sampling did you run? 
-#  3,000
-# How did you initialize your parameters?
-# Show the log likelihood trace for three different runs of the sampler starting at three different points on the data you downloaded.
-# Plot a histogram of the posterior samples for each mean parameter for a single run (after burn-in)
 
-# save.image("success-1.RData")
-# save.image("success-2.RData")
-# save.image("success-3.RData")
+# save.image("success-1.RData") # ok
+# save.image("success-2.RData") # beautiful, except likelihood trace
+save.image("success-3.RData") # pretty good
 
 # D: Show the log likelihood trace for three different runs of the sampler starting at three different points on the data you downloaded.
 
@@ -130,13 +133,13 @@ mus[1700:1720,]
 # load("success-2.RData")
 # load("success-3.RData")
 
-pdf("mu1.pdf")
-histogram(mus[(BURN+1):M, 1], xlab="mu1")
-# histogram(mus[(BURN+1):M, 2], xlab="mu2")
-dev.off()
-
-pdf("mu2.pdf")
+# pdf("mu1.pdf")
 # histogram(mus[(BURN+1):M, 1], xlab="mu1")
-histogram(mus[(BURN+1):M, 2], xlab="mu2")
-dev.off()
+# # histogram(mus[(BURN+1):M, 2], xlab="mu2")
+# dev.off()
+
+# pdf("mu2.pdf")
+# # histogram(mus[(BURN+1):M, 1], xlab="mu1")
+# histogram(mus[(BURN+1):M, 2], xlab="mu2")
+# dev.off()
 
