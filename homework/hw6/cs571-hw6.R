@@ -120,10 +120,11 @@ length(which(z==1))
 length(which(z==2))
 
 
-
 # save.image("success-1.RData") # ok
 # save.image("success-2.RData") # beautiful, except likelihood trace
-save.image("success-3.RData") # pretty good
+# save.image("success-3.RData") # pretty good
+
+
 
 # D: Show the log likelihood trace for three different runs of the sampler starting at three different points on the data you downloaded.
 
