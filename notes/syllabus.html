@@ -1,0 +1,343 @@
+
+<!-- saved from url=(0062)http://www.genome.duke.edu/labs/engelhardt/courses/sta561.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>STA561, Probabilistic Machine Learning, Fall 2013</title>
+    <style type="text/css">
+    </style>
+<style type="text/css"></style></head>
+
+<body bgcolor="#FFFFFF" text="#000000" link="#6633FF" vlink="#007f0f" cz-shortcut-listen="true">
+
+<h2 align="center">STA561: Probabilistic Machine Learning: Fall 2013</h2>
+<table align="center">
+<tbody><tr><td>Prof:</td><td><a href="http://www.genome.duke.edu/labs/engelhardt/">Barbara Engelhardt</a></td>
+                 <td><a href="mailto:barbara.engelhardt@duke.edu">
+                 <i>barbara.engelhardt</i></a><i>@duke.edu</i></td><td></td>
+                 <td>OH: Fri 2-3</td><td>Gross 318</td></tr>                 
+<tr><td>TAs:</td><td>Kevin Luo </td><td>kevinluo@cs.duke.edu</td><td>OH:</td><td>Friday 10-11</td><td>North 225</td></tr> 
+<tr><td></td><td>Jordan Hashimi  </td><td>jordan.hashemi@duke.edu</td><td>OH:</td><td>Thurs 3-4</td><td>Gross Hall, 318</td></tr> 
+<tr><td></td><td>Nick Jarrett  </td><td>nicholas.jarrett@duke.edu</td><td>OH:</td><td>Wed 7-9pm</td><td>SECC (Old Chemistry 211A)</td></tr> 
+<tr><td></td><td>Wenzhao Lian  </td><td>wl89@duke.edu</td><td>OH:</td><td>Thurs 1-2</td><td>Gross Hall, 351</td></tr> 
+<tr><td>Class:</td><td>M/W 10:05-11:20am </td><td></td><td></td><td></td><td> Westbrook 0012, Divinity School </td></tr> 
+</tbody></table>
+
+
+
+<hr>
+<h3 align="center">Description</h3>
+
+Introduction to machine learning techniques. Graphical models, latent variable models, dimensionality reduction techniques, deep learning, regression, kernel methods, state space models, HMMs,  MCMC, variational methods. Emphasis is on applying these techniques to real data in a variety of application areas.
+<p>
+
+
+</p><hr>
+<b>News and information</b>
+
+<ul>
+<li> Homework 4 is not due until 10/7. However, we are writing up a part B of the homework and we have posted it on Sakai; both parts are now due 10/7/2013 before class.
+</li><li> The take-home midterm will go out on 10/7.
+</li><li> Scribes for the next part of the class: please sign up again on Sakai. We are putting three people on each set of notes.
+</li><li> Survey sent around about which poster session you will go to.
+</li><li> The project proposal (single page PDF) is due on Sakai on Wednesday October 2nd before class. We have outlined exactly what should go into this <a href="http://www.genome.duke.edu/labs/engelhardt/courses/proposal.tex">proposal</a>. Please use this template and talk to us if you have questions or ideas!
+</li></ul>
+
+<b> CS Students: If you are taking this course to fulfill your CS AI/ML Quals requirement, then you will be required, without exception, to take a written final exam, and this final will be worth 35% of your grade (the other proportions will be shuffled around to accommodate this change). You will not be exempt from the other course requirements.
+</b><p><b>
+All students: we will have two poster sessions: December 4th (Wednesday) from 2-5pm and December 14th (Saturday) from 2-5pm (both in Gross Hall 3rd floor East Meeting Space). Come to one and only one of these sessions. I highly recommend coming to the first. If you are in the above category of CS students taking this class for credit, you will be able to take the final exam during either time period. We will send around a survey so you can sign up for one of the two dates. If you are auditing the course, we'd love to have you at the first poster session (bring your research groups too!).
+</b></p><p>
+
+
+</p><hr>
+
+Statistics at the level of STA611 (Introduction to Statistical
+Methods) is encouraged, along with knowledge of linear algebra and
+multivariate calculus. <p>
+
+
+Course grade is based on homeworks (45%), take home midterm (15%), a
+final project (30%), and class participation and scribe notes (10%).
+Homeworks are due to me exactly one week after they are handed out at
+the beginning of class. Solutions should be uploaded to SAKAI before
+class on the due date; they should be each a single PDF document, and
+additional files will not be considered. I recommend using LaTeX to
+write up your homeworks (here is a <a href="http://www.genome.duke.edu/labs/engelhardt/courses/homework_template.tex">homework template</a> for you to use); if
+you have never used LaTeX before, you should consider this course an
+excellent opportunity to learn how to use it. Late homeworks will not
+be accepted, although you are allowed one late homework (maximum one
+week) for the course. Students may (and should) collaboratively
+discuss the homework assignments; however, I expect each student to
+program and write up their own homework solutions. Please write the
+names of the students you discussed the homework assignment with at
+the top of your solutions, and cite any material used in the
+preparation of the homeworks.</p><p>
+
+There is a <a href="http://piazza.com/duke/fall2013/sta561">Piazza</a> course
+discussion page. Please direct questions about homeworks and other
+matters to that page. Otherwise, you can email the instructors (TAs
+and professor) at sta561-ta@duke.edu. Note that we are more likely to
+respond to the Piazza questions than to the email, and your classmates
+may respond too, so that is a good place to start.
+
+</p><p>
+
+Each lecture will have up to four scribes, who will type up notes in
+the <a href="http://www.genome.duke.edu/labs/engelhardt/courses/header.tex">LaTeX template</a>. Within a week of class,
+the scribes should send the TAs the LaTeX file, at which point we will
+edit them and post them to the website. It is best to discuss
+beforehand with your fellow scribes what role you will take in the
+write-up: Careful note-taker, tex writer, figure maker, and copy
+editor, or whether you will split these roles among the four of
+you. If you have never used LaTeX before, there are <a href="http://www.maths.tcd.ie/~dwilkins/LaTeXPrimer/">online
+tutorials</a>, <a href="http://pages.uoregon.edu/koch/texshop/">Mac
+GUIs</a>, and even <a href="http://www.sharelatex.com/">online
+compilers</a> that might help you. Here is an example of well-done <a href="http://www.genome.duke.edu/labs/engelhardt/courses/scribe/lec_08_26_2013.tex">scribe notes</a> and <a href="http://www.genome.duke.edu/labs/engelhardt/courses/scribe/Uniform_Distribution_PDF_SVG.pdf">associated figure</a>.
+
+</p><p>
+
+The course project will include a project proposal due mid-semester, a
+four page writeup of the project at the end of the semester, and an
+all-campus poster session where you will present your work. This is
+the most important part of the course; we strongly encourage you to
+come and discuss project ideas with us early and often throughout the
+semester. We expect some of these projects to become publications. You
+are absolutely permitted to use your current rotation or research
+project as course projects.
+
+</p><p>
+
+A second set of references for R may be useful. First, you can
+download R from the <a href="http://cran.r-project.org/">CRAN
+website</a>. There are many resources, such as <a href="http://www.rstudio.com/">R Studio</a>, that can help with the
+programming interface, and <a href="http://www.r-tutor.com/">tutorials
+on R</a> are all over the place. If you are getting bored with the
+standard graphics package, I really like using <a href="http://ggplot2.org/">ggplot2</a> for beautiful graphics and
+figures. Finally, you can integrate R code and output with plain text
+using <a href="http://yihui.name/knitr/">KNITR</a>, but that might be
+going a bit too far if you are a beginner.
+
+</p><p>
+
+The course will follow Kevin Murphy's <cite><a href="http://www.cs.ubc.ca/~murphyk/MLbook/index.html">Machine Learning: a probabilistic perspective</a></cite> book. I may include optional readings or videos as appropriate.
+
+Some other texts and notes that may be useful include:
+</p><ol>
+<li>Michael Lavine, <a href="https://www.math.umass.edu/~lavine/Book/book.html">Introduction to Statistical Thought</a> (an introductory statistical textbook with plenty of R examples, and it's online too)
+</li><li>Chris Bishop, <a href="http://research.microsoft.com/en-us/um/people/cmbishop/PRML/index.htm">Pattern Recognition and Machine Learning</a>
+</li><li>Daphne Koller &amp; Nir Friedman, <a href="http://www.amazon.com/Probabilistic-Graphical-Models-Principles-Computation/dp/0262013193">Probabilistic Graphical Models</a>
+</li><li>Hastie, Tibshirani, Friedman, <a href="http://www-stat.stanford.edu/~tibs/ElemStatLearn/">Elements of Statistical Learning</a> (ESL) (PDF available online)
+</li><li>David J.C. MacKay <a href="http://www.inference.phy.cam.ac.uk/itprnn/book.html">Information Theory, Inference, and Learning Algorithms</a> (PDF available online)
+ </li></ol>
+<p>
+
+The <a href="http://www.genome.duke.edu/labs/engelhardt/courses/hw/final_project.tex"> final project TeX template</a> and <a href="http://www.genome.duke.edu/labs/engelhardt/courses/hw/final_project.sty">final project style file</a> should be used in preparation of your final project report. Please follow the instructions and let me know if you have questions. We will have a poster session where you present your research project in lieu of a final exam.
+</p><p>
+
+This syllabus is <i>tentative</i>, and will almost surely be modified. Reload your browser for the current version.
+</p><p>
+
+
+</p><hr>
+
+<a name="syl"></a>
+<h3 align="center"><a name="syl">Syllabus</a></h3>
+<p>
+
+</p><ol>
+<li> (August 26th) Introduction: concepts in probability and statistics <a href="http://www.genome.duke.edu/labs/engelhardt/courses/scribe/lec_08_26_2013.pdf">[Scribe notes]</a>
+<ul>
+<li> Required: (reading) MLPP Ch 1, 2</li>
+<li> Optional: (video) Christopher Bishop <a href="http://scpro.streamuk.com/uk/player/Default.aspx?wid=7739">Embracing Uncertainty: The New Machine Intelligence</a></li>
+<li> Optional: (video) Sam Roweis <a href="http://videolectures.net/mlss06tw_roweis_mlpgm/">Machine Learning, Probability and Graphical Models, Part 1</a></li>
+</ul>
+</li><li> (August 28th) Introduction: MLE, MAP, Bayesian reasoning <a href="http://www.genome.duke.edu/labs/engelhardt/courses/scribe/lec_08_28_2013.pdf">[Scribe notes]</a>
+<ul>
+<li> Required: (reading) MLPP Ch 3,5</li>
+<li> Optional: (video) Michael Jordan <a href="http://videolectures.net/mlss09uk_jordan_bfway/">Bayesian or Frequentist: Which Are You?</a></li>
+</ul>
+</li><li> (September 2nd) Introduction: exponential family, conjugacy, and sufficiency <a href="http://www.genome.duke.edu/labs/engelhardt/courses/scribe/lec_09_02_2013.pdf">[Scribe notes]</a>
+<ul>
+<li> Required: (reading) MLPP Ch 9</li>
+<li> Optional: (video) Alex Smola -- <a href="http://videolectures.net/mlss06au_smola_ef/">Exponential Families, Part I</a></li>
+</ul>
+</li><li> (September 4th) Simple discrete models: chains, trees, hierarchical models <a href="http://www.genome.duke.edu/labs/engelhardt/courses/scribe/lec_09_04_2013.pdf">[Scribe notes]</a>
+<ul>
+<li> Required: (reading) MLPP Ch 3, 10</li>
+<li> Optional: (paper) Michael I Jordan -- <a href="http://www.seas.harvard.edu/courses/cs281/papers/jordan-2004.pdf">Graphical Models.</a> Statistical Science 19(1):140-155, 2004.</li>
+<li> Optional: (video) Zoubin Ghahramani -- <a href="http://videolectures.net/mlss09uk_ghahramani_gm/">Graphical Models</a></li>
+<li> Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/bayesian_networks#lfocus=bayesian_networks">Bayesian Networks</a></li>
+</ul>
+</li><li> (September 9th) Gaussian models <a href="http://www.genome.duke.edu/labs/engelhardt/courses/scribe/lec_09_09_2013.pdf">[Scribe notes]</a>
+<ul>
+<li> Required: (reading) MLPP Ch 4</li>
+<li> Optional: (paper) Sam Roweis -- <a href="http://www.seas.harvard.edu/courses/cs281/papers/gaussian-identities.pdf">Gaussian Identities.</a></li>
+<li> Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/multivariate_gaussian_distribution#lfocus=multivariate_gaussian_distribution">Multivariate Gaussian Distribution</a></li>
+</ul>
+</li><li> (September 11th) Linear Regression <a href="http://www.genome.duke.edu/labs/engelhardt/courses/scribe/lec_09_11_2013.pdf">[Scribe notes]</a>
+<ul>
+<li> Required: (reading) MLPP Ch 7</li>
+<li> Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/linear_regression#lfocus=linear_regression">Linear Regression</a> (I particularly recommend the chapter of Hastie, Tibshirani, Friedman)</li>
+</ul>
+</li><li> (September 16th) Generalized linear models  <a href="http://www.genome.duke.edu/labs/engelhardt/courses/scribe/lec_09_18_2013.pdf">[Scribe notes]</a>
+<ul>
+<li> Required: (reading) MLPP Ch 8, 9</li>
+<li> Optional: (reading) Elements of Statistical Learning (ESL) Chapter 4</li>
+<li> Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/binary_linear_classifiers#lfocus=binary_linear_classifiers">Binary linear classifiers</a> </li>
+<li> Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/generalized_linear_models#lfocus=generalized_linear_models">Generalized linear models</a> </li>
+</ul>
+</li><li> (September 18th) Mixture models &amp; K-means &amp; Expectation Maximization <a href="http://www.genome.duke.edu/labs/engelhardt/courses/scribe/lec_09_18_2013.pdf">[Scribe notes]</a>
+<ul>
+<li> Required: (reading) MLPP Ch 11</li>
+<li> Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/k_means">K-means</a> </li>
+<li> Optional: (video) <a href="http://videolectures.net/bootcamp07_quinonero_emal/">EM algorithm and mixtures of Gaussians</a> </li>
+<li> Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/expectation_maximization#lfocus=expectation_maximization">Expectation Maximization</a> </li>
+</ul>
+</li><li> (September 23th) Hidden Markov models <a href="http://www.genome.duke.edu/labs/engelhardt/courses/scribe/lec_09_23_2013.pdf">[Scribe notes]</a>
+<ul>
+<li> Required: (reading) MLPP Ch 17</li>
+<li> Optional: (reading) <a href="http://people.sabanciuniv.edu/berrin/cs512/reading/rabiner-tutorial-on-hmm.pdf">A Tutorial on Hidden Markov Models and Selected Applications in Speech Recognition</a> (Rabiner) </li>
+<li> Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/hidden_markov_models">Hidden Markov Models</a> </li>
+</ul>
+</li><li> (September 25th) Hidden Markov models (continued) and State Space models
+<ul>
+<li> Required: (reading) MLPP Ch 18.1-18.4</li>
+<li> Optional: (reading) <a href="http://www.seas.harvard.edu/courses/cs281/papers/unscented.pdf">The unscented Kalman filter for nonlinear estimation</a> (Wan &amp; van der Merwe) </li>
+<li> Optional: Metacademy -- <a href="http://metacademy.org/graphs/concepts/linear_dynamical_systems#lfocus=linear_dynamical_systems">Dynamical linear systems</a> </li>
+</ul>
+</li><li> (September 30th) Exact inference
+<ul>
+<li> Required: (reading) MLPP Ch 20</li>
+<li> Optional: (reading) MacKay: Chapter 16 (Message passing), Chapter 21 (Exact Inference by Complete Enumeration), Chapter 24 (Exact Marginalization), Chapter 26 (Exact Marginalization in Graphs)</li>
+<li> Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/variable_elimination#lfocus=variable_elimination">Variable elimination</a> </li>
+</ul>
+</li><li> (October 2nd) Factor analysis, PCA
+<ul>
+<li> Required: (reading) MLPP Ch 12</li>
+<li> Optional: (reading) Sam Roweis and Zoubin Ghahramani. <a href="http://www.seas.harvard.edu/courses/cs281/papers/lds.pdf">A Unifying Review of Linear Gaussian Models</a>. Neural Computation 11(2), 1999.
+</li><li> Optional: (reading) MacKay: Chapter 34 (Independent Component Analysis and Latent Variable Modelling)</li>
+<li> Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/factor_analysis">Factor analysis</a> </li>
+<li> Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/principal_component_analysis">Principal components analysis</a> </li>
+</ul>
+</li><li> (October 7th) Sparse linear models
+<ul>
+<li> Required: (reading) MLPP Ch 13</li>
+<li> Optional: (reading) Elements of Statistical Learning (ESL) Chapter 3: Linear models for regression</li>
+<li> Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/lasso">LASSO</a> </li>
+</ul>
+</li><li> (October 9th) Kernels and kernel methods
+<ul>
+<li> Required: (reading) MLPP Ch 14</li>
+<li> Optional: (reading) SLT Chapter 12: Support vector machines and flexible discriminants
+</li><li> Optional: (video) <a href="http://videolectures.net/mlss05us_niyogi_ikm/">Introduction to Kernel Methods</a> Partha Niyogi
+</li><li> Optional: (video) <a href="http://videolectures.net/mlss08au_smola_ksvm/">Kernel Methods and Support Vector Machines</a> Alex Smola
+</li><li> Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/kernel_trick">The kernel trick</a> </li>
+<li> Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/kernel_svm"></a>Kernel Support Vector Machine</li>
+</ul>
+</li><li> (October 16th) Gaussian processes
+<ul>
+<li> Required: (reading) MLPP Ch 15</li>
+<li> Optional: (reading) GPML, Chapter 3: Gaussian process regression
+</li><li> Optional: (reading) GPML, Chapter 4: Gaussian process classification
+</li><li> Optional: (video) <a href="http://videolectures.net/mlss09uk_rasmussen_gp/">Gaussian processes</a> Karl Rasmussen
+</li><li> Optional: (video) <a href="http://videolectures.net/gpip06_mackay_gpb/">Gaussian Process Basics</a> David MacKay
+</li><li> Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/gaussian_processes">Gaussian Processes</a></li>
+</ul>
+</li><li> (October 21st) Markov random fields
+<ul>
+<li> Required: (reading) MLPP Ch 19</li>
+<li> Optional: (reading) SLT Chapter 17: <i>Undirected Graphical Models</i>
+</li><li> Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/markov_random_fields#lfocus=markov_random_fields">Markov Random Fields</a></li>
+</ul>
+</li><li> (October 23rd) MCMC introduction: importance sampling, rejection sampling, simulated annealing, MCs
+<ul>
+<li> Required: (reading) MLPP Ch 23</li>
+<li> Optional: (reading) MacKay Chapter 30: <i>Efficient Monte Carlo Methods</i>
+</li><li> Optional: (reading) Christophe Andrieu, Nando de Freitas, Arnaud Doucet and Michael I. Jordan. <a href="http://www.seas.harvard.edu/courses/cs281/papers/andrieu-defreitas-doucet-jordan-2002.pdf">An Introduction to MCMC for Machine Learning.</a> Machine Learning 50:5-43, 2003.
+</li><li> Optional: (video) Iain Murray, <a href="http://videolectures.net/mlss09uk_murray_mcmc/">Markov Chain Monte Carlo</a></li>
+<li> Optional: (video) Nando de Freitas: <a href="http://videolectures.net/mlss08au_freitas_asm/">Monte Carlo Simulation for Statistical Inference</a></li>
+<li> Optional: (video) Christian Robert: <a href="http://videolectures.net/mlss04_robert_mcmcm/">Markov Chain Monte Carlo Methods</a></li>
+<li>Optional: Metacademy -- <a href="http://metacademy.org/graphs/concepts/markov_chain_monte_carlo#lfocus=markov_chain_monte_carlo">Markov Chain Monte Carlo</a></li>
+</ul>
+</li><li> (October 28th) MCMC: Metropolis hastings, Gibbs sampling
+<ul>
+<li> Required: (reading) MLPP Ch 24</li>
+<li> Optional: (reading) MacKay Chapter 32: <i>Exact Monte Carlo Sampling</i>
+</li><li>Optional: Metacademy -- <a href="http://metacademy.org/graphs/concepts/metropolis_hastings#lfocus=metropolis_hastings">Metropolis-Hastings</a></li>
+<li>Optional: Metacademy -- <a href="http://metacademy.org/graphs/concepts/gibbs_sampling#lfocus=gibbs_sampling">Gibbs Sampling</a></li>
+<li> Optional: Metacademy -- <a href="http://metacademy.org/graphs/concepts/slice_sampling#lfocus=slice_sampling">Slice Sampling</a></li>
+<li>Optional: Metacademy -- <a href="http://metacademy.org/graphs/concepts/hamiltonian_monte_carlo#lfocus=hamiltonian_monte_carlo">Hamiltonian Monte Carlo</a></li>
+</ul>
+</li><li> (October 30th) Variational algorithms: duality, mean field
+<ul>
+<li> Required: (reading) MLPP Ch 21</li>
+<li> Optional: (reading) MacKay Chapter 33: <i>Variational Methods</i>
+</li><li> Optional: (reading) Wainwright &amp; Jordan <a href="http://www.eecs.berkeley.edu/~wainwrig/Papers/WaiJor08_FTML.pdf"> Graphical Models, Exponential Families, and Variational Inference</a>
+</li><li> Optional: (video) Tom Minka <a href="http://videolectures.net/mlss09uk_minka_ai/">Approximate Inference</a></li>
+<li>Optional: (video) Martin Wainwright <a href="http://videolectures.net/mlss06tw_wainwright_gmvmm/">Graphical Models, Variational Methods and Message Passing</a></li>
+<li> Optional: (video) Christopher Bishop <a href="http://videolectures.net/mlss04_bishop_gmvm/">Graphical Models and Variational Methods</a></li>
+<li>Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/variational_inference#lfocus=variational_inference">Variational Inference</a></li>
+</ul>
+</li><li> (November 4th) Variational algorithms: BP, EP, convex relaxations, VB
+<ul>
+<li> Required: (reading) MLPP Ch 22</li>
+<li> Optional: (reading) John Winn and Christopher Bishop. <i><a href="http://www.seas.harvard.edu/courses/cs281/papers/VMP2004.pdf">Variational Message Passing</a></i>. Journal of Machine Learning Research 6:661-694, 2005.</li>
+<li>Optional (video) David Sontag <a href="http://research.microsoft.com/apps/video/default.aspx?id=150309">Approximate Inference in Graphical Models using LP relaxations</a></li>
+<li>Optional: Metacademy -- <a href="http://www.metacademy.org/graphs/concepts/loopy_belief_propagation#lfocus=loopy_belief_propagation">Loopy Belief Propagation</a></li>
+</ul>
+</li><li> (November 6th) Latent Dirichlet allocation &amp; topic models
+<ul>
+<li> Required: (reading) MLPP Ch 27</li>
+<li> Optional: (reading) David M. Blei, Andrew Ng and Michael I. Jordan. <i><a href="http://www.seas.harvard.edu/courses/cs281/papers/blei-ng-jordan-2003.pdf">Latent Dirichlet allocation</a></i>.  Journal of Machine Learning Research 3:993-1022, 2003.</li>
+<li> Optional: (reading) David M. Blei and John D. Lafferty. <i><a href="http://www.seas.harvard.edu/courses/cs281/papers/blei-lafferty-2009.pdf">Topic Models</a></i>. Text Mining: Classification, Clustering and Applications, 2009.</li>
+<li>Optional (reading) Thomas L. Griffiths and Mark Steyvers. <a href="http://www.seas.harvard.edu/courses/cs281/papers/griffiths-steyvers-2004.pdf"><i>Finding Scientific Topics</i></a>. Proceedings of the National Academy of Sciences 101:5228-5235, 2004.</li>
+<li> Optional: (video) David M. Blei <a href="http://videolectures.net/mlss09uk_blei_tm/">Topic Models</a></li>
+<li>Optional: Metacademy -- <a href="http://metacademy.org/graphs/concepts/latent_dirichlet_allocation#lfocus=latent_dirichlet_allocation">Latent Dirichlet Allocation</a></li>
+</ul>
+</li><li> (November 11th) Dirichlet process mixture models 
+<ul>
+<li> Required: (reading) MLPP Ch 25</li>
+<li> Optional: (reading) Peter Orbanz and Yee Whye Teh. <i><a href="http://www.seas.harvard.edu/courses/cs281/papers/orbanz-teh-2010.pdf">Bayesian Nonparametric Models</a></i>. Encyclopedia of Machine Learning, 2010.</li>
+<li> Optional: (reading) Carl Edward Rasmussen. <i><a href="http://www.seas.harvard.edu/courses/cs281/papers/rasmussen-1999a.pdf">The Infinite Gaussian Mixture Model</a></i>. NIPS, 1999.</li>
+<li>Optional (video)  Michael Jordan -- <a href="http://videolectures.net/icml05_jordan_dpcrp/">Dirichlet Processes, Chinese Restaurant Processes and All That</a></li>
+<li> Optional: (video) Yee Whye Teh -- <a href="http://videolectures.net/mlss07_teh_dp/">Dirichlet Processes: Tutorial and Practical Course</a></li>
+<li>Optional (video) Tom Griffiths -- <a href="http://videolectures.net/mlss2010_griffiths_isfd/">Inferring Structure from Data</a></li>
+<li>Optional: Metacademy -- <a href="http://metacademy.org/graphs/concepts/dirichlet_process#lfocus=dirichlet_process">Dirichlet Process</a></li>
+<li>Optional: Metacademy -- <a href="http://metacademy.org/graphs/concepts/chinese_restaurant_process#lfocus=chinese_restaurant_process">Chinese Restaurant Process</a></li>
+</ul>
+</li><li> (November 13th) Advanced Dirichlet processes
+<ul>
+<li> Required: (reading) MLPP Ch 25</li>
+<li> Optional: (reading) Peter Orbanz and Yee Whye Teh. <i><a href="http://www.seas.harvard.edu/courses/cs281/papers/orbanz-teh-2010.pdf">Bayesian Nonparametric Models</a></i>. Encyclopedia of Machine Learning, 2010.</li>
+<li> Optional: (reading) Carl Edward Rasmussen. <i><a href="http://www.seas.harvard.edu/courses/cs281/papers/rasmussen-1999a.pdf">The Infinite Gaussian Mixture Model</a></i>. NIPS, 1999.</li>
+<li>Optional (video)  Michael Jordan -- <a href="http://videolectures.net/icml05_jordan_dpcrp/">Dirichlet Processes, Chinese Restaurant Processes and All That</a></li>
+<li> Optional: (video) Yee Whye Teh -- <a href="http://videolectures.net/mlss07_teh_dp/">Dirichlet Processes: Tutorial and Practical Course</a></li>
+<li>Optional (video) Tom Griffiths -- <a href="http://videolectures.net/mlss2010_griffiths_isfd/">Inferring Structure from Data</a></li>
+<li>Optional: Metacademy -- <a href="http://metacademy.org/graphs/concepts/dirichlet_process#lfocus=dirichlet_process">Dirichlet Process</a></li>
+<li>Optional: Metacademy -- <a href="http://metacademy.org/graphs/concepts/chinese_restaurant_process#lfocus=chinese_restaurant_process">Chinese Restaurant Process</a></li>
+</ul>
+</li><li> (November 18th) Adaptive basis function learning (CART and Boosting)
+<ul>
+<li> Required: (reading) MLPP Ch 16</li>
+<li> Optional: (reading) SLT Chapter 11: <i>Boosting and additive trees</i>
+</li><li> Optional: (video) Robert Schapire <a href="http://videolectures.net/mlss09us_schapire_tab/">Theory and Applications of Boosting</a>
+</li></ul>
+</li><li> (November 20th) Deep belief learning
+<ul>
+<li> Required: (reading) MLPP Ch 28</li>
+<li> Optional: (reading) MacKay Chapter 44: <i> Supervised Learning in Multilayer Networks</i>
+</li><li> Optional: (reading) SLT Chapter 11: <i> Neural Networks</i>
+</li><li>Optional (video) Geoffrey Hinton <a href="http://videolectures.net/mlss09uk_hinton_dbn/">Deep Belief Networks</a></li>
+<li> Optional: (video) Geoffrey Hinton <a href="http://videolectures.net/jul09_hinton_deeplearn/">A Tutorial on Deep Learning</a></li>
+<li>Optional (video) Yoshua Benigo and Yann LeCun <a href="http://videolectures.net/icml09_bengio_lecun_tldar/">Tutorial on Deep Learning Architectures</a></li>
+<li>Optional (video) Yann LeCun <a href="http://www.youtube.com/watch?v=3boKlkPBckA">Visual Perception with Deep Learning</a></li>
+<li>Optional: Metacademy -- <a href="http://metacademy.org/graphs/concepts/feed_forward_neural_nets#lfocus=feed_forward_neural_nets">Feedforward Neural Networks</a></li>
+</ul>
+</li><li> (November 25th) Graphical model structure learning
+<ul>
+<li> Required: (reading) MLPP Ch 26</li>
+<li> Optional: (reading) Zoubin Ghahramani <a href="http://www.youtube.com/watch?v=HurQRI_HLHI">Inference and Structure learning</a>
+</li><li>Optional: Metacademy -- <a href="http://metacademy.org/graphs/concepts/bayes_net_structure_learning">Structure Learning</a>
+</li></ul>
+
+</li></ol>
+
+ 
+</body></html>

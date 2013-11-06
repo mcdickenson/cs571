@@ -1,0 +1,53 @@
+\documentclass[twoside]{article}
+
+\usepackage{epsfig}
+
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf STA561:~Probabilistic machine learning \hfill} }
+       \vspace{6mm}
+       \hbox to 6.28in { {\Large \hfill #1 (#2)  \hfill} }
+       \vspace{6mm}
+       \hbox to 6.28in { {\it Lecturer: #3 \hfill Scribes: #4} }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{#1}{#1}
+   \vspace*{4mm}
+}
+
+\begin{document}
+
+\lecture{Lecture name}{1/1/13}{Barbara Engelhardt}{Scribe names}
+
+\section{Instructions}
+
+Send your finished notes to the course TAs
+({\tt sta561-ta@duke.edu}), including the Latex file and all .eps
+or .pdf files that you've created for figures. Double-check that your file compiles with {\tt pdflatex lec1.tex} before you send it.
+
+These notes should be complete, correct, clear, and free of typos.
+
+If you would like an example of a good set of scribe notes in LaTeX, email me.
+
+Thank you!
+Barbara
+
+\end{document}
+

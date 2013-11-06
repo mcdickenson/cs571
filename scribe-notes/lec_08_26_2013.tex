@@ -1,0 +1,484 @@
+\documentclass[twoside]{article}
+
+\usepackage{epsfig}
+
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf STA561:~Probabilistic machine learning \hfill} }
+       \vspace{6mm}
+       \hbox to 6.28in { {\Large \hfill #1 (#2)  \hfill} }
+       \vspace{6mm}
+       \hbox to 6.28in { {\it Lecturer: #3 \hfill Scribes: #4} }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{#1}{#1}
+   \vspace*{4mm}
+}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+%\usepackage[letterpaper, left=.8in, top=0.9in, right=.8in, bottom=0.70in,nohead,includefoot, verbose, ignoremp]{geometry}
+\usepackage{charter} %choose default font ... your choice here % {mathptmx} % mathrsfs} % mathptmx} %mathpple} %mathpazo}
+\usepackage{enumerate} % for different labels in numbered lists 
+\usepackage{xy}\xyoption{all} \xyoption{poly} \xyoption{knot}  
+\usepackage{latexsym,amssymb,amsmath,amsfonts,graphicx,color,fancybox,amsthm,enumerate,natbib,movie15,booktabs}
+\usepackage{bm}
+\usepackage[utf8x]{inputenc}
+\usepackage[pdftex,pagebackref=true]{hyperref}
+\usepackage[svgnames,dvipsnames,x11names]{xcolor}
+\usepackage{floatrow}
+\newfloatcommand{capbtabbox}{table}[][\FBwidth]
+\hypersetup{
+colorlinks,%
+linkcolor=RoyalBlue2,  % color of links to eqns, tables, sections, etc
+urlcolor=Sienna4,   % color of unboxed URLs
+citecolor=RoyalBlue2  % color of citations linked in text
+}
+
+%---------------------%
+%abbreviations etc.%
+%---------------------%
+\def\Cor{\textsf{Cor}} %correlation function symbol
+\def\Cov{\textsf{Cov}} %covariance function symbol
+\def\Ber{\textsf{Ber}} %bernoulli distribution symbol
+\def\Bin{\textsf{Bin}} %bernoulli distribution symbol
+\def\defn{\stackrel{\Delta}{=}} %definition symbol
+\def\F{\textsf{F}} %CDF function symbol
+\def\ind{1\hspace{-0.033 in}\textnormal{l}} %indicator function
+\def\indep{\perp} %independence symbol
+\def\N{\mathcal{N}} %normal distribution symbol
+\def\Pois{\textsf{Pois}} %poisson distribution symbol
+\def\Mult{\textsf{Mult}} %multinomial distribution symbol
+\def\Pr{\textsf{Pr}} %probability function symbol
+\def\p{\textsf{p}} %density function symbol
+\def\sd{\textsf{sd}} %Standard deviation function symbol
+\def\Var{\textsf{Var}} %Variance function symbol
+\def\tn#1{\textnormal{#1}} %function for normal text in math mode
+
+
+
+
+\begin{document}
+\lecture{Concepts in Probability and Statistics}{8/26/13}{Barbara Engelhardt}{Ben Burchfiel, Nicole Dalzell, Andrew Kephart, Florian Wagner}
+
+\section*{Course Outline} 
+\begin{itemize} 
+  \item {\bf Course Website:} http://www.genome.duke.edu/labs/engelhardt/courses/sta561.html 
+  \begin{itemize}
+    \item {\bf helpful resources:} tutorials, videos, additional readings
+    \item syllabus
+    \item office hours
+  \end{itemize}
+  \item {\bf Book:} Kevin Murphy's `Machine Learning: a probabilistic perspective'
+  \begin{itemize}
+    \item readings are \underline{highly} recommended, due to the fast pace of this course
+  \end{itemize}
+  \item {\bf Homework:} approx. weekly; due in one week
+  \begin{itemize}
+    \item study groups allowed, but write solutions \underline{independently}
+    \item include names of all group members on homework
+    \item submit in a single pdf to Sakai website \underline{before} class.
+    \item regrades done by Professor, does not mean higher grade
+  \end{itemize}
+  \item {\bf Scribe Notes:} done in \LaTeX
+  \begin{itemize}
+    \item sign up sheet online
+    \item four scribes per class
+  \end{itemize}
+  \item {\bf Take home Midterm:} Due Date: October 16
+  \item {\bf Final Project} 
+  \begin{itemize}
+    \item 1 page proposal due October 2nd.
+    \item 4 page paper due on December 4th.
+    \item Poster Presentation: Either December 4th or December 14th, 2-5pm
+    \item Work alone or in pairs, but pairs held to higher standard
+    \item Final exam (if and only if you are taking this class for CS AI/ML quails credit): Either December 4th or December 14th, 2-5pm
+  \end{itemize}
+\end{itemize}
+
+
+\section*{Why Machine Learning}
+{\bf Fundamental Challenge:} It is easy to collect data, but it is hard to extract meaning from it.
+\begin{itemize}
+  \item Machine Learning (ML) gives you the tools necessary to extract meaning from massive data. 
+  \item The industry is expanding rapidly. There are more data than analytic solutions. 
+  \item Duke is one of the best places to study ML because we have:
+  \begin{itemize}
+    \item one of the best Bayesian Statistics departments in the world
+    \item a great ML community with
+    \begin{itemize}
+      \item seminars Wednesdays at 3:30
+      \item lunch seminars for students
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+
+\section*{Probability}
+Often the goal of machine learning (or research in general) is to determine the probability of an event, e.g.:
+\begin{itemize}
+\item $\Pr(\tn{year that polar ice cap melts} \leq 2020)$
+\item $\Pr(\tn{a new email is spam})$
+\item $\Pr(\tn{a person is at risk for a disease})$
+\end{itemize}
+
+There are two main paradigms in statistics:
+\begin{itemize}
+  \item {\bf Frequentist:} probabilities are long run frequencies
+  \begin{itemize}
+    \item flip a coin a million times to determine if it's fair
+  \end{itemize}
+  \item {\bf Bayesian:} probabilities quantify our uncertainty in events
+  \begin{itemize}
+    \item designed to get the closest to the truth given a specific set of data
+  \end{itemize}
+\end{itemize}
+
+From the Frequentist perspective, the probability of an event is defined as the \emph{frequency} that specific event occurred in a long list of repeated trials.
+
+In ML, we are working with the data that we are given, which often means that we do not have the luxury of observing multiple trials. We therefore require the ability to generalize from a small number of events. This is easily described through the Bayesian paradigm. We will adopt the Bayesian, with a number of exceptions, in our ML course.
+
+\section{Probability Theory}
+A \emph{random variable} (RV) describes an event that we have not yet observed, e.g.:
+\begin{itemize}
+  \item the number of heads in 6 flips of a fair coin,
+  \item the number of spam e-mails we will receive today,
+  \item whether it rains today.
+\end{itemize} 
+
+
+Let $\Pr(A) \defn$ the probability that an event, $A$, occurs. Then, $0 \leq \Pr(A) \leq 1$ and $\Pr(\overline{A}) = 1 - \Pr(A)$.
+
+$\overline{A}$ represents ``not $A$,'' or the event $A$ not happening. More formally, $\overline{A}$ is called the \emph{complement} of $A$, and $\Pr(\overline{A})$ can be interpreted as the probability that event $A$ does not occur. When we say that $X$ is a random variable, and we write $\Pr(X=x)$ this is the probability that RV $X$ takes on value $x$.
+
+A \emph{binary random variable} is a RV that can take on only two values, e.g., $0$ or $1$. Suppose $A$ is a binary RV. We may then write $A \in \lbrace 0, 1 \rbrace$, meaning that $A$ can take on the values 0 or 1. 
+
+A simple example of a situation involving a a binary random variable is the flipping of a fair coin one time. Will the outcome of the flip be heads (1) or tails (0)? If we let $A$ denote the unknown outcome of the flip, then $A$ is a binary random variable. 
+
+\subsection*{Discrete Random Variables} 
+
+\emph{Discrete random variables} have a discrete sample space, meaning that they can take on only a finite number of values. Suppose $\chi = \lbrace 1, 2, 3,4 \rbrace$ is our sample space, and $X$ is a random variable that takes values in this sample space, ie $X \in \chi$. Consider, for instance, reaching into a bag with 4 balls, with labels 1, 2, 3 and 4. What is the label on the ball that you select?
+
+As before $0 \leq \Pr(X) \leq 1$; If $\Pr(X=i)=0$, you never draw ball $i$. Alternatively, if $\Pr(X=i)= 1$, you always draw ball $i$. In all other cases, ($0 < \Pr(X=i) < 1$),  you sometimes draw ball $i$. Additionally, the ball that you draw must have either a 1,2,3 or 4 on it, so 
+\begin{align*}
+\Pr(X=1) + \Pr(X=2) + \Pr(X=3) + \Pr(X=4) & = 1
+\end{align*}
+More generally, $\sum_{x \in \chi} \Pr(X=x) =1 $.
+
+\subsection{Rules of Probability} 
+Consider two events $A$ and $B$. 
+
+\subsection*{Union}
+\[
+\Pr(A \tn{ or } B) \defn \Pr( A \cup B) = \Pr(A) + \Pr(B) - \Pr(A \cap B).
+\]
+Note that when we add $\Pr(A)$ and $\Pr(B)$, we double count the probability of the intersection of these events $\Pr(A \cap B)$. 
+
+\subsection*{Joint Probability}
+\subsubsection*{Intersection}
+\[ 
+\Pr(A \tn{ and } B) \defn \Pr( A \cap B) \defn \Pr(A , B) = \Pr(A \mid B)\Pr(B).
+\]
+
+\subsubsection*{Conditional Probabilities}
+$\Pr(A \mid B)$ means ``the \emph{conditional} probability of A given B'', e.g. ``What is the probability that it will rain, \emph{given} that it is 79 degrees today?'' We can define the conditional probability in terms of the joint probability and the marginal probability:
+\[
+\Pr(A\mid B) = \frac {\Pr(A,B)}{\Pr(B)}
+\]
+
+\subsubsection*{Chain Rule}
+If $C$ and $D$ also denote events,
+\[\Pr(A \tn{ and } B \tn{ and } C \tn{ and } D) \defn \Pr( A \cap B \cap C \cap D) \defn \Pr( A, B, C, D) = \Pr(A)\Pr(B\mid A)\Pr(C\mid A,B)\Pr(D \mid A,B,C)
+\]
+
+\subsection*{Marginal Probability}
+If we are interested in the \emph{marginal probability} $\Pr(A)$, and we have information on the joint $\Pr(A,B)$, we may obtain information on the marginal probability by \emph{marginalizing} over $B$. In the case of discrete random variables, we do this by summing over $B$. 
+\begin{align*}
+ P(A) & = \sum_{b \in \mathcal{B} } \Pr(A, B=b)\\
+ & = \sum_{ b \in \mathcal{B} } \Pr(A\mid B=b)\Pr(B=b)
+\end{align*}
+
+\subsection*{Bayes Rule} 
+Let's return to the idea of conditional probability for a moment. From the definition of joint probability, we can solve for the conditional probability of $A\mid B$ as long as $\Pr(B)>0$. 
+\begin{align*} 
+\Pr( A, B) = \Pr(A\mid B)\Pr(B) & \Rightarrow \Pr(A\mid B) = \frac{\Pr( A, B)}{\Pr(B)}\\
+ & \Rightarrow  {\color{blue} \Pr(A\mid B) = \frac{\Pr(B\mid A)\Pr(A)}{\Pr(B)} }
+\end{align*}
+The final (blue) equation is called \emph{Bayes rule} and will be used extensively in the derivation of Bayesian posterior distributions.
+
+\subsection*{Continuous Random Variables}
+In the discrete case, a random variable $X$ could take on only finitely many values. In the continuous case, the random variable may take on infinitely many values. Let's begin with an example, a Uniform Random Variable.
+\begin{figure}[!htbp]
+ \includegraphics[scale=.2]{Uniform_Distribution_PDF_SVG.pdf}
+ \caption{Uniform(a,b). Source: Wikipedia}
+ \label{fig:uniform}
+\end{figure}
+
+For continuous random variables the function $\p(\cdot)$ is called a \emph{probability density function} (PDF). %It is related to the probability of an event $A$ by $\Pr(A) = \int \ind(\tn{x satisfies A})\p(x)dx$, where $\ind(\cdot)$ is the \emph{indicator function}, which takes the value 1 if and only if its argument is true, and takes the value 0 otherwise.
+
+We say that the Uniform random variable $X$ has support on the set $(a,b)$, meaning that $ a < X < b$ (Figure~\ref{fig:uniform}). Over that support, the pdf of $x$ is defined as $\p(x)= \frac{1}{b-a}>0$, and outside of the support, $\p(x)= 0$. Note that the pdf $\p(x)$ can be bigger than 1, but it always integrates to exactly one. \{$a=0,b=0.2 \Rightarrow \p(0.1) = \frac{1}{0.2} = 5$\} 
+
+Let's consider a few events to illustrate this point:
+
+\begin{tabular}{lll}
+Event $A$ & $a \leq X < \frac{b+a}{2}$	& $\Pr(A) = 1/2$\\
+Event $B$ & $\frac{b+a}{2} \leq X < b$	& $\Pr(B) = 1/2$\\
+Event $W$ & $a \leq X \leq b$		& $\Pr(W) = 1$\\
+\end{tabular}
+
+Events $A$ and $B$ are \emph{mutually exclusive}, meaning that they cannot happen at the same time. $X$ cannot be both $< \frac{b+a}{2}$ and $ \geq \frac{b+a}{2}$. % this is not the example I gave in class. Mutually exclusive events should be defined with non-zero densities! In class the support was over (0,1) and a and b were numbers somewhere in-between them.
+% same thing here. event A needs to be redefined.
+Also, event $W$ is the union of events $A$ and $B$.
+\begin{align*}
+ \Pr(W) & = \Pr(a \leq X \leq b) = \Pr\left(a \leq X \leq \frac{b+a}{2}\right) + \Pr\left(\frac{b+a}{2} \leq X \leq b\right) = \Pr(A) + \Pr(B)\\
+ \Pr(A,B) & = 0  
+\end{align*}
+For discrete random variables, $\p(\cdot)$ is called a \emph{probability mass function} (PMF) and $\p(x)=\Pr(X=x)$.
+
+\section*{Cumulative Distribution Functions (CDFs)}
+When dealing with continuous random variables (or discrete random variables with support over an infinite number of events), the probability of seeing any one particular $x \in \chi$, where $\chi$ is the set of all possible values $x$ can take, has measure 0; there are infinitely many points, and we have to assign each a probability such that the probabilities of each of these infinitely many points (hypothetically) sum to one. Instead of focusing on $\Pr(X=x)$, in the continuous case we can consider $\Pr(X \leq x)$. This function is called the \emph{cumulative distribution function} (CDF). 
+$$ \F(x) \defn \Pr(X \leq x), x \in \chi $$
+The CDF is a monotone increasing function. Taking the derivative of the CDF with respect to $x$ yields the \emph{probability density function} (PDF). 
+\begin{align*}
+ \p(x) = \frac{d}{dx} \F(x)
+\end{align*}
+The probability that the random variable $X$ is near a specific value $x$ is approximated by:
+\begin{align*}
+ P(a \leq X \leq b) & = \int_{a}^{b} f(x) dx \\
+ P(x < X \leq x + dx)& = F(x + dx) - F(x)  \approx \p(x) dx 
+\end{align*}
+
+\section{Bayesian Statistics: A Very Brief Introduction} 
+Suppose we have some \emph{parameters} $\theta$. These are unknown quantities, such as the average height of all men of age 18 in North Carolina. 
+We have some data $D$ (such as the height of 30,000 North Carolinian men of age 18). How can we describe our uncertainty about $\theta$ based 
+on our data? To answer this question, we appeal to Bayes Rule. 
+$$ {\color{red} \p(\theta \mid X ) } = \frac{ {\color{blue} \p(X \mid \theta )}{\color{Sepia} \p( \theta )} }{{\color{Black}\p(X)}} $$
+Let's break down this expression. 
+\begin{itemize}
+ \item $\color{red} \p(\theta\mid X )$ 
+ \begin{itemize}
+ \item This is called the \emph{posterior distribution} of $\theta$ given $X$ and calculating (or approximating) it is the main goal of Bayesian inference. The posterior expresses our the uncertainty about $\theta$, the parameter(s) we care about, \textit{after} we have seen (``learned from'') the data. There is still uncertainty, because while the data told us something about $\theta$, we still don't know everything about it.
+ \end{itemize}
+ 
+ \item ${\color{blue} \p(X \mid \theta )}$:
+ \begin{itemize}
+ \item This is called the \emph{likelihood}, and is a function of the parameters $\theta$. Basically, this is a way of describing the probability 
+  of the data as a function of these unknown parameters. We will discuss this in the third class. 
+ \end{itemize}
+ \item ${\color{Sepia} \p( \theta )}$ 
+ \begin{itemize}
+ \item This is called the \emph{prior distribution}, and it describes our belief about the quantity of interest \emph{before} we see data. What do we  think is the average height of 18 year old men in North Carolina, and how certain are we of this belief? Often times we use what are called \emph{conjugate} priors to the likelihood to describe our \emph{a priori} beliefs. More on this soon.
+ \end{itemize}
+ \item ${\color{Black} \p(X)}$ 
+ \begin{itemize}
+ \item This is called the \emph{marginal likelihood} of $X$, and it is constant with respect to $\theta$. Because of this, we often write the  above quantity as $ { \p(\theta | X ) } \propto { \p(X | \theta )}{\p( \theta )}$.
+ \item To solve for the marginal likelihood of $X$:
+ \begin{align}
+  \p(X) = \int_{\Theta} \p(X|\theta) \p(\theta) d\theta 
+ \end{align}
+  Note that this is called the marginal likelihood because we are marginalizing (or averaging) over $\theta \in \Theta$. 
+ \end{itemize}
+
+\end{itemize}
+
+\subsection{Independence} 
+Many of our calculations will be made simpler when we can assume \emph{independence} between certain random variables. Formally, two events $A$ and $B$ are marginally independent, i.e. $A \indep B$, if their joint density $\p(A,B)$ may be expressed as the product of the marginals:
+$$ A\indep B \iff \p(A,B)  = \p(A) \p(B) $$
+% I've been writing this as an upside down T instead of two vert bars; same as in the book. Could we switch this up here throughout?
+Two events $A$ and $B$ are \emph{conditionally independent} given $C$ if $\p(A,B \mid C) = \p(A \mid C)\p(B\mid C)$. This is denoted $\left( A \indep B \right)\mid  C$. 
+$$ \left( A \indep B \right)\mid  C \iff \p(A,B\mid C) = \p(A\mid C)\p(B\mid C) $$
+Conditional independence allows us to build large, complicated networks of random variables out of simple components for which we can easily perform analysis.
+
+% Start of Ben and Andrew's Section
+\section{Basic Statistics}
+
+\subsection*{Expected Value}
+
+The expected value of a random variable is also known as the mean and is commonly denoted by $\mu$
+\begin{itemize}
+\item For a discrete random variable $x$
+  \begin{itemize}
+    \item[] $\mathbb{E}[X] = \sum_{x \in X} x\p(x)$
+  \end{itemize}
+\item For a continuous random variable $x$
+  \begin{itemize}
+    \item[] $\mathbb{E}[X] = \int_{X} x\p(x)dx$
+  \end{itemize}
+\end{itemize}
+
+\subsubsection*{Law of the Unconscious Statistician}
+Let $h(\cdot)$ be a function of $X$
+\begin{itemize}
+\item For a discrete random variable $x$
+  \begin{itemize}
+    \item[] $\mathbb{E}[h(X)] = \sum_{x \in X} h(x)\p(x)$
+  \end{itemize}
+\item For a continuous random variable $x$
+  \begin{itemize}
+    \item[] $\mathbb{E}[h(X)] = \int_{X} h(x)\p(x)dx$
+  \end{itemize}
+\end{itemize} 
+\subsection*{Variance}
+
+The variance of a random variable is commonly denoted by $\sigma^2$. It is a measure of how dispersed its values are relative to the mean. Small variance indicates that the values are tightly clustered around the mean. %We therefore tend to prefer that our estimators have small variance, so that we can reliably provide `good' estimates.
+\begin{align*}
+\Var[X] &\defn \mathbb{E}[(x-\mu)^2]\\
+&= \int_{X} (x-\mu)^{2}p(x)dx\\
+&=\mathbb{E}[X^2]-(\mathbb{E}[X])^2\\
+&=\mathbb{E}[X^2] - \mu^{2}\\
+& = \sigma^2.
+\end{align*}
+The \emph{standard deviation} of $X$ $\defn \sd[X] \defn \sqrt{\Var[X]}$
+
+Since the variance has squared units, which may not always have a natural interpretation, the standard deviation is commonly reported for ease of interpretability. Note that $\Var[X] \geq 0$.
+
+\subsection*{Covariance}
+The covariance between two random variables measures their degree of linear association. If the covariance is 0, then they are linearly unrelated. 
+\begin{align*}
+\Cov[X,Y] &= \mathbb{E}[(X-\mathbb{E}[X])(Y-\mathbb{E}[Y])]\\
+&= \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]
+\end{align*}
+Note that the previously given definition of \emph{variance} arises as a special case when $Y = X$. 
+
+\subsection*{Correlation}
+The correlation is another measure of the linear association between two random variables. If the correlation is 0, they are linearly unrelated. If the correlation is $\pm$ 1, then there is a perfect positive, or negative linear relationship between them respectively.
+$$\Cor(X,Y) \defn \Cov(X,Y) / \sqrt{\Var(X)\Var(Y)} $$
+Observe that $-1 \leq \Cor(X,Y) \leq 1$.
+
+\section{Some Common Discrete Distributions}
+The notation $X \sim \tn{Distribution}(\tn{parameters})$ indicates that $X$ is a random variable that follows the named distribution with given parameters.
+
+\subsection*{Bernouli Distribution}
+\begin{flushleft}
+\def\arraystretch{1.1}
+\begin{tabular}{rl}
+Notation: & $X\sim \Ber(\theta)$\\
+& where $0\leq \theta \leq 1$\\
+Support:  & $\{0,1\}$\\ 
+PMF:   & $\theta^x(1 - \theta)^{1-x}$\\ 
+Expectation:  & $\theta$\\
+Variance:  &  $\theta(1-\theta)$
+\end{tabular}
+\end{flushleft}
+{\bf Example:} Let $X$ denote the result of a single coin flip,
+where tails correspond to $X=0$, heads corresponds to $X=1$, and $\theta$ is the probability of heads.
+\subsection*{Bionomial Distribution}
+\begin{flushleft}
+\def\arraystretch{1.1}
+\begin{tabular}{rl}
+Notation: & $X\sim \Bin(n,\theta)$\\
+& where $n > 0$ and $0 \leq \theta \leq 1$\\
+Support:  & $\{0,1,\ldots,n\}$\\ 
+PMF:   & ${n \choose x}\theta^x(1 - \theta)^{n-x}$\\ 
+Expectation:  & $n \theta$\\
+Variance:  &  $n \theta(1-\theta)$
+\end{tabular}
+\end{flushleft}
+{\bf Example:} Let $X$ denote the number of heads in $n$ flips of the same coin where $\theta$ is the probability of heads on each individual flip. Recall that ${n \choose x} = n!/ (x!(n-x)!)$, where $!$ represents the factorial function. This represents the number of sequences of $n$ coin flips that have exactly $x$ heads.
+
+\subsubsection*{Exchangeability}
+Recall that the coin flips are exchangeable in this distribution. The probability of any sequence of flips depends \emph{only} on the number of heads, the number of tails, and the probability of heads on each flip.\\
+The order in which we observed the coin flips does not matter.
+
+\subsection*{Multinomial Distribution}
+\begin{flushleft}
+\def\arraystretch{1.1}
+\begin{tabular}{rl}
+Notation: & $X\sim \Mult(n,\theta)$\\
+& where $n > 0$, $\theta=[\theta_1,\ldots,\theta_k]$ and $\sum \theta_j = 1$\\
+Support:  & $\{x_1,\ldots,x_k \mid \sum x_j = n, x_j \geq 0 \}$\\ 
+PMF:   & ${n \choose x_1,\ldots,x_k}\prod \theta_j^{x_j}$\\ 
+$\mathbb{E}[X]= $  & $n \theta$\\
+$\Var[X_j]= $  &  $n \theta_j(1-\theta_j)$\\
+$\Cov[X_i,X_j]= $  &  $-n \theta_i\theta_j$
+\end{tabular}
+\end{flushleft}
+
+The multinomial generalizes the binomial to arbitrary collections of categorical variables. 
+
+{\bf Example:} Let $X$ denote the vector of the number of times each side of a $k$ sided die has landed face up in $n$ tosses of the die, and let $\theta_j$ be the probability that the number `j' is rolled on each toss of the die.
+For example, $x_1$ represents the number of times a `1' was rolled, $x_2$ represents the number of times a `2' was rolled, etc.
+
+In this example the categories are $1,\ldots,k$, but in general they can be completely arbitrary. There is no need to make them ordered, or even numeric.
+
+\subsection*{Poisson  Distribution}
+\begin{flushleft}
+\def\arraystretch{1.1}
+\begin{tabular}{rl}
+Notation: & $X\sim \Pois(\lambda)$\\
+& where $\lambda > 0$\\
+Support:  & $\{0,1,2,3,\ldots\}$ (all non-negative integers)\\ 
+PMF:   & $e^{-\lambda}\lambda^x/x!$\\ 
+Expectation:  & $\lambda$\\
+Variance:  &  $\lambda$
+\end{tabular}
+\end{flushleft}
+
+{\bf Typical Examples Include:} Data are based on counts over a specific location or time. For example: 
+\begin{itemize}
+\item the number of cars driving down a street every hour
+\item the number of customers in line 
+\item the number of mutations along a stretch of genome.
+\end{itemize}
+
+\section*{Continuous Distributions}
+\subsection*{Gaussian (Normal) Distribution}
+\begin{flushleft}
+\def\arraystretch{1.1}
+\begin{tabular}{rl}
+Notation: & $X\sim \N(\mu,\sigma^2)$\\
+& where $\mu \in\mathbb{R}$ and $\sigma^2 > 0$\\
+Support:  & $\mathbb{R}$ (the real numbers)\\ 
+PDF:   & $\sqrt{\frac{1}{2\pi\sigma^2}}e^{-\frac{1}{2\sigma^2}(x-\mu)^2}$\\ 
+Expectation:  & $\mu$\\
+Variance:  &  $\sigma^2$
+\end{tabular}
+\end{flushleft}
+$1 / \theta^2$ is often called the \emph{precision}. A Gaussian distribution with a mean of 0 and a standard deviation of 1 is known as the \emph{standard normal} distribution. % don't italicize by putting '$'!!
+
+Due to the Central Limit Theorem, this is probably the most common distribution. For example, let $X$ denote the heights of the males in our class, then $X$ is approximately normally distributed.
+% End Ben and Andrew's Section
+
+% Begin Flo's part
+\subsection*{Multivariate Gaussian Distribution}
+\begin{flushleft}
+\def\arraystretch{1.1}
+\begin{tabular}{rl}
+Notation: & $X\sim \N(\mu,\Sigma)$\\
+& where $\mu \in\mathbb{R}^k$ and $\Sigma$ is $k\times k$ symmetric, positive definite\\
+Support:  & $\mathbb{R}^k$\\ 
+PDF:   & $\left(\frac{1}{2\pi}\right)^{k/2}|\Sigma|^{-\frac{1}{2}}e^{-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)}$\\ 
+Expectation:  & $\mu$\\
+Variance:  &  $\Sigma$
+\end{tabular}
+\end{flushleft}
+The diagonal elements of $\Sigma$ are the variances of each $X_j$, and, in general, the $i,j$ entry of $\Sigma$ is the covariance between $X_i$ and $X_j$. Positive definite means that we have $\bm{v}\bm{\Sigma}\bm{v}^{T} > 0$, for all $\bm{v} \in \mathbb{R}^{k}$
+
+\section*{Additional Material}
+\subsection*{Joe Blitzstein's Statistics 101}
+Video lectures of a full introductory course on statistics by Joe Blitzstein, Harvard University, are freely available on iTunes U (\url{https://itunes.apple.com/us/course/statistics-110-probability/id502492375}). Fundamental concepts such as conditioning, independence, moments, as well as the most important distributions and their relationships to each other are all introduced in a very intuitive way. The course has very few prerequisites, and the ``Final Review'' PDF is a compact summary of nearly everything taught in the course.
+
+\subsection*{Mathematicalmonk's Machine Learning, video series on Youtube}
+In his Youtube channel (\url{http://www.youtube.com/user/mathematicalmonk}), the author provides introductory videos to many relevant concepts, e.g. the \href{http://www.youtube.com/watch?v=TC0ZAX3DA88}{multivariate gaussian distribution}.
+% End Flo's part
+
+%\bibliographystyle{plain}
+%\bibliography{references}
+\end{document}
