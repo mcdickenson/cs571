@@ -43,8 +43,10 @@
 \section{Ising Model}
 
 % previous section should end with a discussion of ELBO
-Before proceeding with variational inference, it is helpful to review the Ising model. The main idea behind the Ising model is a lattice of unobserved variables ($x_1,...x_n$), each with its own (noisy) observation ($y_1, ..., y_n)$). For example, we can think of the lattice as pixels in a black and white image ($x_i \in \{-1, 1\}$), with a noisy grayscale observation of the pixels ($y_i \in R)$. Our goal in this case would be to obtain a de-noised version of the image. More generally, we wish to draw inferences about the unobserved lattice $X$ from the observed values $Y$.
+Before proceeding with variational inference, it is helpful to review the Ising model. The main idea behind the Ising model is a lattice of unobserved variables ($x_1,...x_n$), each with its own (noisy) observation ($y_1, ..., y_n)$). For example, we can think of the lattice as pixels in a black and white image ($x_i \in \{-1, 1\}$), with a noisy grayscale observation of the pixels ($y_i \in R)$. Our goal in this case would be to obtain a de-noised version of the image. More generally, we wish to draw inferences about the unobserved lattice $X$ from the observed values $Y$. Figure \ref{ising} illustrates an Ising model for $n=9$, with the latent nodes colored white and the observed nodes shaded grey. 
 
+\begin{figure}[h!]
+\begin{center}
 \begin{tikzpicture}
 \scriptsize
 \foreach \i in {1,...,9}
@@ -81,9 +83,61 @@ Before proceeding with variational inference, it is helpful to review the Ising 
 \draw (7) -- (70);
 \draw (8) -- (80);
 \draw (9) -- (90);
-% http://tex.stackexchange.com/questions/61805/tikz-using-loop-to-draw-grid-of-nodes
 \end{tikzpicture} 
+\end{center}
+\caption{Schematic of an Ising Model}
+\label{ising}
+\end{figure}
 
+We now define the potential functions of the Ising model:
+\begin{eqnarray*}
+\psi_s(x_s) &=& p(y_i | x_i) \equiv L_i(x_i) \\
+\psi_{st} (x_s x_t) &=& W_{st} x_s x_t 
+\end{eqnarray*} 
+Continuing with our image example above, we could set $W_{st}=1$. In general, we set $W$ to positive values if we want neighbors to agree, and negative values if we want them to differ. 
+
+Now we can specify our priors. Let $N(i)$ be a function that returns the first-degree neighbors of node $i$. For example, in Figure \ref{ising}, calling $N(x_1)$ would return nodes $x_2$ and $x_4$.
+
+\begin{eqnarray*}
+p(x) &=& {1 \over z_0} \exp\{ - \sum_{i=1}^n \sum_{j \in N(i)} x_i x_j \} \\
+p(y|x) &=& \prod_{i=1}^n \exp \{-L_i(x_i) \} \\
+p(x|y) &=& {1 \over z} \exp \{ - \sum_{i=1}^n  \sum_{j \in N(i)} x_i x_j - \sum_{i=1}^n L_i(x_i) \}
+\end{eqnarray*}
+
+\subsection{Mean Field Version of the Ising Model}
+
+Having seen an example of a basic Ising model, we now turn our attention to how we can analyze the mean field version of such a model. We do this by ``breaking'' the edges between the latent variables, and assigning a mean parameter $\mu$ to each of them. The new structure is illustrated in Figure \ref{meanfield}, with the same color coding as above. 
+
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}
+\scriptsize
+\foreach \i in {1,...,3}
+{
+        \pgfmathtruncatemacro{\y}{(\i - 1) / 3};
+        \pgfmathtruncatemacro{\x}{\i - 3 * \y};
+        \pgfmathtruncatemacro{\label}{\x};
+        \pgfmathtruncatemacro{\labely}{\x*10};
+        \pgfmathtruncatemacro{\labelm}{\x*100};
+        \node[circle,draw=black,fill=white,minimum size=20]
+        (\label) at (1.5*\x,1.5*\y) {$x_\label$};
+        \node[circle,draw=black,fill=white!80!black,minimum size=20]
+        (\labely) at (1.5*\x-0.8,1.5*\y-0.8) {$y_\label$};
+        \node[circle,draw=black,fill=white,minimum size=20]
+        (\labelm) at (1.5*\x+0.8,1.5*\y+0.8) {$\mu_\label$};
+}
+% Lattice of X's
+\draw (1) -- (10);
+\draw (2) -- (20);
+\draw (3) -- (30);
+\draw (1) -- (100);
+\draw (2) -- (200);
+\draw (3) -- (300);
+\end{tikzpicture} 
+\end{center}
+\caption{Mean Field Version of an Ising Model}
+\label{meanfield}
+\end{figure}
 
 \section{Loopy Belief Propogation}
 
