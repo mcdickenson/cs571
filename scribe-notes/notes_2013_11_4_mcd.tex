@@ -170,15 +170,15 @@ Note the resemblance of this function to a sigmoid function $1 \over 1+q_i(x_i=-
 
 For the mean field, we now iteratively updateL 
 \begin{eqnarray*}
-mu_i = +1 (q_i(x_i=+1)) + -1 (q_i(x_i=-1)) \\
-z_i \propto \exp[ \mathbb{E}[ \log p(z|x)]]
+\mu_i &=& +1 (q_i(x_i=+1)) + -1 (q_i(x_i=-1)) \\
+z_i &\propto& \exp[ \mathbb{E}[ \log p(z|x)]]
 \end{eqnarray*}
 
 In the model, we have three parameters of interest: $\mu_1, \mu_2$, and $\mu_{12}$, where $\mu_{12}=\mathbb{E}[\psi_{12}(x_1 x_2)]$. We have the constraint $0 \leq \mu_{12} \leq \mu_1, \mu_2$. We limit acceptable values to those within the portion of the simplex that satisfies this constraint. 
 
 % insert a picture
 
-If we take a slice of this convex polytope, it is a trinagle. % some more stuff here
+If we take a slice of this convex polytope, it is a triangle. % some more stuff here
 
 \section{Loopy Belief Propogation}
 
