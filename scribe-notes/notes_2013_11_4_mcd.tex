@@ -174,20 +174,30 @@ For the mean field, we now iteratively update:
 z_i &\propto& \exp[ \mathbb{E}[ \log p(z|x)]]
 \end{eqnarray*}
 
-In the model, we have three parameters of interest: $\mu_1, \mu_2$, and $\mu_{12}$, where $\mu_{12}=\mathbb{E}[\psi_{12}(x_1 x_2)]$. We have the constraint $0 \leq \mu_{12} \leq \mu_1, \mu_2$. We limit acceptable values to those within the portion of the simplex that satisfies this constraint, visualized in Figure \ref{mu}. 
+In the model, we have three parameters of interest: $\mu_1, \mu_2$, and $\mu_{12}$, where $\mu_{12}=\mathbb{E}[\psi_{12}(x_1 x_2)]$. We have the constraint $0 \leq \mu_{12} \leq \mu_1, \mu_2$. We limit acceptable values to those within the portion of the simplex that satisfies this constraint. We can visualize this in Figure \ref{mu}, where the acceptable values occupy the space under the shaded face. 
 
 \begin{figure}[h!]
 \begin{center}
-\setlength{\fboxsep}{0pt}%
-\setlength{\fboxrule}{1pt}%
+\setlength{\fboxsep}{0pt}
+\setlength{\fboxrule}{1pt}
 \fbox{\includegraphics[scale=0.2]{cube.png}}
 \caption{Visualizing Constraints on $\mu$}
 \label{mu}
 \end{center}
 \end{figure}
 
-If we take a slice of this convex polytope at $\mu_1=\mu_2$, it is a triangle. 
-% add triangle drawing and explain mu_1^2 = mu_{12}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.5]{triangle.pdf}
+\caption{Visualizing $\mu_{12}$ when $\mu_1=\mu_2$}
+\label{mu2}
+\end{center}
+\end{figure}
+
+If we take a slice of this convex polytope in Figure \ref{mu} at $\mu_1=\mu_2$, it is a triangle like the one in Figure \ref{mu2}. The $x$-axis in the figure is $\mu_1$. The quadratic curve indicates where $\mu_1^2=\mu_{1,2}$. This quadratic function is due to the marginal independence of $\mu_1$ and $\mu_2$. 
+
+
 
 \section{Loopy Belief Propogation}
 
