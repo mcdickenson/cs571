@@ -1,6 +1,7 @@
 \documentclass[twoside]{article}
 
 \usepackage{epsfig}
+\usepackage{amsfonts}
 \usepackage{tikz}
 
 \setlength{\oddsidemargin}{0.25 in}
@@ -106,7 +107,7 @@ p(x|y) &=& {1 \over z} \exp \{ - \sum_{i=1}^n  \sum_{j \in N(i)} x_i x_j - \sum_
 
 \subsection{Mean Field Version of the Ising Model}
 
-Having seen an example of a basic Ising model, we now turn our attention to how we can analyze the mean field version of such a model. We do this by ``breaking'' the edges between the latent variables, and assigning a mean parameter $\mu$ to each of them. The new structure is illustrated in Figure \ref{meanfield}, with the same color coding as above. 
+Having seen an example of a basic Ising model, we now turn our attention to how we can analyze the mean field version of such a model. We do this by ``breaking'' the edges between the latent variables. We also a mean parameter $\mu$ to each of $x$, such that $\mu_i=\mathbb{E}[x_i]$. The new structure is illustrated in Figure \ref{meanfield}, with the same color coding as above. 
 
 \begin{figure}[h!]
 \begin{center}
@@ -138,6 +139,32 @@ Having seen an example of a basic Ising model, we now turn our attention to how 
 \caption{Mean Field Version of an Ising Model}
 \label{meanfield}
 \end{figure}
+
+
+% todo: explain what q is/where it comes from
+\begin{eqnarray*}
+q(x) &=& \prod_{i=1}^n q_i (x_i) \\
+\log ( q_i (x_i)) &=& \mathbb{E}_q [ \log \tilde{p}(x) ]
+\end{eqnarray*}
+
+We can maximize this with a coordinate ascent method. % wut?
+
+Now, we rewrite the ELBO in terms of the Ising model:
+\begin{eqnarray*}
+\log (q_i (x_i)) &=& \mathbb{E}_{q_i} [ x_i \sum_{j \in N(i)} x_j + L_i(x_i) +c ] \\
+q_i (x_i) &\propto& \exp \{ x_i \sum_{j \in N(i)} \mu_j + L_i(x_i) \}
+\end{eqnarray*}
+% propto line may not be correct
+
+Thus, 
+\begin{eqnarray*}
+q_i(x_i=+1) &=& { \exp\{ \sum_{j \in N(i)} \mu_j + L_i(+1) \}   \over \sum_{x_i^{\prime} \in \{ +1, -1\}} \exp \{ \sum_{j \in N(i)} \mu_j + L_i(x_i^{\prime}) \} }
+\end{eqnarray*}
+Note the resemblance of this function to a sigmoid function $1 \over 1+q_i(x_i=-1)$. Effectively, this $q_i$ is an approximation of the marginalized posterior, or basically a Gibbs step.
+
+For the mean field, we now iteratively update all the $mu_i = q_i(x_i=+1) - q_i(x_i=-1)$. 
+
+In the original model, we have three parameters of interest: $\mu_1, \mu_2$, and $\mu_{12}$, where $\mu_{12}=\mathbb{E}[\psi_{12}(x_1 x_2)]$. We have the constraint $0 \leq \mu_{12} \leq \mu_1, \mu_2$. 
 
 \section{Loopy Belief Propogation}
 
