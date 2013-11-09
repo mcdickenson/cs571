@@ -1,3 +1,21 @@
+head(rowsums)
+exc_prior_odds = matrix(NA, nrow=length(rowsums), ncol=100)#
+p = runif(100, min=0.4, max=0.6)#
+for(i in 1:nrow(exc_prior_odds)){#
+	exc_prior_odds[i,] = p^rowsums[i]*(1-p)^(14-rowsums[i])#
+}
+head(exc_prior_odds[,1:10])
+exc_prior_odds = matrix(NA, nrow=length(rowsums), ncol=1000)
+p = runif(1000)
+for(i in 1:nrow(exc_prior_odds)){#
+	exc_prior_odds[i,] = p^rowsums[i]*(1-p)^(14-rowsums[i])#
+}
+head(exc_prior_odds[,1:10])
+epo = apply(exc_prior_odds, 1, mean)
+head(epo)
+exc_post_odds = epo* lbf.all
+head(exc_post_odds)
+exc_post_odds = epo* exp(lbf.all)
 head(exc_post_odds)
 exc_post_odds = epo* lbf.all
 head(exc_post_odds)
@@ -310,26 +328,14 @@ lines(yearly$year, yearly$reforma,
 col=colors[3], type='o', pch=16, lwd=3)
 lines(yearly$year, yearly$milenio,
 col=colors[2], type='o', pch=16, lwd=3)
-print("hello")
-print("hello")
 setwd('~/github/cs571/homework/hw7')
 Problem 2
 beta02 = rbeta(1000, 0.2, 0.2)
-length(beta02)
-beta1 = rbeta(1000, 1, 1)
+beta1  = rbeta(1000, 1, 1)
 beta10 = rbeta(1000, 10, 10)
-hist(beta02)
-hist(beta02, main="Histogram of Beta Samples", xlab="alpha=(0.2, 0.2)")
-hist(beta1, main="", xlab="alpha=(1, 1)")
-hist(beta10, main="", xlab="alpha=(10, 10)")
-par(mfrow=c(3,1))
-hist(beta02, main="", xlab="alpha=(0.2, 0.2)")
-hist(beta1, main="", xlab="alpha=(1, 1)")
-hist(beta10, main="", xlab="alpha=(10, 10)")
-pdf("betasamps.pdf")
+pdf("betasamps.pdf", height=6, width=2)
 par(mfrow=c(3,1))
 hist(beta02, main="", xlab="alpha=(0.2, 0.2)")
 hist(beta1, main="", xlab="alpha=(1, 1)")
 hist(beta10, main="", xlab="alpha=(10, 10)")
 dev.off()
-pdf("betasamps.pdf", height=6, width=w)

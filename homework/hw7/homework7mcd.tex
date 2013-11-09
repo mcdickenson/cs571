@@ -49,14 +49,35 @@
 
 \paragraph{A} 
 
-\paragraph{B}
+We use the forward KL divergence, minimized with respect to $q(x)$:
+\begin{eqnarray*}
+KL (p || q) &=& \sum_x p(x, y) \log {p(x, y) \over q(x , y)} \\
+ &=& \sum_x p(x, y) \log {p(x, y) \over q(x) q(y)} \\
+\log q(x) &=& \log \int_y q(x,y) dy \\
+ &=& \log \int_y q(x) q(y) dy \\
+ &=& \log \int_y q(x) q(y) {p(x,y) \over p(x,y)} dy \\
+ &=& \log \int_y p(x,y) {q(x)q(y) \ over p(x,y)} dy \\
+ &=& \log p(x) {q(x) \mathbb{E}[q(y)] \over p(x)} \\
+ &=& \log p(x)q(x) \mathbb{E}[q(y)] - p(x) \\
+KL (\tilde{p} || q) &=& - \mathbb{E}[\log q(x) q(y)] + \mathbb{E}[\log p(x)] - \log p(x) 
+\end{eqnarray*}
+
+We can disregard the last term of the last line as a constant.
+
+\begin{eqnarray*}
+{\partial \over \partial q(x)} KL (\tilde{p} || q) &=& 0 \\
+-{\mathbb{E}[q(y)] \over q(x)} + {1 \over \mathbb{E}[p(x)]} &=& 0 \\
+q(x) &=& \mathbb{E}[p(x)q(y)]
+\end{eqnarray*}
+
+\paragraph{B} The variational updates applied from this approach will be appropriate under two conditions: we expect that $q(x)$ will not be close to zero (which would lead to very large divergence) and that the true distribution is unimodal. These constraints are valid in some situations, but in general it is safer to use the backwards KL divergence as we did in class. 
 
 \end{answer}
 
 
 \begin{answer}{2}
 
-\paragraph{A} We expect values of $\pi_j$ (with $K=3$ for this example) close to $(1,0,0), (0,1,0)$, or $(0,0,1)$ with high probability, but assign very low probbaility to $pi_j=(\frac{1}{3}, \frac{1}{3}, \frac{1}{3})$.
+\paragraph{A} We expect values of $\pi_j$ (with $K=3$ for this example) close to $(1,0,0), (0,1,0)$, or $(0,0,1)$ with high probability, but assign very low probbaility to $\pi_j=(\frac{1}{3}, \frac{1}{3}, \frac{1}{3})$.
 
 \paragraph{B} In this case, $\pi_j$ is uniform.
 
