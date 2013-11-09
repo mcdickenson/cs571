@@ -1,0 +1,335 @@
+head(exc_post_odds)
+exc_post_odds = epo* lbf.all
+head(exc_post_odds)
+tableize2 = function(post_odds, other_odds){#
+	tmp = post_odds#
+	highest_post_odds_rows = c()#
+	highind = highest_post_odds_rows#
+	highind = which.max(post_odds)#
+	highindvals = post_odds[highind]#
+	tmp[highind] = 0 #
+	for(i in 1:9){#
+		mini = min(highindvals)#
+		new = which.max(tmp)#
+		tmp[new] = 0 #
+		highind = c(highind, new)#
+	}#
+#
+	highind = rev(highind)#
+	highindvals = post_odds[highind]#
+	other_vals = other_odds[highind]#
+	vars_included = gam.all[highind,]#
+	vars = matrix(NA, nrow=10, ncol=1)#
+	for(row in 1:10){#
+		vars[row] = ""#
+		for(col in colnames(gam.all)){#
+			if(vars_included[row, col]){#
+				if(nchar(vars[row])>0){sp=", "}#
+				else{sp=""}#
+				vars[row] = paste(vars[row], col, sep=sp)#
+			}#
+		}#
+	}#
+#
+	highindvals = round(highindvals, 5)#
+	other_vals = round(other_vals, 5)#
+	table_data = cbind(vars, other_vals, highindvals)#
+	print(xtable(table_data), digits=5)#
+	return(highindvals)#
+}
+highexcvals = tableize2(exc_post_odds, ind_post_odds)
+.7/1.7
+ind_post_prob = ind_post_odds/(1+ind_post_odds)
+highindvals = tableize(ind_post_odds)
+highindvalsp = tablelize(ind_post_prob)
+highindvalsp = tableize(ind_post_prob)
+epo = apply(exc_prior_odds, 1, mean)
+head(epo)
+exc_post_odds = epo* lbf.all
+head(exc_post_odds)
+exc_post_probs = exc_post_odds/(1+exc_post_odds)
+highexcvals = tableize2(exc_post_odds, ind_post_odds)
+highexcvals = tableize2(exc_post_probs, ind_post_probs)
+highexcvals = tableize2(exc_post_probs, ind_post_prob)
+post_incl_prob_ind = gam.all*ind_post_prob
+pipi = apply(post_incl_prob_ind, 2, sum)
+length(pipi)
+pipi
+pipi = apply(post_incl_prob_ind, 2, mean)
+pipi
+colsums = apply(gam.all, 2, sum)
+pipi = apply(post_incl_prob_ind, 2, sum)
+pipi
+colsums
+pipi/colsums
+epp = exc_post_probs / sum(exc_post_probs)
+highexcvals = tableize2(epp, ind_post_prob)
+c(T, F)* 2
+post_incl_prob_ind = gam.all*ind_post_prob
+pipi = apply(post_incl_prob_ind, 2, sum)
+pipisum = sum(pipi)
+pipi/pipisum
+pipi
+post_incl_prob_ind = matrix(NA, nrow=1, ncol=14)
+colnames(post_incl_prob_ind) = colnames(gam.all)
+for(i in 1:14){#
+	post_incl_prob_ind[,i] = sum(ind_post_prob[gam.all[,i]])#
+}
+post_incl_prob_ind
+post_incl_prob_ind = gam.all*ind_post_prob
+pipi = apply(post_incl_prob_ind, 2, sum)
+pipi
+pipi/8192
+colsums = apply(gam.all, 2, sum)
+colsums
+post_incl_prob_exc = gam.all*exc_post_probs
+pipe = apply(post_incl_prob_exc, 2, sum)
+pipe/8192
+sum(exc_post_probs)
+post_incl_prob_exc = gam.all*epp
+pipe = apply(post_incl_prob_exc, 2, sum)
+pipe
+sum(ind_post_prob)
+ipp = ind_post_prob/sum(ind_post_prob)
+post_incl_prob_ind = gam.all*ipp
+pipi = apply(post_incl_prob_ind, 2, sum)
+pipi
+pipe
+tableize2(epp, ipp)
+sum(ind_post_prob)
+pipi
+round(pipi, 3)
+pipe
+round(pipe, 3)
+install.packages("verification")
+library(verification)
+library(ROCR)
+install.packages("ROCR")
+library(ROCR)
+install.packages("dma")
+library(dma)
+coef = c(.08, -.4, -.1)
+coefmat = cbind(rep(coef[1], 200), rep(coef[2], 200), rep(coef[3], 200))
+coefmat = cbind(coefmat, seq(1, .45, length.out=nrow(coefmat)), seq(-.75, -.14, length.out=nrow(coefmat)))
+coefmat<-cbind(rep(coef[1],200),rep(coef[2],200),rep(coef[3],200))
+coefmat<-cbind(coefmat,seq(1,.45,length.out=nrow(coefmat)),#
+seq(-.75,-.15,length.out=nrow(coefmat)),
+c(rep(-1.5,nrow(coefmat)/2),rep(-.5,nrow(coefmat)/2)))
+npar = ncol(coefmat)-1
+dat = matrix(rnorm(200*npar), 0, 1, 200, npar)
+dat = matrix(rnorm(200*npar), 0, 1, 200, (npar))
+dat = matrix(rnorm(200*npar), 0, 1), 200, (npar))
+dat = matrix(rnorm(200*(npar), 0, 1), 200, (npar))
+ydat<-exp(rowSums((cbind(rep(1,nrow(dat)),dat))[1:100,]*coefmat[1:100,]))/#
+(1+exp(rowSums(cbind(rep(1,nrow(dat)),dat)[1:100,]*coefmat[1:100,])))#
+y<-c(ydat,exp(rowSums(cbind(rep(1,nrow(dat)),dat)[-c(1:100),c(1,5,6)]*#
+coefmat[-c(1:100),c(1,5,6)]))/#
+(1+exp(rowSums(cbind(rep(1,nrow(dat)),dat)[-c(1:100),c(1,5,6)]*#
+coefmat[-c(1:100),c(1,5,6)]))))
+u = runif(length(y))
+y = as.numeric(u < y)
+mmat = matrix(c(1,1,1,1,1,0,0,0,1,1,1,0,1,0,1),3,5,byrow=TRUE)
+mmat
+ldma.test = logistic.dma(dat, y mmat, lambda=.99, alpha=.99, autotune=FALSE)
+ldma.test = logistic.dma(dat, y, mmat, lambda=.99, alpha=.99, autotune=FALSE)
+install.packages(mnormt)
+install.packages('mnormt')
+install.packages('MASS')
+ldma.test = logistic.dma(dat, y, mmat, lambda=.99, alpha=.99, autotune=FALSE)
+plot(ldma.test)
+install.packages("pglm", repos='http://cran.us.r-project.org')
+install.packages("msm")
+library(msm)
+data("cav")
+cav = cav[!is.na(cav$pdiag),]
+head(cav)
+statetable.msm(state, PTNUM, data=cav)
+twoway4.q = rbind(c(0, 0.25, 0, 0.25), c(0.166, 0, 0.166, 0.166), c(0, 0.25, 0, 0.25), c(0, 0, 0, 0))
+rownames(twoway4.q) = colnames(twoway4.q) = c("Well", "Mild", "Severe", "Death")
+twoway4.q
+cav.msm = msm(state ~ years, subject=PTNUM, data=cav, qmatrix=twoway4.q, death=4)
+cav.msm
+pmatrix.msm(cav.msm, t=1, ci="normal")
+ihd = as.numeric(cav[, "pdiag"] == "IHD")
+cav.cov.msm = msm(state ~ years, subject=PTNUM, data=cav, covariates = ~ dage + ihd, qmatrix = twoway4.q, death=4, method="BFGS", control=list(fnscale=4000, maxit=10000))
+hazard.msm(cav.cov.msm)
+coef.msm(cav.cov.msm)
+lrtest.msm(cav.msm, cav.cov.msm)
+plot.msm(cav.cov.msm)
+data("fev")
+head(fev)
+install.packages("e1071")
+x = array(data=c(0,0,1,1,0,1,0,1), dim=c(4,2))
+y = factor(c(1,-1,-1,1))
+model = svm(x, y, type="C-classification")
+library(e1071)
+model = svm(x, y, type="C-classification")
+predict(model, x)
+install.packages("RWeka")
+install.packages("verification")
+install.packages("ROCR")
+library(Hmisc)
+install.packages("Hmisc")
+library(DMwR)
+data(iris)
+data = iris[, c(1,2,5)]
+data$Species = factor(ifelse(data$Species)=="setosa", "rare", "common")
+data$Species = factor(ifelse(data$Species=="setosa", "rare", "common"))
+iris.smote = SMOTE(Species ~ ., data, perc.over=600)
+table(iris.smote$Species)
+classTree = SMOTE(Species ~., data, perc.over=600, learner="rpartXse", se=0.5)
+classTree
+install.packages("randomForest")
+x = seq(-2, -4, by=0.01)
+x = seq(-4, -2, by=0.01)
+f = function(x){ y=(x^2 - 9)/(x+3); return(y)}
+y = f(x)
+plot(x, y)
+plot(x, y, type='l')
+install.packages('nnet')
+install.packages('kernlab')
+install.packages('earth')
+install.packages('~/Dropbox/CRISP/package/package0.2.2/CRISP_0.2.2.tar.gz', repos = NULL, type="source")
+library(CRISP)
+install.package('maptools')
+install.packages(c('maptools', 'pscl', 'corpcor', 'cshapes', 'shape'))
+install.packages('~/Dropbox/CRISP/package/package0.2.2/CRISP_0.2.2.tar.gz', repos = NULL, type="source")
+library(CRISP)
+data(crisp.data)
+data(predict.data)
+data(cutoffs)
+crisp.data$X64...ZF....l1cut <- ifelse(crisp.data$X64...ZF....l1>=500,500,crisp.data$X64...ZF....l1)#
+crisp.data$fdipc.l1 <- crisp.data$BX.KLT.DINV.CD.WD.l1/crisp.data$SP.POP.TOTL.l1#
+crisp.data$fdipc.l1cut <- ifelse(crisp.data$fdipc.l1>=10000,10000,crisp.data$fdipc.l1)#
+crisp.data$fdi_gdp.l1 <- crisp.data$BX.KLT.DINV.CD.WD.l1/crisp.data$NY.GDP.MKTP.KD.l1#
+crisp.data$iraq <- ifelse(crisp.data$ccode==645,1,0)#
+crisp.data$afg <- ifelse(crisp.data$ccode==700,1,0)#
+crisp.data$fdi.l1 <- crisp.data$BX.KLT.DINV.CD.WD.l1#
+predict.data$X64...ZF....l1cut <- ifelse(predict.data$X64...ZF....l1>=500,500,predict.data$X64...ZF....l1)#
+predict.data$fdipc.l1 <- predict.data$BX.KLT.DINV.CD.WD.l1/predict.data$SP.POP.TOTL.l1#
+predict.data$fdipc.l1cut <- ifelse(predict.data$fdipc.l1>=10000,10000,predict.data$fdipc.l1)#
+predict.data$fdi_gdp.l1 <- predict.data$BX.KLT.DINV.CD.WD.l1/predict.data$NY.GDP.MKTP.KD.l1#
+predict.data$iraq <- ifelse(predict.data$ccode==645,1,0)#
+predict.data$afg <- ifelse(predict.data$ccode==700,1,0)
+training <- crisp.data[crisp.data$date <= cutoffs$trainingend,]#
+test <- crisp.data[crisp.data$date >= cutoffs$teststart,]
+MSE <- function(model, data){#
+  y <- names(model$model)[1]#
+  pred <- predict(model, newdata=data)#
+  diff <- (data[, y] - pred)^2#
+  output <- sum(diff)/length(diff)#
+  print(output)#
+}
+model.ins <- zeroinfl(#
+  ins.h.count.both ~ 1 + W.centdist.std.rebellion.l1 + eth.rel.h.count.l1 |  1 + #
+  ins.h.count.both.l1 + log(NY.GDP.PCAP.KD.l1), #
+  dist='negbin', link='logit', data=training)#
+#
+summary(model.ins)#
+MSE(model.ins, training) # 94.8#
+MSE(model.ins, test) # 0.37
+par(mfrow=c(1,2))
+plot.countfit(model.ins, training, title="In-Sample Insurgency Model")
+plot.countfit(model.ins, test, title="Out-of-Sample Insurgency Model")
+dev.off()
+check <- function(model){#
+	print(summary(model))#
+	print(MSE(model, training))#
+	print(MSE(model, test))#
+#
+	par(mfrow=c(1,2))#
+	plot.countfit(model, training, title="In-Sample Insurgency Model")#
+	plot.countfit(model, test, title="Out-of-Sample Insurgency Model")#
+}
+model.mcd <- zeroinfl(#
+  ins.h.count.both ~ 1 + W.centdist.std.rebellion.l1 + eth.rel.h.count.l1 +#
+  State.Dept. +  fdi.l1 + exclpop + ProxElection |  1 + #
+  ins.h.count.both.l1 + log(NY.GDP.PCAP.KD.l1), #
+  dist='negbin', link='logit', data=training)#
+#
+summary(model.mcd)#
+MSE(model.ins, training) # 4.33#
+MSE(model.ins, test) # 0.326
+ls()
+head(crisp.data)
+install.packages('~/Dropbox/wicews/packages/package/SERIFpackage/package0.7.2/wicews_0.7.2.tar.gz', repos = NULL, type="source")
+install.packages('~/Dropbox/wicews/package/SERIFpackage/package0.7.2/wicews_0.7.2.tar.gz', repos = NULL, type="source")
+library(wicews)
+data(wicews.data)
+data(wicews)
+data(icews)
+head(icews)
+install.packages('expm')
+set.seed(123)
+tmat = matrix(rnorm(16)^2, ncol=4)
+tmat = tmat/rowSums(tmat)
+tmat
+require(expm)
+matplot(t(sapply(1:20, function(x) matrix(c(1,0,0,0), ncol=4), %*% (tmat(%^% x)))))
+matplot( t(sapply(1:20, function(x) matrix(c(1,0,0,0), ncol=4) %*% (tmat %^% x) ) ) )
+install.packages('bigmemory')
+install.packages('biganalytics')
+install.packages('biglm')
+library(bigmemory)
+library(biganalytics)
+?read.big.matrix
+install.packages('biglm')
+install.packages('bigtabulate')
+egy = read.csv('~/dropbox/gdelt-egypt-turkey/carto-data/both-egypt-clean-20130725.csv')
+dim(egy)
+head(egy)
+library(doBy)
+egysum = summaryBy(igdelt + iicews ~ SenderActor + Latitude + Longitude + Source )
+egysum = summaryBy(igdelt + iicews ~ SenderActor + Latitude + Longitude + Source, data=egy)
+dim(egysum)
+head(egysum)
+egysum = summaryBy(igdelt + iicews ~ SenderActor + Latitude + Longitude + Source, data=egy, FUN=sum)
+head(egysum)
+colnames(egysum)[5] = 'gdeltsum'
+head(egysum)
+colnames(egysum)[6] = 'icewssum'
+head(egysum)
+egy2 = merge(egy, egysum, by=c('SenderActor', 'Latitude', 'Longitude', 'Source'), all.x=TRUE)
+dim(egy2)
+head(egy2)
+tail(egy2)
+egy2$maxsum = ifelse(egy2$gdeltsum>=egy2$icewssum, egy2$gdeltsum, egy2$icewssum)
+summary(egy2$maxsum)
+write.csv(egy2, file='~/dropbox/gdelt-egypt-turky/carto-data/both-egypt-clean-sum-20130725.csv')
+write.csv(egy2, file='~/dropbox/gdelt-egypt-turkey/carto-data/both-egypt-clean-sum-20130725.csv')
+write.csv(egy2, file='~/dropbox/gdelt-egypt-turkey/carto-data/both-egypt-clean-sum-20130725.csv', row.names=FALSE)
+log(1, 2)
+log(2, 1)
+plot(yearly$year, yearly$inegi,
+ylim = c(0, 30000),
+xlab="Year", ylab="Murders",
+col=colors[1], type='o', pch=16, lwd=3)
+lines(yearly$year, yearly$snsp,
+col=colors[4], type='o', pch=16, lwd=3)
+lines(yearly$year, yearly$reforma,
+col=colors[3], type='o', pch=16, lwd=3)
+lines(yearly$year, yearly$milenio,
+col=colors[2], type='o', pch=16, lwd=3)
+print("hello")
+print("hello")
+setwd('~/github/cs571/homework/hw7')
+Problem 2
+beta02 = rbeta(1000, 0.2, 0.2)
+length(beta02)
+beta1 = rbeta(1000, 1, 1)
+beta10 = rbeta(1000, 10, 10)
+hist(beta02)
+hist(beta02, main="Histogram of Beta Samples", xlab="alpha=(0.2, 0.2)")
+hist(beta1, main="", xlab="alpha=(1, 1)")
+hist(beta10, main="", xlab="alpha=(10, 10)")
+par(mfrow=c(3,1))
+hist(beta02, main="", xlab="alpha=(0.2, 0.2)")
+hist(beta1, main="", xlab="alpha=(1, 1)")
+hist(beta10, main="", xlab="alpha=(10, 10)")
+pdf("betasamps.pdf")
+par(mfrow=c(3,1))
+hist(beta02, main="", xlab="alpha=(0.2, 0.2)")
+hist(beta1, main="", xlab="alpha=(1, 1)")
+hist(beta10, main="", xlab="alpha=(10, 10)")
+dev.off()
+pdf("betasamps.pdf", height=6, width=w)
