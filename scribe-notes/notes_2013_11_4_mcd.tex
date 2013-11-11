@@ -3,6 +3,7 @@
 \usepackage{epsfig}
 \usepackage{amsfonts}
 \usepackage{tikz}
+\usepackage{amsthm}
 
 \setlength{\oddsidemargin}{0.25 in}
 \setlength{\evensidemargin}{-0.25 in}
@@ -39,6 +40,52 @@
 \lecture{Variational Inference}{11/4/13}{Barbara Engelhardt}{Tracy Schifeling, Alireza Samany, and Matt Dickenson}
 
 \section{Introduction}
+In this lecture we will  further discuss Variational Inference and then proceed with Loopy Belief Propagation,also known as LBP.In the last lecture we discussed Mean Field Variational Inference and we investigated the matter in the context of having univariate Gaussians.In this lecture,we will talk further about Variational Inference in the context of the Ising Model,which is a Markov random field,and then we proceed with Mean Field and Loopy Belief Propagation.Let us begin by reviewing Variational Inference.\\In Variational Inference,we have our data set as $\mathcal{D}=\{X_1,X_2,\dots,X_n\}$ and we are going to describe both our latent variables ,$Z_{1:m}$,and the set of our model parameteres,$\theta$,by a single parametere $Z$ such that $Z=\{Z_{1:m},\theta \}$.
+As always,we are interested at estimating the posterior probability of latent variables given the data,which is $p(Z|X)$.By definition of the conditional distribution,we know that the posterior probability of latent variables given data is equal to the joint distribution of latent variables and data divided by the marginal probability of the data(observed variables).Therefore,we have :\\
+$p(Z|X)=\frac{p(Z,X)}{\int_Z{p(Z,X)dZ}}$\\
+The posterior distribution is an important concept because it serves as a function which links our model parameters to the data.It tells us how the observed data affect our belief about the parameters.This important property makes deriving the posterior distribution an important goal in Gibbs Sampling,Exact Inference and also Variational Inference,which is just another method to compute an approximation to this important distribution. 
+In general,computing the posterior distribution for several distributions,such as truncated Gaussians or Gaussians mixture models,can be very hard.This issue obliges us to restort to computing approximates for the posterior distribution.For example,consider the case of Gaussian Mixture Models.Let us assume the standard mixture model where each class specific mean $\mu_k$ is distributed according to $\mu_k \sim \mathcal{N}(0,\tau^2)$,our latent variables $Z_i$ have the distribution $Z_i \sim Mult(\pi)$ for a fixed hyper parameter $\pi$ and the data $X_i$ is distributed as $X_i \sim \mathcal{N}(\mu_k,\Sigma_k)$.So our model will be :\\
+$\mu_k \sim \mathcal{N}(0,\tau^2)$\\
+$Z_i \sim Mult(\pi)$\\
+$X_i \sim \mathcal{N}(\mu_k,\Sigma_k)$\\
+
+which leads to the following expression for the posterior distribution using the chain rule:\\
+$p(\mu,Z|X)=\frac{\prod_{k=1}^K{p(\mu_k)}x \prod_{i=1}^n{p(Z_i|\pi)x p(Z_i|X_i,\mu_{1:k})}}{\int_{\mu_{1:K}} \Sigma_{Z_{1:n}}\prod_{k=1}^K{p(\mu_k)}x \prod_{i=1}^n{p(Z_i|\pi)x p(Z_i|X_i,\mu_{1:k})}d\mu_{1:K}}$\\
+The numerator is simple to compute.However,computing the denumerator is exponentially difficult.In addition,the integral in the denumerator is not generally straightforward.These problems serve as our motivation for finding approximate posterior distributions as we need to tackle the same  problem again once we discuss LDA models which also lead to exponentially hard denumerators.\\
+
+Let us return to our previous discussion on the space of possible parametrizations of our original posterior distributions named $mathcal{M}$.It turns out that if we consider all the values of $Z$ which are consistent with the posterior distribution derived above,we have a theorem that for most models such as Gaussian models and many discrete models,for the given data the $Z$ parameters lie in a convex polytope.
+The immediate advantage of this fact is that we can do optimization over a convex space to find the parameteres $Z$.However,the denisty on the space $M$ might not have a form convenient to optimize as we have previously for the Gaussian Mixture Model.\\
+\begin{picture}(150,150)(-150,0)
+
+\put(0,50){\line(1,1){50}}
+\put(50,100){\line(1,0){50}}
+\put(100,100){\line(1,-1){50}}
+\put(150,50){\line(-1,-1){50}}
+\put(100,0){\line(-1,0){50}}
+\put(50,00){\line(-1,1){50}}
+\put(75,50){$\mathcal{M}$}
+\put(90,75){.Z}
+\makebox(140,-20)[40]{Convex polytope $\mathcal{M}$ conatining the  possible parameter values $Z$}
+\end{picture}
+\\
+
+
+Let us review Mean Field in order to fully understand our goal in Variational Inference.Our goal in the Mean Field is to find a fully factorized posterior distribution.We assume an approximation to the posterior in the form of $q(Z)=\prod_{i=1}^m{q(Z_i)}$and attempt to obtain the following:\\
+\[ \min_{Z}{KL(q(Z)||p(Z|X))} \]\\
+We should note that each variable is assumed to be independent of others here.Remember that based on the reverse KL divergence,we need the support of $q(Z)$ to entirely lie in the support of $p(Z|X)$.The margingal independence assumption we imposed here leads us to a parameterization space which is no longer convex as shown in the figure below.However,this new space,called $\mathcal{M}_{MF}$, turns out to be straightforward to search over when we use  computable expressions for $q(Z_i)$.We should note that it is very possible that the desired $Z^*$ does not lie in $\mathcal{M}_MF$.\\
+\includegraphics{convexpolytope}\\
+Here we do the optimization above using an unnormalized $p(Z|X)$,but let us look at the optimzation above from an entirely different perspective by using a concept called the Evidence Lower Bound,also known as ELBO.
+\subsection{Evidence Lower Bound}
+Let us recall Jensen's Inequality first.According tpo jensen's Inequality,we know that for a given convex function $f(.)$ we have $E[f(x)] \le f(E[x])$.This can be derived directly using the definition of expectation and applying the convexity property of $f(.)$.As $log(x)$ is a convex function,we can apply Jensen's Inequality to it.Let us consider $log(p(X))$.We have:\\
+$log(p(X))=log \int_Z{p(X,Z)}dZ=log \int_Z{p(X,Z)x \frac{q(Z)}{q(Z)}dZ=log E_q[\frac {p(X,Z)}{q(Z)}]$\\
+Using Jensen's Inequality,we have:\\
+$log(p(X))=log E_q[\frac {p(X,Z)}{q(Z)}] \ge E_q[log(\frac {p(X,Z)}{q(Z)})]=E_q[log(p(X,Z))]-E_q[log(q(Z))]$\\
+Let us recall a result we have derived in the last lecture:\\
+$KL(q|| \~ p)=-E_q[log(p(Z,X)]+E_q[log(q(Z)]+log(p(X)) \Rightarrow KL(q|| \~ p)=-ELBO+log(p(X))$
+Therefore,ELBO is KL divergence with unnormalized posterior.Since $p(X)$ is independent of $q(Z)$,minimizing the KL divergence is equivalent to minimizing the ELBO.
+Therefore there are two steps to minimize the KL divergence:\\
+1.Choosing a proposition,$q$, such that the expectations are computable.\\
+2.Maximize $q(Z)$ w.r.t ELBO in order to obtain the tightest possible approximation to $p(X,Z)$.
 
 
 \section{Ising Model}
@@ -55,13 +102,13 @@ For example, suppose our goal is to reconstruct a denoised image given noisy obs
 \foreach \i in {1,...,9}
 {
         \pgfmathtruncatemacro{\y}{(\i - 1) / 3};
-        \pgfmathtruncatemacro{\x}{\i - 3 * \y};
-        \pgfmathtruncatemacro{\label}{\x + 3 * (2 - \y)};
-        \pgfmathtruncatemacro{\labely}{(\x + 3 * (2 - \y))*10};
+        \pgfmathtruncatemacro{x}{\i - 3 * \y};
+        \pgfmathtruncatemacro{\label}{x + 3 * (2 - \y)};
+        \pgfmathtruncatemacro{\labely}{(x + 3 * (2 - \y))*10};
         \node[circle,draw=black,fill=white,minimum size=20]
-        (\label) at (1.5*\x,1.5*\y) {$x_\label$};
+        (\label) at (1.5*x,1.5*\y) {$x_\label$};
         \node[circle,draw=black,fill=white!80!black,minimum size=20]
-        (\labely) at (1.5*\x-0.8,1.5*\y-0.8) {$y_\label$};
+        (\labely) at (1.5*x-0.8,1.5*\y-0.8) {$y_\label$};
 }
 % Lattice of X's
 \draw (1) -- (2);
@@ -123,16 +170,16 @@ Having seen an example of a basic Ising model, we now turn our attention to how 
 \foreach \i in {1,...,3}
 {
         \pgfmathtruncatemacro{\y}{(\i - 1) / 3};
-        \pgfmathtruncatemacro{\x}{\i - 3 * \y};
-        \pgfmathtruncatemacro{\label}{\x};
-        \pgfmathtruncatemacro{\labely}{\x*10};
-        \pgfmathtruncatemacro{\labelm}{\x*100};
+        \pgfmathtruncatemacro{x}{\i - 3 * \y};
+        \pgfmathtruncatemacro{\label}{x};
+        \pgfmathtruncatemacro{\labely}{x*10};
+        \pgfmathtruncatemacro{\labelm}{x*100};
         \node[circle,draw=black,fill=white,minimum size=20]
-        (\label) at (1.5*\x,1.5*\y) {$x_\label$};
+        (\label) at (1.5*x,1.5*\y) {$x_\label$};
         \node[circle,draw=black,fill=white!80!black,minimum size=20]
-        (\labely) at (1.5*\x-0.8,1.5*\y-0.8) {$y_\label$};
+        (\labely) at (1.5*x-0.8,1.5*\y-0.8) {$y_\label$};
         \node[circle,draw=black,fill=white,minimum size=20]
-        (\labelm) at (1.5*\x+0.8,1.5*\y+0.8) {$\mu_\label$};
+        (\labelm) at (1.5*x+0.8,1.5*\y+0.8) {$\mu_\label$};
 }
 \draw (1) -- (10);
 \draw (2) -- (20);
