@@ -1,5 +1,6 @@
 \documentclass[12pt,letterpaper]{article} % For LaTeX2e
 \usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{booktabs}
 \usepackage{fullpage}
 \usepackage{graphicx}
 \usepackage{lastpage}
@@ -58,19 +59,64 @@ Can classification methods help to automate the production of political indicato
 
 \section{Methods}
 
+\subsection{Problem Definition and Data Sources}
 % Summarize your data, describing the problem you are attempting to solve (e.g., prediction, classification). 
 
+The problem that this project attempts to solve is the classification of country dyad months (e.g. \texttt{USA-China-2012-May}) as either in conflict or not. To achieve this, we will use real time (daily) event data from the Global Database of Events, Language, and Tone (GDELT), aggregated up to the dyad month level for 1992-present. To measure the dependent variable of conflict, the Militarized Interstate Disputes (MID) dataset will be split into subsets for training and validation. The goal of this project is to replicate and extend MID data coding as accurately as possible using automated procedures. If a reliable method can be developed to replicate the MID data up to 2001, it can then be extended to generate data for interstate disputes since 2001. 
+% Cite gdelt
+% Cite mids
+
+
+\subsection{Features of the Data}
 % Describe the features that you will use from your data to solve this problem. 
+
+In work on this project thus far, several important features of the GDELT data have been identified. All events in GDELT are classified according to the CAMEO coding scheme. Within this scheme, there are two major distinctions along two dimensions: acts can be material or verbal, and interactions can be cooperative or conflictual. These four categories provide a rough characterization of how two countries interact within a given period of time. More fine-grain classification, into twenty subcategories, is also provided. Examples of these categories are presented in Table \ref{cameo}.
+% Cite cameo
+
+\begin{table}[t]
+\caption{CAMEO event categories and descriptions}
+\label{cameo}
+\begin{center}
+\begin{tabular}{lp{2in}p{2in}}
+& \textbf{Cooperative} & \textbf{Conflictual} \\
+\midrule
+\textbf{Verbal} & public statement, appeal, express intent to cooperate, consult, engage in diplomatic cooperation & demand, disapprove, reject, threaten, protest \\
+\textbf{Material} & cooperate materially, provide aid, yield, investigate & exhibit fore posture, reduce relations, coerce, assault, fight, use conventional mass violence
+\end{tabular}
+\end{center}
+\end{table}
+
+During the process of aggregating GDELT records into dyad months, the absolute number of events within each of the four major and twenty minor categories was counted. From these raw counts, the monthly change in counts and percentages, as well as the relative frequency of each interaction type was computed. These features--proportion of interactions that were conflictual versus cooperative, and how sharply events changed from the previous month--will be used as predictors for the classification procedure. 
+
+\subsection{Model}
 
 % Present your mathematical model in a rigorous and clear way with equations when necessary. 
 
 % Please specify the random variables and parameters in your model (for example, xi ∈ R are real-valued and yj are categorical variables), and 
 
+
+The mathematical model for this project is that a binary indicator of conflict, $y$, between country $i$ and country $j$ at time $t$ is a function of observed interactions between them in month $t$. Formally, 
+\begin{eqnarray*}
+\hat{y}_{i,j,t}|x &=& f(\Delta x_{i,j,t} + z_{i,j,t})
+\end{eqnarray*}
+
+The conflict indicators $y_{i,j,t}$ are binary $(0,1)$. The observations $x_{i,j,t}$ consist of the month-to-month change in interactions between $i$ and $j$ within each of the event categories described above ($\Delta x_{i,j,t} = x_{i,j,t} - x_{i,j,t-1}$). Thus, $x$ is a count variable that can take on positive or negative values ($x \in \mathbb{Z}$). The observations $z_{i,j,t}$ measure the relative frequency of conflictual interactions as a percentage of the total $n$ observations for the dyad-month: 
+\begin{eqnarray*}
+z_{i,j,t} = {\sum_{k=1}^n x_{i,j,t,k} \mathbb{I}(\text{conflictual})  \over \sum_{k=1}^n x_{i,j,t-1,k} }.
+\end{eqnarray*}
+
 % provide interpretations for these variables (i.e., which are observed, which are hidden, and which you will be estimating, and how each of the observed values will be processed from the original data). 
+
+Both the $x$ and $z$ values are observed in the GDELT data. The indicator of conflict, $y$, is observed in the MID data, and predicted indicators of conflict $\hat{y}$ will be estimated. The predicted values $\hat{y}$ for the test set can be compared to the actual MID data to assess how well the model works out-of-sample. This will give us a sense of how accurate the classifications for post-2001 data will be. Even though these values will not be perfectly accurate, they should give us a good approximation of which countries experienced conflict since 2001 and can help speed up the production of the next generation of MID data. 
+
+\subsection{Machine Learning Method}
 
 % In three sentences, describe the inference problem and what methods you will use for this task.
 
-% This work should be approximately 1-2 pages in TeX, and this text can be used directly in your project report. Please feel free to use the final project report TeX template to write this homework up.
+The inference problem is to compute a function $f(\cdot)$ that maps country interactions to estimate an indicator of whether conflict occurred. To accomplish this, this project will use a support vector machine (SVM). This method is appropriate for binary classification with real-valued predictors, which makes it well suited for this project.
+
+
+
 
 % \section{Results}
 
