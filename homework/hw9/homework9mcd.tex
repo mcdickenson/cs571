@@ -70,6 +70,44 @@ A simple choice for the base distribution is $G_0$ is the Gamma distribution, du
 \paragraph{B}
 % Write out the equation that you would use in your Gibbs sampler for cluster as- signment. Exploit exchangeability (i.e. treat each data point as if it were the last to arrive at the restaurant, then remove it from it’s current cluster assignment, and reassign it to a cluster using this equation).
 
+For the cluster assignment step in the Gibbs sampler, we can exploit exchangeability. 
+
+
+\begin{lstlisting}
+cluster = function(x, centroids, alpha){
+	# do the restaurant process 
+	table_counts = restaurant(x, alpha)
+	table_props = table_counts/sum(table_counts)
+	num_tables = length(table_counts)
+
+	# then exploit permutation
+	permuted_x = sample(x)
+	n = length(x)
+	table_assignments = rep(NA, n)
+
+	# pretend each x is last to arrive 
+	for(i in 1:length(permuted_x)){
+		table_i = sample(c(1:num_tables), 1, prob=table_props)
+		table_assignments[i] = table_i 
+	}
+}
+
+restaurant = function(x, alpha){
+	table_counts = c(1) # number of 'customers' at each 'table'
+											# first customer at first table 
+	for(m in 2:n){
+		tmp = c(table_counts, alpha)
+		table_props = tmp/sum(tmp)
+
+		# assign each 'customer' to a 'table' according to crp
+		table_m = sample(c(1:length(tmp)), 1, prob=table_props)
+		if(table_m==length(tmp)){ table_counts[table_m] = 1}
+		else{ table_counts[table_m] = table_counts[table_m] + 1}
+	}
+	return(table_counts) # sufficient statistic
+}
+\end{lstlisting}
+
 \paragraph{C}
 % How does this algorithm handle empty clusters?
 
