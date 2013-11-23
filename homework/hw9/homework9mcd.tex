@@ -1,0 +1,75 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{lastpage}
+\usepackage{listings}
+\lstset{
+	numbers=left,
+	numbersep=5pt,
+	stepnumber=1,
+	tabsize=2,
+	showstringspaces=false
+}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{mathrsfs}
+\usepackage{cancel}
+\usepackage{xcolor}
+\usepackage[margin=3cm]{geometry}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+
+% Edit these as appropriate
+\newcommand\course{STA561/CS571}
+\newcommand\semester{Fall 2013}     % <-- current semester
+\newcommand\hwnum{9}                  % <-- homework number
+\newcommand\yourname{Matt Dickenson} % <-- your name
+\newcommand\login{mcd31}           % <-- your NetID
+\newcommand\hwdate{Due: 25 November, 2013}           % <-- HW due date
+
+\newenvironment{answer}[1]{
+  \subsubsection*{Problem #1}
+}
+
+
+\pagestyle{fancyplain}
+\headheight 35pt
+\lhead{\yourname\ \texttt{\login}\\\course\ --- \semester}
+\chead{\textbf{\Large Homework \hwnum}}
+\rhead{\hwdate}
+\headsep 10pt
+
+\begin{document}
+
+\noindent \emph{Homework Notes:} I did not work with anyone else on this homework or refer to resources other than the course notes, textbook, and course Piazza page.
+
+\begin{answer}{1}
+% Statement of the problem: Given a data set X ∈ R1000×1 with an unknown number of cluster components, propose an algorithm which simultaneously identifies the number of cluster components and clusters the data.
+
+% Now that we know about Dirichlet processes, we will put a DP prior on the partition of our data into clusters. Let us put this model in a probabilistic framework: let each cluster represent a univariate Gaussian distribution; this model will then represent an infinite Gaussian mixture model. In this mapping to our Chinese Restaurant Process metaphor, a table at a restaurant is a cluster, and a data point is a customer.
+
+\paragraph{A}
+% Write out the generative model. What is a simple choice of base distribution?
+
+\paragraph{B}
+% Write out the equation that you would use in your Gibbs sampler for cluster as- signment. Exploit exchangeability (i.e. treat each data point as if it were the last to arrive at the restaurant, then remove it from it’s current cluster assignment, and reassign it to a cluster using this equation).
+
+\paragraph{C}
+% How does this algorithm handle empty clusters?
+
+\paragraph{D}
+% Explain how this model addresses the problems we encountered in Homework 4, including how this approach differs from specifying a penalty to cluster size of the form: ‘remove a cluster if it has fewer than γ points assigned to it’.
+
+\end{answer}
+
+
+\begin{answer}{2}
+% You should now have dived into the analysis of your data and chosen a modeling framework and an validation approach. An important step in the research process is to look at what other ideas researchers have used to approach a related problem. In addition to making progress on your project this week, you will perform a literature search to see what other researchers have worked with similar data or related problems. What relevant approaches, feature sets, or kernels have they developed that might be useful in your own analysis? What modeling approaches and simplifying assumptions worked in this related work, and what didn’t work? What can you take from the scientific literature to your project? Write this up as a few paragraphs that will (as with last week’s homework) be included in your final project writeup; include citations.
+
+\end{answer}
+
+
+
+\end{document}
