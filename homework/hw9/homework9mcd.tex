@@ -111,8 +111,12 @@ restaurant = function(x, alpha){
 \paragraph{C}
 % How does this algorithm handle empty clusters?
 
+This algorithm does not discard empty clusters. Because the number of clusters is potentially infinite (in theory), it is possible for an observation to be assigned to a previously empty cluster at any iteration of the Gibbs sampler.
+
 \paragraph{D}
 % Explain how this model addresses the problems we encountered in Homework 4, including how this approach differs from specifying a penalty to cluster size of the form: ‘remove a cluster if it has fewer than γ points assigned to it’.
+
+Rather than discarding clusters with fewer than $\gamma$ points assigned to them, we allow the number of potential clusters to be infinite. Thus, this model better addresses the issue of not knowing the number of clusters \emph{a priori}. If we examine the number of clusters at each iteration of the Gibbs sampler (or across multiple runs), we can even get a posterior distribution over the number of clusters. 
 
 \end{answer}
 
