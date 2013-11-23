@@ -1,4 +1,5 @@
 .DS_Store
+project/lit-rvw/*.pdf
 *.acn
 *.acr
 *.alg

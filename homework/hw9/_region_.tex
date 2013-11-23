@@ -1,4 +1,4 @@
-\documentclass[12pt,letterpaper]{article}
+\message{ !name(homework9mcd.tex)}\documentclass[12pt,letterpaper]{article}
 \usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
 \usepackage{fullpage}
 \usepackage{graphicx}
@@ -43,6 +43,9 @@
 \headsep 10pt
 
 \begin{document}
+
+\message{ !name(homework9mcd.tex) !offset(-3) }
+
 
 \noindent \emph{Homework Notes:} I did not work with anyone else on this homework or refer to resources other than the course notes, textbook, and course Piazza page.
 
@@ -136,9 +139,9 @@ The community has also dealt with challenges when aggregating event data up to v
 
 % What can you take from the scientific literature to your project? 
 
-Interpretability is an important concern in this project due to the policy-relevant nature of the problem and the (potential) need to compare the resulting model to the process used by human coders involved in creating the MID dataset \citep{ghosn2004mid3}. For this reason, ``black box'' methods such as Support Vector Machines were judged to be inappropriate. Classification trees (and their continuous counterpart, regression trees, collectively known as CART) offer a nice alternative that is more flexible than GLMs and more interpretable than Random Forests (these two methods should provide lower and upper bounds, respectively, on CART) \citep{klebanov2008lexical}. CART has been used for event data within conflict studies, and in public health where researchers encounter similar issues of unbalanced and missing data \citep{schrodt1990predicting,speybroeck2012classification,trappl1996digging}.
+Interpretability is an important concern in this project due to the policy-relevant nature of the problem and the (potential) need to compare the resulting model to the process used by human coders involved in creating the MID dataset \citep{ghosn2004mid3}. For this reason, ``black box'' methods such as Support Vector Machines were judged to be inappropriate. Classification trees (and their continuous counterpart, regression trees, collectively known as CART) offer a nice alternative that is more flexible than GLMs and more interpretable than Random Forests (these two methods should provide lower and upper bounds, respectively, on CART) \citep{klebanov2008lexical}. Other uses of CART for event data within conflict studies include \citet{schrodt1990predicting,trappl1996digging}; similar circumstances in public health--unbalanced and missing data--have led to the use of CART there as well \citep{speybroeck2012classification}.
 
-In later stages of this project, several additional tools may help to improve the predictive accuracy of the model. International conflict is a relatively rare event, meaning that in $k$-fold cross validation it is possible that some subsets will have no instances of conflict; to prevent this, synthetic minority over-sampling (SMOTE) could be used \citep{chawla2002smote}. To incorporate interdependencies not captured at the dyadic level, future iterations could also include lags that measure conflict in social or spatial neighbors \citep{gleditsch2000war,gleditsch2001measuring,hoff2004modeling,ward1998democratizing,ward2007disputes,ward2011network}. A Bayesian ensemble model of several classification trees could also improve performance while still maintaining more interpretability than is available in random forests \citep{arva2013improving,montgomery2012improving,Raftery:1995,raftery2005using}. If these methods are successful, the general processing of automating political indicators through the use of event data could also be applied to other widely used indices such as the Polity and Freedom House regime scales (measuring democracy and autocracy). 
+In later stages of this project, several additional tools may help to improve the predictive accuracy of the model. International conflict is a relatively rare event, meaning that in $k$-fold cross validation it is possible that some subsets will have no instances of conflict; to prevent this, synthetic minority over-sampling (SMOTE) could be used \citep{chawla2002smote}. To incorporate interdependencies not captured at the dyadic level, future iterations could also include lags that measure conflict in social or spatial neighbors \citep{gleditsch2000war,gleditsch2001measuring,hoff2004modeling,ward1998democratizing,ward2007disputes,ward2011network}. A Bayesian ensemble model of several classification trees could also improve performance while still maintaining more interpretability than is available in random forests\citep{arva2013improving,montgomery2012improving,Raftery:1995,raftery2005using}. If these methods are successful, the general processing of automating political indicators through the use of event data could also be applied to other widely used indices such as the Polity and Freedom House regime scales (measuring democracy and autocracy). 
 
 
 
@@ -154,3 +157,4 @@ In later stages of this project, several additional tools may help to improve th
 
 
 \end{document}
+\message{ !name(homework9mcd.tex) !offset(-160) }
