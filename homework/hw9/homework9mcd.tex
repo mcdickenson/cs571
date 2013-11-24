@@ -75,22 +75,27 @@ For the cluster assignment step in the Gibbs sampler, we can exploit exchangeabi
 
 
 \begin{lstlisting}
-cluster = function(x, centroids, alpha){
-	# do the restaurant process 
-	table_counts = restaurant(x, alpha)
+cluster = function(x, alpha){
+	# permute the data 
+	permuted_x = sample(x)
+
+	# run the chinese restaurant process 
+	table_counts = restaurant(permuted_x, alpha)
+	table_counts[(length(table_counts)+1)] = alpha 
 	table_props = table_counts/sum(table_counts)
 	num_tables = length(table_counts)
 
 	# then exploit permutation
-	permuted_x = sample(x)
 	n = length(x)
 	table_assignments = rep(NA, n)
 
-	# pretend each x is last to arrive 
-	for(i in 1:length(permuted_x)){
+	# pretend each x_i is last to arrive 
+	for(i in 1:n){
 		table_i = sample(c(1:num_tables), 1, prob=table_props)
 		table_assignments[i] = table_i 
 	}
+
+	return(table_assignments)
 }
 
 restaurant = function(x, alpha){
