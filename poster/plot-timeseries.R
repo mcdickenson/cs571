@@ -32,28 +32,3 @@ plot.event.counts = function(data, country1, country2, title="") {
 }
 
 plot.event.counts(agg, "USA", "ISR")
-
-which(agg$country_1=="USA" & agg$country_2=="ISR")
-
-
-names(agg)
-data = agg
-country1 = "USA"
-country2 = "ISR" 
-sub = data[which(data$country_1==country1 & data$country_2==country2), ]
-head(sub)
-tssub = ts(sub)
-head(tssub)
-
-tsdiff1 <- diff(tssub, differences=1)
-head(tsdiff1)
-tsdiff1$X.Date = sub$X.Date
-head(tsdiff1[,'quad1'])
-length(tsdiff1)
-nrow(sub)
-# title = paste(country1, country2, sep="-")
-# sub$X.Date = as.Date(paste(as.character(sub$year), "-", as.character(sub$month), "-01", sep=''))
-# to.plot = melt(sub[,c('quad1', 'quad2', 'quad3', 'quad4', 'X.Date')], 
-#                 id.vars="X.Date")
-print(to.plot)
-plot(sub$X.Date[2:276], tsdiff1[, 'quad1'], type='l')
