@@ -1,0 +1,148 @@
+\documentclass[landscape, paperwidth=42in, paperheight=36in,
+fontscale=.35, margin=1in]{baposter} 
+
+% Packages to use
+\usepackage{calc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{relsize}
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage{bm}
+\usepackage{enumitem}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{tikz}
+\usepackage[longnamesfirst]{natbib}
+\usepackage{array}
+\usepackage[T1]{fontenc}
+\usepackage[urw-garamond]{mathdesign}
+\usepackage{garamondx}
+
+% Define colors
+\definecolor{lightblue}{rgb}{0.145,0.6666,1}
+\definecolor{darkblue}{rgb}{0.220,0.424,0.690}
+\definecolor{lightred}{rgb}{0.81,0.2,.13}
+\definecolor{darkred}{rgb}{0.8,0.18,0.15}
+\definecolor{black}{rgb}{0,0,0}
+\definecolor{dukeblue}{rgb}{0,0,0.612}
+
+% Define custom commands
+\newcommand{\compresslist}{%
+\setlength{\itemsep}{1pt}%
+\setlength{\parskip}{0pt}%
+\setlength{\parsep}{0pt}%
+}
+
+% Begin poster and set options
+\begin{document}
+\begin{poster}{ 
+  % Show grid to help with alignment
+  grid=false,
+  columns=3,
+  % Column spacing
+  colspacing=0.1in, 
+  % Color style
+  bgColorOne=white,
+  bgColorTwo=white,
+  borderColor=black,
+  headerColorOne=dukeblue, % was black (gradient)
+  headerColorTwo=dukeblue, % lightblue
+  headerFontColor=white,
+  boxColorOne=white,
+  boxColorTwo=black, % lightblue
+  % Format of textbox
+  textborder=roundedleft,
+  % Format of text header
+  eyecatcher=true,
+  headerborder=closed,
+  headerheight=0.1\textheight,
+%  textfont=\sc, An example of changing the text font
+% headershape can be one of: rectangle, rounded, smallrounded, roundedleft, roundedright
+  headershape=rounded, 
+  headershade=shadelr,
+  headerfont=\Large\bf\textsf, %Sans Serif 
+  textfont={\setlength{\parindent}{1.5em}},
+  boxshade=plain,
+%  background=shade-tb,
+  background=plain,
+  linewidth=2pt
+  } {%%% Eye Catcher %%%%%%%%
+	% \hspace{1in} 
+ %        \setlength\fboxsep{0pt}
+ %        \setlength\fboxrule{0.5pt}
+ %        \fbox{\includegraphics[scale=1]{bric_countries.jpg}}
+} {%%% Title %%%%%%%%
+\textsf{
+	\bf{Automated Production of Political Indicators}}
+} { %%% Authors %%%%%%%
+	\vspace{1em} \textsf{Matthew C. Dickenson}\\
+	{\smaller \textsf{mcd31@duke.edu}}
+} {%%% Logo %%%%%%%%%%
+  \centering \includegraphics[scale=.8]{dukelogo_vert_black.eps} \hspace{1in}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Now define the boxes that make up the poster
+%%%---------------------------------------------------------------------------
+%%% Each box has a name and can be placed absolutely or relatively.
+%%% The only inconvenience is that you can only specify a relative position 
+%%% towards an already declared box. So if you have a box attached to the 
+%%% bottom, one to the top and a third one which should be in between, you 
+%%% have to specify the top and bottom boxes before you specify the middle 
+%%% box.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %
+    % A coloured circle useful as a bullet with an adjustably strong filling
+    \newcommand{\colouredcircle}{%
+      \tikz{\useasboundingbox (-0.2em,-0.32em) rectangle(0.2em,0.32em); \draw[draw=black,fill=lightblue,line width=0.03em] (0,0) circle(0.18em);}}
+
+%%%%%%
+  \headerbox{\bf Motivation}{name=question,column=0,row=0}{
+%%%%%
+Can political indicators such as the Militarized Interstate Dispute (MID) dataset be aided by automated classification procedures? Existing pipelines for production of MID and related datasets (e.g. Polity and Freedom House) are costly and slow.
+   % \begin{enumerate}\compresslist
+   %    \item Power alone as a sufficient motivator
+   %    \item Expanding economic interests (see Scenario 1)
+   %    \item Threat from foreign states (see Scenario 2)
+   % \end{enumerate}
+
+   \vspace{0.3em}
+ }
+
+%%%%%%
+  \headerbox{\bf Data Source}{name=data,below=question,above=bottom}{
+%%%%%
+Put a few indicative time series from GDELT here. 
+ }
+
+
+%%%%%%
+  \headerbox{\bf Classification Trees}{name=estimations,column=1,row=0}{
+%%%%%
+  Put in the tree and compare to logistic regression.
+   \vspace{-.5in}
+ }
+
+
+%%%%%%
+  \headerbox{\bf Results and Performance}{name=predictions,column=2,row=0}{
+%%%%%
+  Put in some maps.
+ }
+
+%%%%%%
+  \headerbox{\bf Outlook}{name=conclusion,below=predictions,above=bottom,column=2}{
+%%%%%
+   \begin{itemize} \compresslist
+        \item Automated methods can speed up production of political indicators.
+    \end{itemize}
+%\vspace{0.3pt}
+ }
+
+\end{poster}
+\end{document}
