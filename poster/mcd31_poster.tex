@@ -104,20 +104,14 @@ fontscale=.35, margin=1in]{baposter}
 %%%%%%
   \headerbox{\bf Motivation}{name=question,column=0,row=0}{
 %%%%%
-Can political indicators such as the Militarized Interstate Dispute (MID) dataset be aided by automated classification procedures? Existing pipelines for production of MID and related datasets (e.g. Polity and Freedom House) are costly and slow.
-   % \begin{enumerate}\compresslist
-   %    \item Power alone as a sufficient motivator
-   %    \item Expanding economic interests (see Scenario 1)
-   %    \item Threat from foreign states (see Scenario 2)
-   % \end{enumerate}
-
+Can political indicators such as the Militarized Interstate Dispute (MID) dataset be approximated by automated classification procedures? Existing, human-intensive pipelines for production of MID and related datasets (e.g. Polity and Freedom House) are costly and slow. This project uses classification trees to estimate the occurrence of MIDs using event data, described below. 
    \vspace{0.3em}
  }
 
 %%%%%%
   \headerbox{\bf Data Source}{name=data,below=question,above=bottom}{
 %%%%%
-  Put a few indicative time series from GDELT here. 
+  Features were drawn from the Global Database of Events, Language, and Tone (GDELT), which classifies daily interactions as material or verbal, and cooperative or conflictual. Interactions between states were aggregated to the monthly level and first-differenced to account for the exponential growth in the number of records over time. Examples of dyadic time series are shown below, with shaded regions indicating the occurence of a MID. 
 
   \begin{center}
     \input{../graphics/timelines}
@@ -128,17 +122,44 @@ Can political indicators such as the Militarized Interstate Dispute (MID) datase
 %%%%%%
   \headerbox{\bf Classification Trees}{name=estimations,column=1,row=0}{
 %%%%%
-  Put in the tree and compare to logistic regression.
+  The figure below presents a graphical representation of the final classification tree, fit using the \texttt{rpart} package in \texttt{R}. The minimum complexity parameter, $\kappa$, was set to 0.0001. By ten-fold cross-validation, the optimal $\kappa$ was found to be 0.0016, which also minimizes error on the test data. This value was used to prune the tree shown here. The leaves of the tree are shaded according to whether war (MID hostilities $\geq$ 4 ) or peace is more likely, and the value at each leaf indicates the relative frequency of war in the training set. 
+
+\vspace{-1.3in}
   \begin{center}
     \input{../graphics/tree}
   \end{center}
   
-   \vspace{-.5in}
+\vspace{-1.3in}
+  Each table below presents several measures of accuracy for the classification tree compared to a null model (all predicted values are zero) and a logistic regression model using the same features as the tree. The test set covers 1992 to 1998 (\emph{n}=372,271) and the training set covers 1999-2001 (\emph{n}=213,218). The classification tree outperforms the other two models in all respects for the training data, and in most respects for the test data. 
+
+  \begin{center}
+  \begin{tabular}{l|ccc}
+  \multicolumn{4}{c}{Training Data} \\
+  Model & MSE & Precision & Recall \\
+  \midrule
+  Null & 0.0075 & 0.000 & 0.000 \\
+  GLM & 0.0082 & 0.158 & 0.022 \\
+  CART & 0.0067 & 0.702 & 0.192 
+  \end{tabular}
+  \end{center}
+
+  \begin{center}
+  \begin{tabular}{l|ccc}
+  \multicolumn{4}{c}{Test Data} \\
+  Model & MSE & Precision & Recall \\
+  \midrule
+  Null & 0.0066 & 0.000 & 0.000 \\
+  GLM & 0.0079 & 0.142 & 0.038 \\
+  CART & 0.0066 & 0.422 & 0.027 
+  \end{tabular}
+  \end{center}
+
+   % \vspace{-.5in}
  }
 
 
 %%%%%%
-  \headerbox{\bf Results and Performance}{name=predictions,column=2,row=0}{
+  \headerbox{\bf Results}{name=predictions,column=2,row=0}{
 %%%%%
   Put in some maps.
  }
@@ -147,7 +168,9 @@ Can political indicators such as the Militarized Interstate Dispute (MID) datase
   \headerbox{\bf Outlook}{name=conclusion,below=predictions,above=bottom,column=2}{
 %%%%%
    \begin{itemize} \compresslist
-        \item Automated methods can speed up production of political indicators.
+      \item CART handles interactions between features better than GLM.
+      \item Next steps: SMOTE for rare events, use spatial and network lages to account for interdependence between countries, compare to random forest.
+      \item Automated methods can offer a quick and inexpensive first approximation of political indicators.
     \end{itemize}
 %\vspace{0.3pt}
  }
