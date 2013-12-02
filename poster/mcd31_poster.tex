@@ -71,10 +71,12 @@ fontscale=.35, margin=1in]{baposter}
   background=plain,
   linewidth=2pt
   } {%%% Eye Catcher %%%%%%%%
-	% \hspace{1in} 
+	\hspace{1.3in} 
  %        \setlength\fboxsep{0pt}
- %        \setlength\fboxrule{0.5pt}
- %        \fbox{\includegraphics[scale=1]{bric_countries.jpg}}
+        % \setlength\fboxrule{0.5pt}
+        % \fbox{
+        \includegraphics[scale=0.05]{../graphics/Globe_Icon.png}
+        % }
 } {%%% Title %%%%%%%%
 \textsf{
 	\bf{Automated Production of Political Indicators}}
@@ -104,13 +106,14 @@ fontscale=.35, margin=1in]{baposter}
 %%%%%%
   \headerbox{\bf Motivation}{name=question,column=0,row=0}{
 %%%%%
-Can political indicators such as the Militarized Interstate Dispute (MID) dataset be approximated by automated classification procedures? Existing, human-intensive pipelines for production of MID and related datasets (e.g. Polity and Freedom House) are costly and slow. This project uses classification trees to estimate the occurrence of MIDs using event data, described below. 
+Can political indicators such as the Militarized Interstate Dispute (MID) dataset be approximated by automated classification procedures? Existing, human-intensive pipelines for the production of MID and related data (e.g. Polity and Freedom House) are costly and slow. This project uses classification trees to estimate the MID occurrence using event data. 
 
-  \vspace{-1in}
+  \vspace{-1.0in}
 
   \begin{center}
     \input{../graphics/midmap}
-    Proportion of 1992-2001 Spent in a MID
+    % \vspace{-0.2in}
+    Proportion of 1992-2001 Spent in MIDs
   \end{center}
 
    % \vspace{0.3em}
@@ -119,7 +122,7 @@ Can political indicators such as the Militarized Interstate Dispute (MID) datase
 %%%%%%
   \headerbox{\bf Data Source}{name=data,below=question,above=bottom}{
 %%%%%
-  Features were drawn from the Global Database of Events, Language, and Tone (GDELT), which classifies daily interactions as material or verbal, and cooperative or conflictual. Interactions between states were aggregated to the monthly level and first-differenced to account for the exponential growth in the number of records over time. Examples of dyadic time series are shown below, with shaded regions indicating the occurence of a MID. 
+  Features were drawn from the Global Database of Events, Language, and Tone (GDELT), which classifies daily interactions as material or verbal, and cooperative or conflictual. Interactions between states were aggregated to the monthly level and first-differenced to account for the exponential growth in the number of records over time. Examples of dyadic time series are shown below, with shaded regions indicating the occurrence of a MID.
 
   \begin{center}
     \input{../graphics/timelines}
@@ -130,7 +133,17 @@ Can political indicators such as the Militarized Interstate Dispute (MID) datase
 %%%%%%
   \headerbox{\bf Classification Trees}{name=estimations,column=1,row=0}{
 %%%%%
-  The figure below presents a graphical representation of the final classification tree, fit using the \texttt{rpart} package in \texttt{R}. The minimum complexity parameter, $\kappa$, was set to 0.0001. By ten-fold cross-validation, the optimal $\kappa$ was found to be 0.0016, which also minimizes error on the test data. This value was used to prune the tree shown here. The leaves of the tree are shaded according to whether war (MID hostilities $\geq$ 4 ) or peace is more likely, and the value at each leaf indicates the relative frequency of war in the training set. 
+  A tree was fit to classify MIDs in dyad-months using changes in counts of each event types and the proportion of interactions in each quadrant of the material/verbal, cooperative/conflictual matrix. To fit the tree, the minimum complexity parameter was set to $\kappa=$0.0001. By cross-validation, the optimal $\kappa$ was found to be 0.00155, which also minimizes error on the test data. 
+  
+  \vspace{-0.1in}
+
+  \begin{center}
+    \input{../graphics/plotcp}
+  \end{center}
+
+  \vspace{-0.3in}
+
+  This value was used to prune the tree shown below. The leaves of the tree are shaded according to whether war (MID hostilities $\geq$ 4 ) or peace is more likely, and the value at each leaf indicates the relative frequency of war in the training set. 
 
 \vspace{-1.3in}
   \begin{center}
@@ -138,31 +151,18 @@ Can political indicators such as the Militarized Interstate Dispute (MID) datase
   \end{center}
   
 \vspace{-1.3in}
-  Each table below presents several measures of accuracy for the classification tree compared to a null model (all predicted values are zero) and a logistic regression model using the same features as the tree. The test set covers 1992 to 1998 (\emph{n}=372,271) and the training set covers 1999-2001 (\emph{n}=213,218). The classification tree outperforms the other two models in all respects for the training data, and in most respects for the test data. 
+  The table below presents several measures of accuracy for the classification tree compared to a null model (all predicted values are zero) and a logistic regression model using the same features. The test set covers 1992-1998 (\emph{n}=372,271) and the training set covers 1999-2001 (\emph{n}=213,218). The classification tree outperforms the other two models in all respects for the training data, and in most respects for the test data. 
 
   \begin{center}
-  \begin{tabular}{l|ccc}
-  \multicolumn{4}{c}{Training Data} \\
-  Model & MSE & Precision & Recall \\
+  \begin{tabular}{l|ccc|ccc}
+   \multicolumn{1}{c}{} & \multicolumn{3}{c}{Training Data} & \multicolumn{3}{c}{Test Data} \\
+  Model & MSE & Precision & Recall & MSE & Precision & Recall \\
   \midrule
-  Null & 0.0075 & 0.000 & 0.000 \\
-  GLM & 0.0082 & 0.158 & 0.022 \\
-  CART & 0.0067 & 0.702 & 0.192 
+  Null & 0.0075 & 0.000 & 0.000 & 0.0066 & 0.000 & 0.000 \\
+  GLM & 0.0082 & 0.158 & 0.022  & 0.0079 & 0.142 & 0.038 \\
+  CART & 0.0067 & 0.702 & 0.192 & 0.0066 & 0.422 & 0.027 
   \end{tabular}
   \end{center}
-
-  \begin{center}
-  \begin{tabular}{l|ccc}
-  \multicolumn{4}{c}{Test Data} \\
-  Model & MSE & Precision & Recall \\
-  \midrule
-  Null & 0.0066 & 0.000 & 0.000 \\
-  GLM & 0.0079 & 0.142 & 0.038 \\
-  CART & 0.0066 & 0.422 & 0.027 
-  \end{tabular}
-  \end{center}
-
-   % \vspace{-.5in}
  }
 
 
@@ -174,32 +174,6 @@ Can political indicators such as the Militarized Interstate Dispute (MID) datase
       \includegraphics{../graphics/diagnostics.pdf}
     \end{center}
 
-  %   \begin{center}
-  %     \vspace{-1in}
-  %     \includegraphics[page=1]{../graphics/test-parent.pdf}  
-  %   \end{center}
-
-  %   \vspace{-1in}
-
-  %   % \begin{center}
-  %   %   Proportion of False Negatives
-  %   % \end{center}
-
-  %   \begin{center}
-  %     \vspace{-2in}
-  %     \includegraphics[page=2]{../graphics/test-parent.pdf} 
-  %   \end{center}
-
-  %   \vspace{-2in}
-
-  %   \begin{center}
-  %     \includegraphics[page=3]{../graphics/test-parent.pdf}  
-  %   \end{center}
-
-  % \begin{center}
-  %     \includegraphics[page=4]{../graphics/test-parent.pdf} 
-  %   \end{center}
-
  }
 
 %%%%%%
@@ -207,10 +181,10 @@ Can political indicators such as the Militarized Interstate Dispute (MID) datase
 %%%%%
    \begin{itemize} \compresslist
       \item CART handles interactions between features better than GLM.
-      \item Next steps: SMOTE for rare events, use spatial and network lages to account for interdependence between countries, compare to random forest.
+      \item Next steps include SMOTE for rare events, using spatial and network lags to account for interdependence between countries, and a comparison to random forest.
+      \item More advanced methods and a final pass by human coders will likely be required to obtain fully accurate classifications.
       \item Automated methods can offer a quick and inexpensive first approximation of political indicators.
-    \end{itemize}
-%\vspace{0.3pt}
+  \end{itemize}
  }
 
 \end{poster}

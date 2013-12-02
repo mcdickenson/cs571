@@ -93,9 +93,6 @@ names(train)
 countries = sort(unique(c(unique(train$country_1), unique(train$country_2))))
 mths = seq(min(train$date), max(train$date), by='month')
 
-# combos = expand.grid(first=countries, second=mths)
-# colnames(combos) = c("country", "date")
-
 combos = as.data.frame(countries)
 head(combos)
 colnames(combos) = c("country")
@@ -248,19 +245,19 @@ mapCountryData(sPDF, nameColumnToPlot="fp.perc", mapTitle="False Positives", cat
 mapCountryData(sPDF2, nameColumnToPlot="fp.perc", mapTitle="", catMethod=seq(0, 0.005, length.out=10) )
 dev.off()
 
-# getwd()
+setwd(pathGraphics)
 tikz('diagnostics.tex', standAlone=TRUE, width=4.5, height=8.5)
 mapDevice(device="tikz output")
 # mapDevice()
 par(mfrow=c(4,1))
 par(mar=c(0,0,2,2))
-mapCountryData(sPDF, nameColumnToPlot="fp.perc", mapTitle="False Positives", catMethod=seq(0, 0.005, length.out=10),
+mapCountryData(sPDF, nameColumnToPlot="fp.perc", mapTitle="False Positives in Training Data", catMethod=seq(0, 0.005, length.out=10),
 	addLegend=TRUE)
-mapCountryData(sPDF2, nameColumnToPlot="fp.perc", mapTitle="", catMethod=seq(0, 0.005, length.out=10) ,
+mapCountryData(sPDF2, nameColumnToPlot="fp.perc", mapTitle="False Positives in Test Data", catMethod=seq(0, 0.005, length.out=10) ,
 	addLegend=FALSE)
-mapCountryData(sPDF2, nameColumnToPlot="fn.perc", mapTitle="False Negatives", catMethod=seq(0, 0.12, length.out=10),
+mapCountryData(sPDF2, nameColumnToPlot="fn.perc", mapTitle="False Negatives in Training Data", catMethod=seq(0, 0.12, length.out=10),
 	addLegend=TRUE)
-mapCountryData(sPDF2, nameColumnToPlot="fn.perc", mapTitle="", catMethod=seq(0, 0.12, length.out=10),
+mapCountryData(sPDF2, nameColumnToPlot="fn.perc", mapTitle="False Negatives in Test Data", catMethod=seq(0, 0.12, length.out=10),
 	addLegend=FALSE)
 dev.off()
 
