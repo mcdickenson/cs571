@@ -1,0 +1,30 @@
+\begin{figure*}
+
+   \begin{center}
+    \input{../graphics/timelines}
+    \caption{Examples of Dyadic Time Series Derived from GDELT, with and without MIDs (shaded)}
+    \label{timelines}
+  \end{center}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+
+  \begin{center}
+    \input{../graphics/plotcp-full}
+    \caption{Cross-Validation Error and Number of Splits as a Function of $\kappa$}
+    \label{cpplot}
+  \end{center}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}
+
+  \begin{center}
+    \input{../graphics/tree-for-paper}
+    \caption{Fitted and Pruned Classification Tree}
+    \label{tree}
+  \end{center}
+\end{figure*}
+\efloatseparator
+ 

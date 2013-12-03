@@ -1,0 +1,32 @@
+\begin{table*}
+[t]
+\caption{CAMEO event categories and descriptions}
+\label{cameo}
+\begin{center}
+\begin{tabular}{lp{2in}p{2in}}
+& \textbf{Cooperative} & \textbf{Conflictual} \\
+\midrule
+\textbf{Verbal} & public statement, appeal, express intent to cooperate, consult, engage in diplomatic cooperation & demand, disapprove, reject, threaten, protest \\
+\textbf{Material} & cooperate materially, provide aid, yield, investigate & exhibit force posture, reduce relations, coerce, assault, fight, use conventional mass violence
+\end{tabular}
+\end{center}
+\end{table*}
+\efloatseparator
+ 
+\begin{table*}
+
+\caption{Comparison of CART to Alternative Models}
+\label{cart-perf}
+  \begin{center}
+  \begin{tabular}{l|ccc|ccc}
+   \multicolumn{1}{c}{} & \multicolumn{3}{c}{Training Data} & \multicolumn{3}{c}{Test Data} \\
+  Model & MSE & Precision & Recall & MSE & Precision & Recall \\
+  \midrule
+  Null & 0.0075 & 0.000 & 0.000 & 0.0066 & 0.000 & 0.000 \\
+  GLM & 0.0082 & 0.158 & 0.022  & 0.0079 & 0.142 & 0.038 \\
+  CART & 0.0067 & 0.702 & 0.192 & 0.0066 & 0.422 & 0.027
+  \end{tabular}
+  \end{center}
+\end{table*}
+\efloatseparator
+ 
