@@ -1,7 +1,7 @@
 \documentclass[12pt,letterpaper]{article} % For LaTeX2e
 \usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
 \usepackage{booktabs}
-\usepackage[nofiglist, notablist]{endfloat}
+% \usepackage[nofiglist, notablist]{endfloat}
 \usepackage{fullpage}
 \usepackage{graphicx}
 \usepackage{lastpage}
@@ -25,7 +25,7 @@
 \usepackage{xcolor}
 \usepackage[margin=3cm]{geometry}
 
-\renewcommand{\efloatseparator}{\mbox{}}
+% \renewcommand{\efloatseparator}{\mbox{}}
 
 
 
@@ -48,14 +48,21 @@ Durham, NC 27708 \\
 
 \begin{document}
 
+\begin{titlepage}
 
+\clearpage
 \maketitle
+\thispagestyle{empty}
 
 \begin{abstract}
 Can classification methods help to automate the production of political indicators in near real time? The Militarized Interstate Disputes (MID) dataset, produced by the Correlates of War project, has been widely used in political research and policy discussions over the past three decades. Despite its value for understanding conflict, MID data coding is performed in iterative batches by human coders that lag behind the present by several years. However, reliance solely on human coders is neither necessary nor desirable. This project is the first stage in creating a pipeline to approximate the MID dataset using classification trees and daily event data (GDELT) at a substantial reduction in cost. 
 \end{abstract}
 
-% \newpage
+\end{titlepage}
+
+
+
+\newpage
 
 \section{Introduction}
 
@@ -70,9 +77,9 @@ The Militarized Interstate Disputes (MID) dataset has been widely used in politi
 As one of the most widely used dependent variables in international conflict studies, much effort has been devoted to estimating models of MID onset and duration. However, most of this work omits cross-validation and relies on features measured at the annual level, making near real-time (NRT) classification infeasible \citep{ward2010perils}. A recent shift toward event data with frequent updates (often at the daily level) has helped to address this shortcoming \citep{gerner1994,gerner:etal:2002,king2003automated,ruggeri2011events,schrodt2013gdelt}. 
 
 % What modeling approaches and simplifying assumptions worked in this related work, and what didn’t work? 
-With this transition toward event data, the political forecasting community has become attune to new challenges and has responded with several established practices. Coding the sentiment of interactions can now be done in NRT using the Tabari system, which aggregates and deduplicates news reports \citep{o2010crisis,schrodt2009tabari}. Event classification can be performed using CAMEO, which uses a schema of twenty event types consisting of material/verbal and cooperative/conflictual actions (see Table \ref{cameo}). These event classifications provide a principled, automated method for exhaustively categorizing the types of events that may consitute an interstate dispute \citep{ghosn2004mid3}. 
+With this transition toward event data, the political forecasting community has become attune to new challenges and has responded with several established practices. Coding the sentiment of interactions can now be done in NRT using the Tabari system, which aggregates and deduplicates news reports \citep{o2010crisis,schrodt2009tabari}. Event classification can be performed using CAMEO, which uses a schema of twenty event types consisting of material/verbal and cooperative/conflictual actions (see Table \ref{cameo}). These event classifications provide a principled, automated method for exhaustively categorizing the types of events that may consitute an interstate dispute \citep{ghosn2004mid3}. The CAMEO event counts can be aggregated up to the monthly level and first-differenced, both of which are common strategies for dealing with event data \citep{arva2013improving, Box:1976,gerner:etal:2002,yonamine2013event}. 
 
-\begin{table}[t]
+\begin{table}[h!]
 \caption{CAMEO event categories and descriptions}
 \label{cameo}
 \begin{center}
@@ -84,8 +91,6 @@ With this transition toward event data, the political forecasting community has 
 \end{tabular}
 \end{center}
 \end{table}
-
-Forecasters have also dealt with challenges when aggregating event data up to various temporal levels. Although there is no single best practice, monthly aggregation has become a common strategy \citep{arva2013improving,yonamine2013event} and is used in this project. CAMEO event counts are amenable to this approach. They also allow for aggregation up to longer temporal periods than the daily level \citep{gerner:etal:2002}. Modfiying the features by transforming the raw counts into month-to-month changes (i.e. first-differencing) can also help to simplify the feature set \citep{Box:1976}. 
 
 % What can you take from the scientific literature to your project? 
 
@@ -106,15 +111,10 @@ In work on this project thus far, several important features of the GDELT data h
 
 % todo: example time series, discuss how noisy GDELT is
 
-During the process of aggregating GDELT records into dyad months, the absolute number of events within each of the four major and twenty minor categories was counted. Some example time series of dyads with and without conflict are presented in Figure \ref{timelines}.  From these raw counts, the monthly change in counts and the relative frequency of each interaction type were computed. These features--proportion of interactions that were conflictual versus cooperative, and how sharply events changed from the previous month--are used as predictors in the classification procedure.
+During the process of aggregating GDELT records into dyad months, the absolute number of events within each of the four major and twenty minor categories was counted. 
+% Some example time series of dyads with and without conflict are presented in Figure \ref{timelines}.  
+From these raw counts, the monthly change in counts and the relative frequency of each interaction type were computed. These features--proportion of interactions that were conflictual versus cooperative, and how sharply events changed from the previous month--are used as predictors in the classification procedure.
 
-\begin{figure}
-   \begin{center}
-    \input{../graphics/timelines}
-    \caption{Examples of Dyadic Time Series Derived from GDELT, with and without MIDs (shaded)}
-    \label{timelines}
-  \end{center}
-\end{figure} 
 
 MID hostilities are measured on a five-point scale, which was collapsed into a binary with the cutoff set at four. Events above this threshold involve the use of force, typically associated with ``war,'' while events below this threshold require only the threat or display of force \citep{ghosn2004mid3}. Further classification of exact hostility levels will be attempted in a later stage of this project. 
 
@@ -134,7 +134,7 @@ z_{i,j,t,m} = {\sum_{k=1}^n x_{i,j,t,k} \mathbb{I}(x \in m)  \over \sum_{k=1}^n 
 
 % provide interpretations for these variables (i.e., which are observed, which are hidden, and which you will be estimating, and how each of the observed values will be processed from the original data). 
 
-Both the $x$ and $z$ values are derived from observations the GDELT data. The indicator of conflict, $y$, is observed in the MID data, and predicted indicators of conflict $\hat{y}$ will be estimated using the classification tree. The predicted values $\hat{y}$ for the test set can be compared to the actual MID data to validate the model. This will give us a sense of how accurate the classifications for post-2001 data will be. Even though these values will not be perfectly accurate, they should give us a good approximation of which countries experienced conflict since 2001 and can help speed up the production of the next generation of MID data. 
+Both the $x$ and $z$ values are derived from observations the GDELT data. The indicator of conflict, $y$, is observed in the MID data, and predicted indicators of conflict $\hat{y}$ will be estimated using the classification tree. The predicted values $\hat{y}$ for the test set can be compared to the actual MID data to validate the model.
 
 
 \subsection{Machine Learning Method}
@@ -143,7 +143,9 @@ Both the $x$ and $z$ values are derived from observations the GDELT data. The in
 
 The inference problem is to compute a function $f(\cdot)$ that uses country interactions to estimate an indicator of whether conflict occurred. To accomplish this, this project will use a classification tree (CART). This method is appropriate for binary classification with real-valued predictors, which makes it well suited for this project.
 
-CART grows a tree $T$ from a root node by adding splits based on features. At each stage, there is an impurity function $I(T)$ that measures the (in)accuracy of the existing classifications. When adding another split to the tree, the CART algorithm seeks to maximize the impurity reduction $\Delta I$. The measure of impurity reduction is supplied to the algorithm, as is a complexity parameter, $\kappa$. We can think of $\kappa$ as the cost of adding another variable to the tree. When $\kappa=\infty$ the tree will consist of only the root node, and as we reduce $\kappa$ toward zero we allow the tree to grow. However, setting $\kappa$ too low can result in overfitting, which can be assessed via cross-validation. For more on classification trees in general and the implementation used for this project, see \citep{murphy2012machine,olshen1984classification,therneau1997introduction}. 
+CART grows a tree $T$ from a root node by adding splits based on features. At each stage, there is an impurity function $I(T)$ that measures the (in)accuracy of the existing classifications. When adding another split to the tree, the CART algorithm seeks to maximize the impurity reduction $\Delta I$. The measure of impurity reduction is supplied to the algorithm, as is a complexity parameter, $\kappa$. 
+% We can think of $\kappa$ as the cost of adding another variable to the tree. When $\kappa=\infty$ the tree will consist of only the root node, and as we reduce $\kappa$ toward zero we allow the tree to grow. However, setting $\kappa$ too low can result in overfitting, which can be assessed via cross-validation. 
+For more on classification trees in general and the implementation used for this project, see \citep{murphy2012machine,olshen1984classification,therneau1997introduction}. 
 
 % In terms of being concise, if the methodological ideas are written exactly elsewhere, you may reference (and cite) that text, as long as you explain clearly what you did so that your experimental results could be replicated based on your text.
 
@@ -152,21 +154,14 @@ CART grows a tree $T$ from a root node by adding splits based on features. At ea
 
 \subsection{Model Estimation}
 
-To fit the classification tree, this project used the \texttt{rpart} library in $\mathcal{R}$ \citep{therneau1997introduction}. The minimum complexity parameter, $\kappa$, was initialized to be $10^{-4}$. By cross-validation, the optimal $\kappa$ was found to be 0.00155 (see Figure \ref{cpplot}). The Gini coefficient was used as the impurity function. 
+To fit the classification tree, this project used the \texttt{rpart} library in $\mathcal{R}$ \citep{therneau1997introduction}. The minimum complexity parameter, $\kappa$, was initialized to be $10^{-4}$. By cross-validation, the optimal $\kappa$ was found to be 0.00155. The Gini coefficient was used as the impurity function. This value was used to prune the tree from its maximum of 176 splits down to nine. The resulting tree is shown in Figure \ref{tree}, with leaves shaded by whether MID hostilities (``war'') or peace is more likely. Each leaf also indicates the relative frequency of war in the training set for observations assigned to that leaf.
 
-This value was used to prune the tree from its maximum of 176 splits down to nine. The resulting tree is shown in Figure \ref{tree}, with leaves shaded by whether MID hostilities (``war'') or peace is more likely. Each leaf also indicates the relative frequency of war in the training set for observations assigned to that leaf.
 
-\begin{figure}
+\begin{figure}[h!]
   \begin{center}
-    \input{../graphics/plotcp-full}
-    \caption{Cross-Validation Error and Number of Splits as a Function of $\kappa$}
-    \label{cpplot}
-  \end{center}
-\end{figure}
-
-\begin{figure}
-  \begin{center}
+  \vspace{-1in}
     \input{../graphics/tree-for-paper}
+  \vspace{-1in}
     \caption{Fitted and Pruned Classification Tree}
     \label{tree}
   \end{center}
@@ -213,7 +208,7 @@ The findings thus far indicate that automated production of political indicators
 
 Thanks to Michael D. Ward and National Science Foundation Grant \#3331808 for support during this project. Any conclusions or errors are the sole responsibility of the author.
 
-\newpage
+% \newpage
 \subsubsection*{References}
 
 % CITE A LOT. Any unreferenced methods, prior work, or biological phenomenon, unless it is textbook-common, will be penalized.
